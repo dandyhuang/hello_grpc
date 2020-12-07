@@ -31,11 +31,12 @@ type reqHead struct {
 }
 
 func (c *ClientCodec) GetReqbuf() ([]byte, error) {
-	str := reqHead{recommending: "testst"}
+	//	str := reqHead{recommending: "testst"}
 
-	strbyte := []byte(str.recommending)
-	body := uint32(123)
-	totalLen := uint32(len(strbyte)) + uint32(unsafe.Sizeof(body))
+	//	strbyte := []byte(str.recommending)
+	body := uint32(1022)
+	msgtype := byte('1')
+	totalLen := uint32(unsafe.Sizeof(msgtype)) + uint32(unsafe.Sizeof(body))
 	fmt.Println("totallen:", totalLen)
 
 	// 开始打包
@@ -44,7 +45,7 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 		return nil, err
 	}
 
-	if err := binary.Write(buf, binary.BigEndian, strbyte); err != nil {
+	if err := binary.Write(buf, binary.BigEndian, msgtype); err != nil {
 		return nil, err
 	}
 	if err := binary.Write(buf, binary.BigEndian, body); err != nil {
