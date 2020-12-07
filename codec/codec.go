@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"unsafe"
 )
 
 const TrpcMagic_TRPC_MAGIC_VALUE = 0x21
@@ -31,12 +32,10 @@ type reqHead struct {
 
 func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	str := reqHead{recommending: "testst"}
-	reqbody := bytes.NewBuffer([]byte{})
-	tmp := uint32(100)
-	binary.Write(reqbody, binary.BigEndian, tmp)
 
 	strbyte := []byte(str.recommending)
-	totalLen := uint32(len(strbyte)) + uint32(reqbody.Len())
+	body := uint32(123)
+	totalLen := uint32(len(strbyte)) + uint32(unsafe.Sizeof(body))
 	fmt.Println("totallen:", totalLen)
 
 	// 开始打包
@@ -45,10 +44,10 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 		return nil, err
 	}
 
-	if err := binary.Write(buf, binary.BigEndian, reqbody); err != nil {
+	if err := binary.Write(buf, binary.BigEndian, strbyte); err != nil {
 		return nil, err
 	}
-	if err := binary.Write(buf, binary.BigEndian, strbyte); err != nil {
+	if err := binary.Write(buf, binary.BigEndian, body); err != nil {
 		return nil, err
 	}
 	fmt.Println("buf len:", buf.Len())
