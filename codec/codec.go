@@ -34,10 +34,12 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	//	str := reqHead{recommending: "testst"}
 
 	//	strbyte := []byte(str.recommending)
-	body := uint32(1022)
+	msgmethod := uint32(102)
 	magicnum := uint16(256)
 	msgtype := byte('1')
-	totalLen := uint32(unsafe.Sizeof(msgtype)) + uint32(unsafe.Sizeof(magicnum)) + uint32(unsafe.Sizeof(body))
+	uuid := uint32(12324)
+	totalLen := uint32(unsafe.Sizeof(msgtype)) + uint32(unsafe.Sizeof(magicnum)) + uint32(unsafe.Sizeof(msgmethod)) +
+		uint32(unsafe.Sizeof(uuid))
 	fmt.Println("totallen:", totalLen)
 
 	// 开始打包
@@ -51,7 +53,10 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	if err := binary.Write(buf, binary.BigEndian, msgtype); err != nil {
 		return nil, err
 	}
-	if err := binary.Write(buf, binary.BigEndian, body); err != nil {
+	if err := binary.Write(buf, binary.BigEndian, msgmethod); err != nil {
+		return nil, err
+	}
+	if err := binary.Write(buf, binary.BigEndian, uuid); err != nil {
 		return nil, err
 	}
 	fmt.Println("buf len:", buf.Len())
