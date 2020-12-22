@@ -198,6 +198,9 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	//if err := binary.Write(buf, binary.BigEndian, pbbuf); err != nil {
 	//	return nil, err
 	//}
+	if err := binary.Write(buf, binary.BigEndian, uint32(len(pbbuf))); err != nil {
+		return nil, err
+	}
 	buf.Write(pbbuf)
 	fmt.Println("buf len:", buf.Len())
 	return buf.Bytes(), nil

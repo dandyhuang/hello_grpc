@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"unsafe"
 )
@@ -13,6 +14,15 @@ type Man struct {
 }
 
 func main() {
+	fmt.Println("===========以下通过Write把swift写入Learning缓冲器尾部=========")
+	newBytes := []byte("swift")
+	//创建一个内容Learning的缓冲器
+	buf := bytes.NewBuffer([]byte("Learning"))
+	//打印为Learning
+	fmt.Println(buf.String(), len(newBytes))
+	//将newBytes这个slice写到buf的尾部
+	buf.Write(newBytes)
+	fmt.Println(buf.String())
 
 	m := Man{Name: "John", Age: 20}
 	x := "text"
