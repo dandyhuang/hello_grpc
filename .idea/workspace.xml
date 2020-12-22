@@ -20,7 +20,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee2095a8-58b1-4d79-8e1d-aa87c5d78785" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/codec/codec.go" beforeDir="false" afterPath="$PROJECT_DIR$/codec/codec.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -174,12 +173,13 @@
     <state x="130" y="39" key="SettingsEditor/0.23.1440.828@0.23.1440.828" timestamp="1606994934728" />
     <state x="0" y="30" key="SettingsEditor/0.23.1440.829@0.23.1440.829" timestamp="1606998153307" />
     <state x="34" y="30" key="SettingsEditor/34.23.1406.877@34.23.1406.877" timestamp="1607845295107" />
-    <state x="525" y="122" width="568" height="680" key="find.popup" timestamp="1607867130989">
-      <screen x="43" y="23" width="1397" height="877" />
+    <state x="515" y="122" width="575" height="680" key="find.popup" timestamp="1608626937528">
+      <screen x="28" y="23" width="1412" height="877" />
     </state>
     <state x="662" y="118" width="596" height="804" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606301890820" />
     <state x="497" y="117" width="568" height="642" key="find.popup/0.23.1440.829@0.23.1440.829" timestamp="1606998656449" />
     <state x="497" y="117" width="568" height="642" key="find.popup/0.23.1440.830@0.23.1440.830" timestamp="1606997962971" />
+    <state x="515" y="122" width="575" height="680" key="find.popup/28.23.1412.877@28.23.1412.877" timestamp="1608626937528" />
     <state x="525" y="122" width="568" height="680" key="find.popup/43.23.1397.877@43.23.1397.877" timestamp="1607867130989" />
     <state x="406" y="201" width="668" height="676" key="search.everywhere.popup" timestamp="1607868855330">
       <screen x="40" y="23" width="1400" height="877" />

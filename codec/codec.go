@@ -75,7 +75,7 @@ func (access *AccessFlowTag) TagWrite(buf *bytes.Buffer) error {
 	if err := binary.Write(buf, binary.BigEndian, access.trace_id); err != nil {
 		return err
 	}
-	return errors.New("sdf")
+	return nil
 }
 
 type AdposInfo struct {
@@ -129,8 +129,7 @@ func (info *AdposInfo) InfoWrite(buf *bytes.Buffer) error {
 		return err
 	}
 	fmt.Println("access len:", info.totallen)
-
-	return errors.New("sdf")
+	return nil
 }
 func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	// 开始打包
