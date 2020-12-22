@@ -163,7 +163,7 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	//	uint32(unsafe.Sizeof(msgid))
 	totalLen := uint32(unsafe.Sizeof(msgtype)) +
 		uint32(unsafe.Sizeof(msgmethod)) + uint32(unsafe.Sizeof(uuid)) + uint32(unsafe.Sizeof(sessionid)) +
-		uint32(unsafe.Sizeof(msgid)) + tag.totallen + info.totallen + uint32(len(pbbuf))
+		uint32(unsafe.Sizeof(msgid)) + tag.totallen + info.totallen + 4 + uint32(len(pbbuf))
 	fmt.Println("totallen:", totalLen)
 
 	// 开始打包
@@ -195,9 +195,6 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	if err := info.InfoWrite(buf); err != nil {
 		return nil, err
 	}
-	//if err := binary.Write(buf, binary.BigEndian, pbbuf); err != nil {
-	//	return nil, err
-	//}
 	if err := binary.Write(buf, binary.BigEndian, uint32(len(pbbuf))); err != nil {
 		return nil, err
 	}
