@@ -6,9 +6,10 @@ import (
 )
 
 type Man struct {
-	Name string
-	Age  int
-	sex  uint32
+	Name  string
+	Age   int
+	sex   uint32
+	types uint8
 }
 
 func main() {
@@ -20,4 +21,5 @@ func main() {
 	fmt.Println("name size:", unsafe.Sizeof(m.Name))
 	fmt.Println("age size:", unsafe.Sizeof(m.Age))
 	fmt.Println("sex size:", unsafe.Sizeof(m.sex))
+	fmt.Println("types size:", unsafe.Sizeof(m.types))
 }

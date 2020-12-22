@@ -35,7 +35,7 @@ type AccessFlowTag struct {
 	bid      uint32 //业务bid
 	site_id  uint32 //站点集合
 	uid      string
-	uidtype  byte
+	uidtype  uint8
 	trace_id string
 }
 
@@ -140,7 +140,7 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	//	strbyte := []byte(str.recommending)
 	msgmethod := uint32(102)
 	//magicnum := uint16(256)
-	msgtype := byte('1')
+	msgtype := uint8(1)
 
 	// msgtype := uint8(1)
 	uuid := uint32(12324)
