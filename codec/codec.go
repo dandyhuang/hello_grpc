@@ -99,7 +99,7 @@ func (info *AdposInfo) InfoEnCode() error {
 	info.file_version = 0
 	info.adidnum = 1
 	info.relfect_adpos = 1
-	fmt.Println("access len:", info.totallen)
+	fmt.Println("info len:", info.totallen)
 
 	return errors.New("sdf")
 }
@@ -128,7 +128,6 @@ func (info *AdposInfo) InfoWrite(buf *bytes.Buffer) error {
 	if err := binary.Write(buf, binary.BigEndian, info.relfect_adpos); err != nil {
 		return err
 	}
-	fmt.Println("access len:", info.totallen)
 	return nil
 }
 func (c *ClientCodec) GetReqbuf() ([]byte, error) {
@@ -150,11 +149,12 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	var pbbuf []byte
 	str := "hell rank2.0"
 	pbbuf = []byte(str)
-	//totalLen := uint32(unsafe.Sizeof(msgtype)) + uint32(unsafe.Sizeof(magicnum)) +
-	//	uint32(unsafe.Sizeof(msgmethod)) + uint32(unsafe.Sizeof(uuid))
 	totalLen := uint32(unsafe.Sizeof(msgtype)) +
 		uint32(unsafe.Sizeof(msgmethod)) + uint32(unsafe.Sizeof(uuid)) + uint32(unsafe.Sizeof(sessionid)) +
-		uint32(unsafe.Sizeof(msgid)) + tag.totallen + info.totallen + uint32(len(pbbuf))
+		uint32(unsafe.Sizeof(msgid))
+	//totalLen := uint32(unsafe.Sizeof(msgtype)) +
+	//	uint32(unsafe.Sizeof(msgmethod)) + uint32(unsafe.Sizeof(uuid)) + uint32(unsafe.Sizeof(sessionid)) +
+	//	uint32(unsafe.Sizeof(msgid)) + tag.totallen + info.totallen + uint32(len(pbbuf))
 	fmt.Println("totallen:", totalLen)
 
 	// 开始打包
@@ -180,15 +180,15 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	if err := binary.Write(buf, binary.BigEndian, msgid); err != nil {
 		return nil, err
 	}
-	if err := tag.TagWrite(buf); err != nil {
-		return nil, err
-	}
-	if err := info.InfoWrite(buf); err != nil {
-		return nil, err
-	}
-	if err := binary.Write(buf, binary.BigEndian, pbbuf); err != nil {
-		return nil, err
-	}
+	//if err := tag.TagWrite(buf); err != nil {
+	//	return nil, err
+	//}
+	//if err := info.InfoWrite(buf); err != nil {
+	//	return nil, err
+	//}
+	//if err := binary.Write(buf, binary.BigEndian, pbbuf); err != nil {
+	//	return nil, err
+	//}
 	fmt.Println("buf len:", buf.Len())
 	return buf.Bytes(), nil
 }
