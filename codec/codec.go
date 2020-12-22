@@ -34,17 +34,20 @@ type AccessFlowTag struct {
 	totallen uint32
 	bid      uint32 //业务bid
 	site_id  uint32 //站点集合
-	uid      string
+	uid      []byte
 	uidtype  uint8
-	trace_id string
+	trace_id []byte
 }
 
 func (access *AccessFlowTag) TagEnCode() error {
-	access.uid = "hzh"
+	str := "hzh"
+	access.uid = []byte(str)
+
 	access.bid = 22222
 	access.site_id = 55555
 	access.uidtype = byte('3')
-	access.trace_id = "tracechage"
+	str = "tracechage"
+	access.trace_id = []byte(str)
 	access.totallen = uint32(unsafe.Sizeof(access.bid))*5 + uint32(len(access.uid)) +
 		uint32(unsafe.Sizeof(access.uidtype)) +
 		uint32(len(access.trace_id))
@@ -146,8 +149,9 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	uuid := uint32(12324)
 	sessionid := uint32(33312324)
 	msgid := uint32(6666)
-
-	pbbuf := "hello rank2.0"
+	var pbbuf []byte
+	str := "hell rank2.0"
+	pbbuf = []byte(str)
 	//totalLen := uint32(unsafe.Sizeof(msgtype)) + uint32(unsafe.Sizeof(magicnum)) +
 	//	uint32(unsafe.Sizeof(msgmethod)) + uint32(unsafe.Sizeof(uuid))
 	totalLen := uint32(unsafe.Sizeof(msgtype)) +

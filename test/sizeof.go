@@ -15,7 +15,14 @@ type Man struct {
 func main() {
 
 	m := Man{Name: "John", Age: 20}
-
+	x := "text"
+	xBytes := []byte(x)
+	var trace_id []byte
+	copy(trace_id, "tracechage")
+	data := []byte("hello")
+	fmt.Println("trade_id:", trace_id)
+	fmt.Println("xBytes：", xBytes)
+	fmt.Println("data:", string(data))
 	fmt.Println("name len:", len(m.Name))
 	fmt.Println("man size:", unsafe.Sizeof(m))
 	fmt.Println("name size:", unsafe.Sizeof(m.Name))
