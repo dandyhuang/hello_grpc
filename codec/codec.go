@@ -149,6 +149,7 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	var pbbuf []byte
 	str := "hell rank2.0"
 	pbbuf = []byte(str)
+	fmt.Println(pbbuf)
 	totalLen := uint32(unsafe.Sizeof(msgtype)) +
 		uint32(unsafe.Sizeof(msgmethod)) + uint32(unsafe.Sizeof(uuid)) + uint32(unsafe.Sizeof(sessionid)) +
 		uint32(unsafe.Sizeof(msgid))
