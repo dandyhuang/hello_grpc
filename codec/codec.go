@@ -132,8 +132,7 @@ func (info *AdposInfo) InfoWrite(buf *bytes.Buffer) error {
 	return nil
 }
 func (c *ClientCodec) GetReqbuf() ([]byte, error) {
-	// 开始打包
-	buf := bytes.NewBuffer(make([]byte, 0, 1024*1024*5))
+
 	//	str := reqHead{recommending: "testst"}
 	tag := AccessFlowTag{}
 	tag.TagEnCode()
@@ -158,6 +157,8 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 		uint32(unsafe.Sizeof(msgid)) + tag.totallen + info.totallen + uint32(len(pbbuf))
 	fmt.Println("totallen:", totalLen)
 
+	// 开始打包
+	buf := bytes.NewBuffer(make([]byte, 0, totalLen))
 	if err := binary.Write(buf, binary.BigEndian, totalLen); err != nil {
 		return nil, err
 	}
