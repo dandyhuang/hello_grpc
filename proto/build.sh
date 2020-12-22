@@ -1,1 +1,1 @@
-protoc --go_out=plugins=grpc:../service hello_grpc.proto
+protoc --go_out=plugins=grpc:../service/proto update_user.proto

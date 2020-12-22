@@ -3,6 +3,7 @@ package codec
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"unsafe"
 )
@@ -29,23 +30,131 @@ type ClientCodec struct {
 type reqHead struct {
 	recommending string
 }
+type AccessFlowTag struct {
+	totallen uint32
+	bid      uint32 //业务bid
+	site_id  uint32 //站点集合
+	uid      string
+	uidtype  byte
+	trace_id string
+}
 
+func (access *AccessFlowTag) TagEnCode() error {
+	access.uid = "hzh"
+	access.bid = 22222
+	access.site_id = 55555
+	access.uidtype = byte('3')
+	access.trace_id = "tracechage"
+	access.totallen = uint32(unsafe.Sizeof(access.bid))*5 + uint32(len(access.uid)) +
+		uint32(unsafe.Sizeof(access.uidtype)) +
+		uint32(len(access.trace_id))
+	fmt.Println("access len:", access.totallen)
+
+	return errors.New("sdf")
+}
+func (access *AccessFlowTag) TagWrite(buf *bytes.Buffer) error {
+
+	if err := binary.Write(buf, binary.BigEndian, access.totallen); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, access.bid); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, access.site_id); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, access.uid); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, access.uidtype); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, access.trace_id); err != nil {
+		return err
+	}
+	return errors.New("sdf")
+}
+
+type AdposInfo struct {
+	totallen     uint32
+	adposid      uint32
+	siteid       uint32
+	version      uint32
+	sub_version  uint32
+	file_version uint32
+	adidnum      uint32
+
+	relfect_adpos uint32
+}
+
+func (info *AdposInfo) InfoEnCode() error {
+	info.totallen = 36
+	info.adposid = 22222
+	info.siteid = 55555
+	info.version = 104
+	info.sub_version = 1
+	info.file_version = 0
+	info.adidnum = 1
+	info.relfect_adpos = 1
+	fmt.Println("access len:", info.totallen)
+
+	return errors.New("sdf")
+}
+func (info *AdposInfo) InfoWrite(buf *bytes.Buffer) error {
+	if err := binary.Write(buf, binary.BigEndian, info.totallen); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, info.adposid); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, info.siteid); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, info.version); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, info.sub_version); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, info.file_version); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, info.adidnum); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, info.relfect_adpos); err != nil {
+		return err
+	}
+	fmt.Println("access len:", info.totallen)
+
+	return errors.New("sdf")
+}
 func (c *ClientCodec) GetReqbuf() ([]byte, error) {
+	// 开始打包
+	buf := bytes.NewBuffer(make([]byte, 0, 1024*1024*5))
 	//	str := reqHead{recommending: "testst"}
-
+	tag := AccessFlowTag{}
+	tag.TagEnCode()
+	info := AdposInfo{}
+	info.InfoEnCode()
 	//	strbyte := []byte(str.recommending)
 	msgmethod := uint32(102)
 	//magicnum := uint16(256)
 	msgtype := byte('1')
+
+	// msgtype := uint8(1)
 	uuid := uint32(12324)
+	sessionid := uint32(33312324)
+	msgid := uint32(6666)
+
+	pbbuf := "hello rank2.0"
 	//totalLen := uint32(unsafe.Sizeof(msgtype)) + uint32(unsafe.Sizeof(magicnum)) +
 	//	uint32(unsafe.Sizeof(msgmethod)) + uint32(unsafe.Sizeof(uuid))
 	totalLen := uint32(unsafe.Sizeof(msgtype)) +
-		uint32(unsafe.Sizeof(msgmethod)) + uint32(unsafe.Sizeof(uuid))
+		uint32(unsafe.Sizeof(msgmethod)) + uint32(unsafe.Sizeof(uuid)) + uint32(unsafe.Sizeof(sessionid)) +
+		uint32(unsafe.Sizeof(msgid)) + tag.totallen + info.totallen + uint32(len(pbbuf))
 	fmt.Println("totallen:", totalLen)
 
-	// 开始打包
-	buf := bytes.NewBuffer(make([]byte, 0, totalLen))
 	if err := binary.Write(buf, binary.BigEndian, totalLen); err != nil {
 		return nil, err
 	}
@@ -59,6 +168,17 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 		return nil, err
 	}
 	if err := binary.Write(buf, binary.BigEndian, uuid); err != nil {
+		return nil, err
+	}
+	if err := binary.Write(buf, binary.BigEndian, sessionid); err != nil {
+		return nil, err
+	}
+	if err := binary.Write(buf, binary.BigEndian, msgid); err != nil {
+		return nil, err
+	}
+	tag.TagWrite(buf)
+	info.InfoWrite(buf)
+	if err := binary.Write(buf, binary.BigEndian, pbbuf); err != nil {
 		return nil, err
 	}
 	fmt.Println("buf len:", buf.Len())

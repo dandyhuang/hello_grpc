@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee2095a8-58b1-4d79-8e1d-aa87c5d78785" name="Default Changelist" comment="" />
+    <list default="true" id="ee2095a8-58b1-4d79-8e1d-aa87c5d78785" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/proto/update_user.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/lambda.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/mask.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/signal_shutdown.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/singleflight.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/sizeof.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codec/codec.go" beforeDir="false" afterPath="$PROJECT_DIR$/codec/codec.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proto/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/proto/build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/main.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,8 +46,12 @@
     </option>
   </component>
   <component name="GOROOT" path="/usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1kjtHTmma7XlmcsziJUutbkdgbd" />
   <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
@@ -36,6 +71,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/service/proto" />
       <recent name="E:\go_project\hello_world\server" />
       <recent name="E:\go_project\hello_world" />
     </key>
@@ -71,6 +107,18 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
   </component>
@@ -83,6 +131,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="675" y="320" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1606227852751" />
+    <state x="428" y="204" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1608392173519">
+      <screen x="34" y="23" width="1406" height="877" />
+    </state>
+    <state x="428" y="204" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/34.23.1406.877@34.23.1406.877" timestamp="1608392173519" />
     <state x="374" y="222" width="691" height="627" key="EditFileWatcherDialog" timestamp="1606994933476">
       <screen x="0" y="23" width="1440" height="828" />
     </state>
@@ -123,23 +175,31 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="469" y="263" key="IDE.errors.dialog/0.0.1920.1040@0.0.1920.1040" timestamp="1606280011972" />
-    <state x="0" y="30" width="1440" height="821" key="SettingsEditor" timestamp="1606998153307">
-      <screen x="0" y="23" width="1440" height="829" />
+    <state x="34" y="30" width="1440" height="821" key="SettingsEditor" timestamp="1607845295107">
+      <screen x="34" y="23" width="1406" height="877" />
     </state>
     <state x="319" y="111" width="1340" height="845" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1606309662880" />
     <state x="0" y="23" width="1440" height="821" key="SettingsEditor/0.23.1440.821@0.23.1440.821" timestamp="1606540783446" />
     <state x="239" y="111" width="1005" height="722" key="SettingsEditor/0.23.1440.823@0.23.1440.823" timestamp="1606540177410" />
     <state x="130" y="39" key="SettingsEditor/0.23.1440.828@0.23.1440.828" timestamp="1606994934728" />
     <state x="0" y="30" key="SettingsEditor/0.23.1440.829@0.23.1440.829" timestamp="1606998153307" />
-    <state x="497" y="117" width="568" height="642" key="find.popup" timestamp="1606998656449">
-      <screen x="0" y="23" width="1440" height="829" />
+    <state x="34" y="30" key="SettingsEditor/34.23.1406.877@34.23.1406.877" timestamp="1607845295107" />
+    <state x="525" y="122" width="568" height="680" key="find.popup" timestamp="1607867130989">
+      <screen x="43" y="23" width="1397" height="877" />
     </state>
     <state x="662" y="118" width="596" height="804" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606301890820" />
     <state x="497" y="117" width="568" height="642" key="find.popup/0.23.1440.829@0.23.1440.829" timestamp="1606998656449" />
     <state x="497" y="117" width="568" height="642" key="find.popup/0.23.1440.830@0.23.1440.830" timestamp="1606997962971" />
-    <state x="450" y="356" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1606998931183">
-      <screen x="0" y="23" width="1440" height="828" />
+    <state x="525" y="122" width="568" height="680" key="find.popup/43.23.1397.877@43.23.1397.877" timestamp="1607867130989" />
+    <state x="406" y="201" width="668" height="676" key="search.everywhere.popup" timestamp="1607868855330">
+      <screen x="40" y="23" width="1400" height="877" />
+    </state>
+    <state x="402" y="201" width="670" height="676" key="search.everywhere.popup/34.23.1406.877@34.23.1406.877" timestamp="1607850998576" />
+    <state x="406" y="201" width="668" height="676" key="search.everywhere.popup/40.23.1400.877@40.23.1400.877" timestamp="1607868855330" />
+    <state x="469" y="376" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1608618711030">
+      <screen x="28" y="23" width="1412" height="877" />
     </state>
     <state x="450" y="356" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.23.1440.828@0.23.1440.828" timestamp="1606998931183" />
+    <state x="469" y="376" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/28.23.1412.877@28.23.1412.877" timestamp="1608618711030" />
   </component>
 </project>

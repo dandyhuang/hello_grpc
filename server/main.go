@@ -50,6 +50,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	fmt.Println("listen grpc!")
+	grpc.ServerOption(apply:func() { print("666") })
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
