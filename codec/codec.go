@@ -66,10 +66,16 @@ func (access *AccessFlowTag) TagWrite(buf *bytes.Buffer) error {
 	if err := binary.Write(buf, binary.BigEndian, access.site_id); err != nil {
 		return err
 	}
+	if err := binary.Write(buf, binary.BigEndian, uint32(len(access.uid))); err != nil {
+		return err
+	}
 	if err := binary.Write(buf, binary.BigEndian, access.uid); err != nil {
 		return err
 	}
 	if err := binary.Write(buf, binary.BigEndian, access.uidtype); err != nil {
+		return err
+	}
+	if err := binary.Write(buf, binary.BigEndian, uint32(len(access.trace_id))); err != nil {
 		return err
 	}
 	if err := binary.Write(buf, binary.BigEndian, access.trace_id); err != nil {
@@ -80,7 +86,7 @@ func (access *AccessFlowTag) TagWrite(buf *bytes.Buffer) error {
 
 type AdposInfo struct {
 	totallen     uint32
-	adposid      uint32
+	adposid      uint64
 	siteid       uint32
 	version      uint32
 	sub_version  uint32
@@ -150,12 +156,12 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	str := "hell rank2.0"
 	pbbuf = []byte(str)
 	fmt.Println(pbbuf)
-	totalLen := uint32(unsafe.Sizeof(msgtype)) +
-		uint32(unsafe.Sizeof(msgmethod)) + uint32(unsafe.Sizeof(uuid)) + uint32(unsafe.Sizeof(sessionid)) +
-		uint32(unsafe.Sizeof(msgid))
 	//totalLen := uint32(unsafe.Sizeof(msgtype)) +
 	//	uint32(unsafe.Sizeof(msgmethod)) + uint32(unsafe.Sizeof(uuid)) + uint32(unsafe.Sizeof(sessionid)) +
-	//	uint32(unsafe.Sizeof(msgid)) + tag.totallen + info.totallen + uint32(len(pbbuf))
+	//	uint32(unsafe.Sizeof(msgid))
+	totalLen := uint32(unsafe.Sizeof(msgtype)) +
+		uint32(unsafe.Sizeof(msgmethod)) + uint32(unsafe.Sizeof(uuid)) + uint32(unsafe.Sizeof(sessionid)) +
+		uint32(unsafe.Sizeof(msgid)) + tag.totallen + info.totallen + uint32(len(pbbuf))
 	fmt.Println("totallen:", totalLen)
 
 	// 开始打包
@@ -181,15 +187,15 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	if err := binary.Write(buf, binary.BigEndian, msgid); err != nil {
 		return nil, err
 	}
-	//if err := tag.TagWrite(buf); err != nil {
-	//	return nil, err
-	//}
-	//if err := info.InfoWrite(buf); err != nil {
-	//	return nil, err
-	//}
-	//if err := binary.Write(buf, binary.BigEndian, pbbuf); err != nil {
-	//	return nil, err
-	//}
+	if err := tag.TagWrite(buf); err != nil {
+		return nil, err
+	}
+	if err := info.InfoWrite(buf); err != nil {
+		return nil, err
+	}
+	if err := binary.Write(buf, binary.BigEndian, pbbuf); err != nil {
+		return nil, err
+	}
 	fmt.Println("buf len:", buf.Len())
 	return buf.Bytes(), nil
 }
