@@ -69,18 +69,20 @@ func (access *AccessFlowTag) TagWrite(buf *bytes.Buffer) error {
 	if err := binary.Write(buf, binary.BigEndian, uint32(len(access.uid))); err != nil {
 		return err
 	}
-	if err := binary.Write(buf, binary.BigEndian, access.uid); err != nil {
-		return err
-	}
+	buf.Write(access.uid)
+	//if err := binary.Write(buf, binary.BigEndian, access.uid); err != nil {
+	//	return err
+	//}
 	if err := binary.Write(buf, binary.BigEndian, access.uidtype); err != nil {
 		return err
 	}
 	if err := binary.Write(buf, binary.BigEndian, uint32(len(access.trace_id))); err != nil {
 		return err
 	}
-	if err := binary.Write(buf, binary.BigEndian, access.trace_id); err != nil {
-		return err
-	}
+	//if err := binary.Write(buf, binary.BigEndian, access.trace_id); err != nil {
+	//	return err
+	//}
+	buf.Write(access.trace_id)
 	return nil
 }
 
@@ -193,9 +195,10 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	if err := info.InfoWrite(buf); err != nil {
 		return nil, err
 	}
-	if err := binary.Write(buf, binary.BigEndian, pbbuf); err != nil {
-		return nil, err
-	}
+	//if err := binary.Write(buf, binary.BigEndian, pbbuf); err != nil {
+	//	return nil, err
+	//}
+	buf.Write(pbbuf)
 	fmt.Println("buf len:", buf.Len())
 	return buf.Bytes(), nil
 }
