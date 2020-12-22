@@ -180,8 +180,12 @@ func (c *ClientCodec) GetReqbuf() ([]byte, error) {
 	if err := binary.Write(buf, binary.BigEndian, msgid); err != nil {
 		return nil, err
 	}
-	tag.TagWrite(buf)
-	info.InfoWrite(buf)
+	if err := tag.TagWrite(buf); err != nil {
+		return nil, err
+	}
+	if err := info.InfoWrite(buf); err != nil {
+		return nil, err
+	}
 	if err := binary.Write(buf, binary.BigEndian, pbbuf); err != nil {
 		return nil, err
 	}
