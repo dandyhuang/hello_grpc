@@ -1,0 +1,19 @@
+syntax = "proto3";
+package so_rtrs;
+
+import "rtrs_expinfo.proto";
+
+message AbtestReq
+{
+    uint64 sceneid = 1;  //场景id
+    string userid = 2;  //用于查找白名单
+    string hashid = 3;  //用于计算哈希值
+};
+
+message AbtestRsp
+{
+    repeated AlgMultiTestInfo  page_items = 1; 
+    string debug_error  = 2;
+};
+
+

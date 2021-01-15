@@ -1,0 +1,16 @@
+syntax = "proto3";
+package guard_pb;
+
+import "rtrs_expinfo.proto";
+
+message AbtestReq
+{
+    uint64 pageid = 1;
+    string imei   = 2;
+};
+
+message AbtestRsp
+{
+    repeated AlgMultiTestInfo  page_items   = 1; 
+    string             debug_error  = 2;
+};

@@ -1,0 +1,18 @@
+syntax = "proto3";
+package so_rtrs;
+
+import "recommend.proto";
+
+//Begin---------------接口
+//请求参数
+message BatchRequest{
+    repeated so_rtrs.RecomRequest recomRequestList = 1;   
+};
+
+//推荐结果
+message BatchResponse{
+    repeated so_rtrs.RecomResponse recomResponseList = 1;   
+};
+//End---------------接口
+
+

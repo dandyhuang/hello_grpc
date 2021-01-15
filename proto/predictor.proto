@@ -1,0 +1,150 @@
+syntax = "proto3";
+
+package so_predictor;
+
+/**
+ * 预估请求消息
+ * 跟 Label 表基本对齐，除了没有 label 信息；另外有多个 item 。
+ */ 
+message PredictRequest {
+  /* Request Header */
+  // 请求 id，traceId，方便上下游串联起来定位问题
+  string requestId = 1;
+  // 请求源ip 地址
+  string requestIp = 2;
+  // 请求应用标识，身份验证使用，如ranker
+  string accessKey = 3;
+  // 请求授权，类似于密码，权限判断使用
+  string accessToken = 4;
+
+  // 实验相关参数
+  ExperimentInfo expInfo = 5;  
+
+  /* Request Body */
+  // 模型名，Predictor 会对模型名进行校验，如果不符合会拒绝；
+  // 也会根据模型名去获取模型元数据，进而得到样本元信息，进而得知如何对 label 表与特征视图进行拼接和特征处理
+  string modelName = 11;
+
+  UserProfile user = 12;
+  
+  repeated ItemProfile items = 13;
+  
+  ContextProfile context = 14;
+  
+  map<string, string> extParams = 15;
+}
+
+/**
+ * 预估响应消息
+ */
+message PredictResponse {
+  // 响应码，0表示成功。
+  uint32 result = 1;
+  // 错误信息
+  string errorMessage = 2;
+  // 预测结果
+  repeated ItemScore itemScores = 3;
+}
+
+/**
+ * 用户Profile
+ */
+message UserProfile {
+  // userId，一般是 imei 
+  string userId = 14;
+}
+
+/**
+ * ItemProfile
+ */
+message ItemProfile {
+  // itemIdList，统一用 String 类型
+  string itemId = 15;   
+}
+
+/**
+ * ItemScore
+ */
+message ItemScore {
+  string itemId = 1; 
+  double score = 2;
+}
+
+/**
+ * ContextProfile，必须有 contextId
+ */
+message ContextProfile {
+
+  	string contextId = 1; 
+  	
+   /**
+     * 上下文信息,如详情页itemid
+     */
+  	string context = 2;
+  	/**
+     * 查询词
+     */
+  	string query = 3;
+  	string reqId = 4;
+  	// 业务场景，如浏览器搜索，等。用于选择相应的算法处理逻辑。
+  	uint32 sceneId = 5;  
+  
+	string androidId = 6;  
+	string imei = 7;  
+	int64  superUser = 8;                                 //jail break/root
+	string language = 9;                                 //语言
+	string manufacturer = 10;                                  //手机厂商 htc, LG, ...
+	string modelName = 11;                                  //手机型号 Nexus 5, ...
+	string osVersion = 12;                                  //安卓版本号 4.4.1
+	string resolution = 13;                                  //400x800, 400*600
+	string macAddr = 14;                                  //34:34:f3:...
+	string clientVersion = 15;                                //客户端版本号 TMA_411_DEV/040411&NA/040411&2.3.4_10_1&20_15_14&samsung_GTS5570&NA&NA&V3
+	string city = 16;                                          //城市
+	string longitude = 17;                                    //经纬度
+	string timezone = 18;                                     //时区
+
+	string imsi = 19;                                           //sim卡号
+	string networkType = 20;                                   //wifi, 2g, 3g...
+	string networkOperator = 21;                               //运营商
+	string phoneNumber = 22;                                   //手机号
+	string clientIp = 23;                                      //客户端用户的ip
+	int32 netType = 24;                                           //网络类型,0=UN_DETECT, 1=WIFI, 2=CMWAP, 3=CMNET, 4=UNIWAP, 5=UNINET, 6=WAP3G, 7=NET3G, 8=CTWAP, 9=CTNET, 10=UNKNOWN, 11=UNKNOW_WAP, 12=NO_NETWORK, 13=NETWORK_TYPE_LTE 4g网络
+	int32 extNetworkType = 25;                                    //网络类型
+	string wifiSsid = 26;                                       //wifi名(Vivo-Freewifi)
+	string wifiBssid = 27;                                      //wifi路由器的mac地址
+
+	string potionId = 28;                                        // 广告位ID
+	string adtxt = 29;                                         // 广告语
+	int32 adType = 30;                                          // 广告类型：1、现金广告；2、换量广告
+	int32 startTime = 31;                                        // 广告开始时间
+	int32 endTime = 32;                                         //广告结束时间
+	double price = 33;                                        // 广告的价格
+	int32 costType = 34;                                       // 区分广告的计费类型，如是否cpt
+	map<string,string> ideaMap = 35;                          // 广告创意信息
+
+	bool isIncludeAge = 36;                            //是否使用年龄字段
+	repeated Interval ageInterval = 37;                         //年龄区间
+	bool isIncludeSex = 38;
+	int32 sex = 39;                                              //1男2女0全部
+	bool isIncludeIncome = 40;                         //是否使用收入字段
+	repeated Interval incomeInterval = 41;                      //收入区间
+	bool isIncludeCity = 42;                           //是否使用地域城市字段
+	repeated uint32 vecCityId = 43;                       //地域城市范围
+	
+}
+
+message Interval{
+    double lowerLimit = 1;                                    //下限
+    double upperLimit = 2;                                    //上限
+};
+
+/**
+ * 分层实验平台相关参数，具体参数确定由 @荣橙 给出 TODO
+ */ 
+message ExperimentInfo { 
+  // 实验 id
+  uint64 eid = 1;  
+                                
+}
+
+

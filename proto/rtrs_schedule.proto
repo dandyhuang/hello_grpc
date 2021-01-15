@@ -1,0 +1,26 @@
+syntax = "proto3";
+package so_rtrs.schedule;
+
+message ParamKV {
+  string key = 1;
+  string val = 2;
+}
+
+message Request
+{
+  string  uri    = 1;
+  repeated ParamKV query  = 2;
+  repeated ParamKV header = 3;
+  repeated ParamKV cookie = 4;
+  bytes   body   = 5;
+}
+
+message Response
+{
+  string  mime       = 1;
+  repeated ParamKV header     = 2;
+  fixed32 code       = 3;
+  bytes   body       = 4;
+}
+
+

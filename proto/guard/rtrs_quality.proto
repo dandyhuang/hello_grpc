@@ -1,0 +1,60 @@
+syntax = "proto3";
+package guard_pb;
+
+import "recommend.proto";
+
+//系统相关，流量调度相关信息
+import "rtrs_schedule.proto";
+
+//请求abtest相关信息
+import "rtrs_abtest.proto";
+
+//QualityReqBody、QualityRspBody这两个message在vre推荐引擎中所有子系统中都使用，只不过不同的系统使用不同的成员；
+//recommend.proto文件中RecomRequest、RecomResponse这两个message是vre目前与外部的pb协议，由schedule so理解；
+//vre内部系统间添加字段直接加在QualityReqBody、QualityRspBody中；
+//vre对外部间添加的字段加在recommend.proto文件中RecomRequest、RecomResponse中；
+
+// RTRS请求包定义
+message QualityReqBody 
+{
+	// 请求位置信息
+	message ReqPosInfo 
+	{
+		uint32 pos_id = 1; // 推荐位置定义 与scene含义相同
+		schedule.Request mix_req = 2; // 保存从guard发送过来的包体，仅scheduler so理解，下游rtrs so不用该成员
+		RecommendInfo pos_detail_info =3; //描述该场景的具体信息，schedule so传递信息给下游rtrs so
+		AbtestReq abtest_req = 4;  //仅在访问abtest时使用，abtest请求包信息
+	}
+
+	message GlobalInfo 
+	{
+		bytes log_id = 1; // 用于唯一确定某次请求
+		RuleAppDirectInfo  rule_app_direct_info=2; //每个app的定向条件
+
+		//设备相关信息
+		DeviceInfo recom_device = 3;
+		//位置相关信息
+		LocationInfo recom_location = 4;
+		//网络相关信息
+		NetworkInfo recom_network = 5;
+	}
+
+	GlobalInfo global_info = 1; // 请求级全局信息
+	repeated  ReqPosInfo req_pos_info = 2; // 排序位置, 一次请求可包含多个位置
+}
+
+// RTRS回复包定义
+message QualityRspBody 
+{
+	message RspPosInfo 
+	{
+		schedule.Response mix_rsp = 1;  //仅schedule so使用，保存schedule返回给guard的回包
+		RecommendInfo pos_detail_info =2; //描述该场景的具体信息
+		AbtestRsp abtest_rsp = 3;   //仅在访问abtest时使用，abtest回包信息
+		
+		int32 rtrs_code = 1000;
+
+	}
+	// 推荐位返回结果
+	repeated RspPosInfo rsp_pos_info = 1;
+}
