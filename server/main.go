@@ -22,11 +22,12 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net"
 
 	"google.golang.org/grpc"
-	pb "hello_world/service/proto"
+	pb "hello_grpc/service/proto"
 )
 
 const (
@@ -45,12 +46,20 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest1) (*pb.HelloR
 }
 
 func main() {
+	engine := gin.Default()
+	engine.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
+	engine.Run("50050")
+
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	fmt.Println("listen grpc!")
-	grpc.ServerOption(apply:func() { print("666") })
+	// grpc.ServerOption(apply:func() { print("666") })
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
