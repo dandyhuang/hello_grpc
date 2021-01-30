@@ -27,6 +27,7 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
+	"hello_grpc/config"
 	pb "hello_grpc/service/proto"
 )
 
@@ -46,13 +47,19 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest1) (*pb.HelloR
 }
 
 func main() {
+	cfg, err := config.Load("../config/hello.yaml")
+	if err != nil {
+		fmt.Println("cfg err:", err)
+		return
+	}
 	engine := gin.Default()
 	engine.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
 	})
-	engine.Run("127.0.0.1:50050")
+	ginAddr := cfg.Server.Addr + ":" + cfg.Server.Port
+	engine.Run(ginAddr)
 
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
