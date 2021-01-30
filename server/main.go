@@ -52,7 +52,7 @@ func main() {
 			"message": "pong",
 		})
 	})
-	engine.Run("50050")
+	engine.Run("127.0.0.1:50050")
 
 	lis, err := net.Listen("tcp", port)
 	if err != nil {

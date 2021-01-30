@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/golang/protobuf/proto"
-	guard_pb "hello_world/proto/guard"
+	guard_pb "hello_grpc/proto/guard"
 	"log"
 )
 
@@ -21,5 +21,12 @@ func main() {
 	if err := proto.Unmarshal(pb, req); err != nil {
 		log.Fatalln("Failed to parse search request:", err)
 	}
-	fmt.Printf("req =[%+v]", req)
+	fmt.Printf("req =[%+v] =============== \n", req)
+
+	buf, _ := proto.Marshal(req)
+	req1 := &guard_pb.RecomRequest1{}
+	if err = proto.Unmarshal(buf, req1); err != nil {
+		log.Fatalln("Failed to parse search request1:", err)
+	}
+	fmt.Printf("req1 = [%+v]\n", req1)
 }

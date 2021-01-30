@@ -240,6 +240,17 @@ message RecomRequest{
     string appKey = 8;
     bool need_debug = 9;     //是否需要debug，目前只有白名单看板需要
 };
+message RecomRequest1{
+    DeviceInfo device = 1;
+    LocationInfo location = 2;
+    NetworkInfo network = 3;
+    RecommendInfo recommend = 4;
+    repeated AlgMultiTestInfo vecTestInfo = 5;                //多层abtest信息, 在请求access的时候已经确定好
+    string reqId = 6;
+    int32 timeout = 7; //请求超时时间，单位ms
+    string appKey = 8;
+    bool need_debug = 9;     //是否需要debug，目前只有白名单看板需要
+};
 
 //推荐结果
 message RecomResponse{
