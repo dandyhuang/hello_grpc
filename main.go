@@ -23,6 +23,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"hello_grpc/dao"
 	"log"
 	"net"
 
@@ -47,6 +48,7 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest1) (*pb.HelloR
 }
 
 func main() {
+	dao.GormTool()
 	cfg, err := config.Load("../config/hello.yaml")
 	if err != nil {
 		fmt.Println("cfg err:", err)
