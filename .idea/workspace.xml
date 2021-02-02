@@ -20,7 +20,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee2095a8-58b1-4d79-8e1d-aa87c5d78785" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/codec/codec.go" beforeDir="false" afterPath="$PROJECT_DIR$/codec/codec.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dao/gorm_tool.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dao/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +39,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" path="/usr/local/go" />
+  <component name="GOROOT" path="C:\Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -58,14 +63,27 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="go" />
   </component>
+  <component name="ReadonlyStatusHandler">
+    <option name="SHOW_DIALOG" value="false" />
+  </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\go_project\hello_grpc" />
       <recent name="$PROJECT_DIR$/service/proto" />
       <recent name="E:\go_project\hello_world\server" />
       <recent name="E:\go_project\hello_world" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.go test hello_world/test">
+  <component name="RunManager" selected="Go Build.go build hello_grpc">
+    <configuration name="go build hello_grpc" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="hello_world" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="hello_grpc" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build hello_world/test" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="hello_world" />
       <working_directory value="$PROJECT_DIR$" />
@@ -87,6 +105,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build hello_grpc" />
         <item itemvalue="Go Test.go test hello_world/test" />
         <item itemvalue="Go Build.go build hello_world/test" />
       </list>
@@ -112,14 +131,18 @@
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
+    <state x="752" y="450" key="#GOROOT" timestamp="1612172664450">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="752" y="450" key="#GOROOT/0.0.1920.1040@0.0.1920.1040" timestamp="1612172664450" />
     <state x="752" y="353" key="#Go_Modules" timestamp="1606305765504">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="752" y="353" key="#Go_Modules/0.0.1920.1040@0.0.1920.1040" timestamp="1606305765504" />
-    <state x="675" y="320" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1606227852751">
+    <state x="675" y="320" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612180513997">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="675" y="320" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1606227852751" />
+    <state x="675" y="320" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1612180513997" />
     <state x="428" y="204" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1608392173519">
       <screen x="34" y="23" width="1406" height="877" />
     </state>
@@ -132,31 +155,31 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1606301829227" />
-    <state width="1398" height="212" key="GridCell.Tab.0.bottom" timestamp="1607225408249">
-      <screen x="0" y="23" width="1440" height="823" />
+    <state width="1877" height="212" key="GridCell.Tab.0.bottom" timestamp="1612182589152">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1606309911893" />
+    <state width="1877" height="212" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1612182589152" />
     <state width="1398" height="212" key="GridCell.Tab.0.bottom/0.23.1440.823@0.23.1440.823" timestamp="1607225408249" />
     <state width="1398" height="214" key="GridCell.Tab.0.bottom/0.23.1440.828@0.23.1440.828" timestamp="1606990570501" />
     <state width="1398" height="212" key="GridCell.Tab.0.bottom/0.23.1440.830@0.23.1440.830" timestamp="1607081087112" />
-    <state width="1398" height="212" key="GridCell.Tab.0.center" timestamp="1607225408249">
-      <screen x="0" y="23" width="1440" height="823" />
+    <state width="1877" height="212" key="GridCell.Tab.0.center" timestamp="1612182589152">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1606309911893" />
+    <state width="1877" height="212" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1612182589152" />
     <state width="1398" height="212" key="GridCell.Tab.0.center/0.23.1440.823@0.23.1440.823" timestamp="1607225408249" />
     <state width="1398" height="214" key="GridCell.Tab.0.center/0.23.1440.828@0.23.1440.828" timestamp="1606990570501" />
     <state width="1398" height="212" key="GridCell.Tab.0.center/0.23.1440.830@0.23.1440.830" timestamp="1607081087112" />
-    <state width="1398" height="212" key="GridCell.Tab.0.left" timestamp="1607225408248">
-      <screen x="0" y="23" width="1440" height="823" />
+    <state width="1877" height="212" key="GridCell.Tab.0.left" timestamp="1612182589151">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1606309911893" />
+    <state width="1877" height="212" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1612182589151" />
     <state width="1398" height="212" key="GridCell.Tab.0.left/0.23.1440.823@0.23.1440.823" timestamp="1607225408248" />
     <state width="1398" height="214" key="GridCell.Tab.0.left/0.23.1440.828@0.23.1440.828" timestamp="1606990570500" />
     <state width="1398" height="212" key="GridCell.Tab.0.left/0.23.1440.830@0.23.1440.830" timestamp="1607081087111" />
-    <state width="1398" height="212" key="GridCell.Tab.0.right" timestamp="1607225408249">
-      <screen x="0" y="23" width="1440" height="823" />
+    <state width="1877" height="212" key="GridCell.Tab.0.right" timestamp="1612182589152">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1606309911893" />
+    <state width="1877" height="212" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1612182589152" />
     <state width="1398" height="212" key="GridCell.Tab.0.right/0.23.1440.823@0.23.1440.823" timestamp="1607225408249" />
     <state width="1398" height="214" key="GridCell.Tab.0.right/0.23.1440.828@0.23.1440.828" timestamp="1606990570501" />
     <state width="1398" height="212" key="GridCell.Tab.0.right/0.23.1440.830@0.23.1440.830" timestamp="1607081087112" />
@@ -173,10 +196,10 @@
     <state x="130" y="39" key="SettingsEditor/0.23.1440.828@0.23.1440.828" timestamp="1606994934728" />
     <state x="0" y="30" key="SettingsEditor/0.23.1440.829@0.23.1440.829" timestamp="1606998153307" />
     <state x="34" y="30" key="SettingsEditor/34.23.1406.877@34.23.1406.877" timestamp="1607845295107" />
-    <state x="515" y="122" width="575" height="680" key="find.popup" timestamp="1608626937528">
-      <screen x="28" y="23" width="1412" height="877" />
+    <state x="662" y="118" width="596" height="804" key="find.popup" timestamp="1612184823964">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="662" y="118" width="596" height="804" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606301890820" />
+    <state x="662" y="118" width="596" height="804" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1612184823964" />
     <state x="497" y="117" width="568" height="642" key="find.popup/0.23.1440.829@0.23.1440.829" timestamp="1606998656449" />
     <state x="497" y="117" width="568" height="642" key="find.popup/0.23.1440.830@0.23.1440.830" timestamp="1606997962971" />
     <state x="515" y="122" width="575" height="680" key="find.popup/28.23.1412.877@28.23.1412.877" timestamp="1608626937528" />
@@ -186,9 +209,10 @@
     </state>
     <state x="402" y="201" width="670" height="676" key="search.everywhere.popup/34.23.1406.877@34.23.1406.877" timestamp="1607850998576" />
     <state x="406" y="201" width="668" height="676" key="search.everywhere.popup/40.23.1400.877@40.23.1400.877" timestamp="1607868855330" />
-    <state x="469" y="376" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1608618711030">
-      <screen x="28" y="23" width="1412" height="877" />
+    <state x="600" y="419" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1612185893142">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="600" y="419" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1612185893142" />
     <state x="450" y="356" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.23.1440.828@0.23.1440.828" timestamp="1606998931183" />
     <state x="469" y="376" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/28.23.1412.877@28.23.1412.877" timestamp="1608618711030" />
   </component>
