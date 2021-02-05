@@ -1,11 +1,11 @@
-package dao
+package mysql
 
 import (
 	"context"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"hello_grpc/dao/proto/service/test_orm"
+	"hello_grpc/dao/mysql/proto/service/test_orm"
 )
 
 func JianzhuTool() {
