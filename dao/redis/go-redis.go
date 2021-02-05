@@ -37,9 +37,19 @@ func main() {
 		fmt.Println("strMap", strMap)
 	}
 
+	// method 2
+	client.WrapProcessPipeline(func(old func([]redis.Cmder) error) func([]redis.Cmder) error {
+		return func(cmds []redis.Cmder) error {
+			fmt.Printf("pipeline starting processing: %v\n", cmds)
+			err := old(cmds)
+			fmt.Printf("pipeline finished processing: %v\n", cmds)
+			return err
+		}
+	})
+
 	client.Pipelined(func(pipe redis.Pipeliner) error {
-		res := pipe.Get("key")
-		fmt.Printf("%+v", res)
+		pipe.Get("key")
+		pipe.Get("key1")
 		return nil
 	})
 
