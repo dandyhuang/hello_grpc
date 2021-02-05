@@ -20,6 +20,13 @@ type User struct {
 	Birthday time.Time
 }
 
+//message BaseInfo {
+//option (gorm.opts).ormable = true;
+//uint32 id = 1;
+//int32 sex = 2;
+//string name = 3;
+//}
+
 func GormTool() {
 
 	dsn := "root:2501002@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"

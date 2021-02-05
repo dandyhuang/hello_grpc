@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package test_orm;
+import "google/protobuf/empty.proto";
+import "github.com/infobloxopen/protoc-gen-gorm/options/gorm.proto";
+import "google/protobuf/field_mask.proto";
+
+option go_package = "service/test_orm;test_orm";
+
+message User {
+  option (gorm.opts).ormable = true;
+  uint32 id = 1;
+  int32 sex = 2;
+  string name = 3;
+}
+
+message CreateStudentReq {
+  // Convention dictates that this field be of the given type, and be
+  // named 'payload' in order to autogenerate the handler
+  User info = 1;
+}
+
+message CreateStudentRsp {
+  // Convention also requires that the return type be the same and named 'result'
+  User info = 2;
+}
+
+message ReadStudentReq {
+  // For a read request, the id field is the only to be specified
+  uint32 id = 1;
+}
+
+message ReadStudentRsp {
+  // Again the type with 'result' name
+  User result = 1;
+}
+
+service IntPointService {
+  // This option tells protoc-gen-gorm to generate the calls and stubs
+  option (gorm.server).autogen = true;
+  // The convention requires the rpc names have Create/Read/Update/List/Delete
+  // as a prefix. The type is inferred from the response (except for delete),
+  // so multiple objects can have CURDL handlers in the same service, provided
+  // they are given unique suffixes
+  rpc Create (CreateStudentReq) returns (CreateStudentRsp) {}
+  rpc Read (ReadStudentReq) returns ( ReadStudentRsp ) {}
+}

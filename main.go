@@ -48,7 +48,9 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest1) (*pb.HelloR
 }
 
 func main() {
-	dao.GormTool()
+	dao.JianzhuTool()
+	log.Println("=========")
+	// dao.GormTool()
 	cfg, err := config.Load("../config/hello.yaml")
 	if err != nil {
 		fmt.Println("cfg err:", err)
