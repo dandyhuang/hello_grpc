@@ -1,4 +1,4 @@
-package dao
+package proto
 
 import (
 	"fmt"

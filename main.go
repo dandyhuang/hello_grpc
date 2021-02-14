@@ -22,8 +22,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"hello_grpc/dao"
+	"google.golang.org/grpc/metadata"
+	"hello_grpc/dao/mysql/proto"
 	"log"
 	"net"
 
@@ -43,29 +43,46 @@ type server struct {
 
 // SayHello implements helloworld.GreeterServer
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest1) (*pb.HelloReply, error) {
+	// metadata
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		fmt.Printf("get metadata error")
+	}
+	i := 0
+	for k, v := range md {
+
+		fmt.Println(i, k, v)
+		i = i + 1
+	}
+	if t, ok := md["key1"]; ok {
+		fmt.Printf("timestamp from metadata:\n")
+		for i, e := range t {
+			fmt.Printf(" %d. %s\n", i, e)
+		}
+	}
 	log.Printf("Received: %v", in.GetName())
 	return &pb.HelloReply{Message: "Hello " + in.GetName()}, nil
 }
 
 func main() {
-	dao.JianzhuTool()
+	proto.JianzhuTool()
 	log.Println("=========")
 	// dao.GormTool()
-	cfg, err := config.Load("../config/hello.yaml")
+	cfg, err := config.Load("./config/hello.yaml")
 	if err != nil {
 		fmt.Println("cfg err:", err)
 		return
 	}
-	engine := gin.Default()
-	engine.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	ginAddr := cfg.Server.Addr + ":" + cfg.Server.Port
-	engine.Run(ginAddr)
+	//engine := gin.Default()
+	//engine.GET("/ping", func(c *gin.Context) {
+	//	c.JSON(200, gin.H{
+	//		"message": "pong",
+	//	})
+	//})
+	//ginAddr := cfg.Server.Addr + ":" + cfg.Server.Port
+	//engine.Run(ginAddr)
 
-	lis, err := net.Listen("tcp", port)
+	lis, err := net.Listen("tcp", ":"+cfg.Server.Port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

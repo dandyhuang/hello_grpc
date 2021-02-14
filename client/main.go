@@ -21,16 +21,17 @@ package main
 
 import (
 	"context"
+	"google.golang.org/grpc/metadata"
 	"log"
 	"os"
 	"time"
 
 	"google.golang.org/grpc"
-	pb "hello_world/service/proto"
+	pb "hello_grpc/service/proto"
 )
 
 const (
-	address     = "localhost:50051"
+	address     = "localhost:50050"
 	defaultName = "world"
 )
 
@@ -50,6 +51,9 @@ func main() {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+	// metadata 使用
+	md := metadata.New(map[string]string{"key1": "val1", "key2": "val2"})
+	ctx = metadata.NewOutgoingContext(ctx, md)
 	r, err := c.SayHello(ctx, &pb.HelloRequest1{Name: name})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
