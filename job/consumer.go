@@ -7,7 +7,7 @@ import (
 
 func main() {
 
-	broker := "testip"
+	broker := "localhost:9093"
 	group := "test"
 	topics := []string{"test"}
 
@@ -22,5 +22,13 @@ func main() {
 	err = c.SubscribeTopics(topics, nil)
 	fmt.Println(err)
 	for {
+		msg, err := c.ReadMessage(-1)
+		if err == nil {
+			fmt.Printf("Message on %s: %s\n", msg.TopicPartition, string(msg.Value))
+		} else {
+			// The client will automatically try to recover from all errors.
+			fmt.Printf("Consumer error: %v (%v)\n", err, msg)
+		}
 	}
+	c.Close()
 }
