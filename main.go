@@ -22,8 +22,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc/metadata"
-	"hello_grpc/dao/mysql/proto"
 	"log"
 	"net"
 
@@ -65,22 +65,25 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest1) (*pb.HelloR
 }
 
 func main() {
-	proto.JianzhuTool()
-	log.Println("=========")
+	//proto.JianzhuTool()
+	//log.Println("=========")
 	// dao.GormTool()
 	cfg, err := config.Load("./config/hello.yaml")
 	if err != nil {
 		fmt.Println("cfg err:", err)
 		return
 	}
-	//engine := gin.Default()
-	//engine.GET("/ping", func(c *gin.Context) {
-	//	c.JSON(200, gin.H{
-	//		"message": "pong",
-	//	})
-	//})
-	//ginAddr := cfg.Server.Addr + ":" + cfg.Server.Port
-	//engine.Run(ginAddr)
+	engine := gin.Default()
+	engine.Use(gin.BasicAuth(gin.Accounts{
+		"admin": "123456",
+	}))
+	engine.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
+	ginAddr := cfg.Server.Addr + ":" + cfg.Server.Port
+	engine.Run(ginAddr)
 
 	lis, err := net.Listen("tcp", ":"+cfg.Server.Port)
 	if err != nil {

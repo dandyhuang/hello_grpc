@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"hello_world/codec"
+	"hello_grpc/codec"
 	"net"
 	"os"
 )

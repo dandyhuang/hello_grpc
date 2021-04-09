@@ -26,6 +26,27 @@ type User struct {
 //int32 sex = 2;
 //string name = 3;
 //}
+type Animal struct {
+	Name string
+}
+
+func CreateAnimals(db *gorm.DB) (err error) {
+	tx := db.Begin()
+	// 注意，一旦你在一个事务中，使用tx作为数据库句柄
+
+	if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if err := tx.Create(&Animal{Name: "Lion"}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	tx.Commit()
+	return nil
+}
 
 func GormTool() {
 
