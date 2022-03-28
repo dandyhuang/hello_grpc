@@ -1,0 +1,38 @@
+syntax = "proto3";
+package feed.api;
+
+option go_package =  "feed.api";
+message VideoItem {
+
+    string id = 1;
+    uint64 gmt_create = 2;                          //  创建时间
+    uint64 gmt_modified = 3;                        //  修改时间
+    string title = 4;                               //  标题
+    string channel_id = 5;                          //  channel_id
+    string published_at = 6;                        //  视频发布日期
+    string channel_title = 7;                       //  channelTitle
+    string category_id = 8;                         //  视频类别id
+    string category = 9;                            //  category
+    string video_url = 10;                          //  视频url，youtube原生页面地址
+    string region = 11;                             //  国家和地区代码
+    string language= 12;                            //  语言代码
+    uint64 duration = 13;                           //  视频时长 单位 s
+    string cover_img = 14;                          //  视频图片url
+    repeated string tags = 15;                      //  tags （看着像关键词）
+    uint64 expire_time = 16;                        //  过期时间
+    uint32 status = 17;                             //  在架状态  1在架 0下架
+
+
+    //  ~ 199  静态信息保留字段， 以下为统计值字段
+    uint64 comment_count = 200;                     //  视频评论数
+    uint64 dislike_count = 201;                     //  不喜欢个数
+    uint64 like_count = 202;                        //  点赞的个数
+    uint64 view_count = 203;                        //  观看个数
+
+
+
+
+
+
+
+}

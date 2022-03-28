@@ -21,13 +21,14 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/balancer/roundrobin"
 	"google.golang.org/grpc/metadata"
+	pb "hello_grpc/service/proto"
 	"log"
 	"os"
 	"time"
-
-	"google.golang.org/grpc"
-	pb "hello_grpc/service/proto"
 )
 
 const (
@@ -36,8 +37,14 @@ const (
 )
 
 func main() {
+	//conn, err := grpc.Dial("", grpc.WithInsecure(),
+	//	grpc.WithBalancer(
+	//		grpc.RoundRobin(
+	//			grpclb.NewConsulResolver("127.0.0.1:8500", "grpc.health.v1.add"))))
+
 	// Set up a connection to the stream_server.
-	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
+	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock(),
+		grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"LoadBalancingPolicy": "%s"}`, roundrobin.Name)))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}

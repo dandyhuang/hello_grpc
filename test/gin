@@ -1,0 +1,45 @@
+package main
+
+import (
+	"github.com/gin-gonic/gin"
+	_ "net/http/pprof"
+	"strings"
+)
+
+func main() {
+	//f, _ := os.Create("trace.out")
+	//defer f.Close()
+	//trace.Start(f)
+	//defer trace.Stop()
+	//// 开启pprof，监听请求
+	//ip := "0.0.0.0:6060"
+	//go func() {
+	//	if err := http.ListenAndServe(ip, nil); err != nil {
+	//		fmt.Printf("start pprof failed on %s\n", ip)
+	//	}
+	//}()
+	gin.SetMode(gin.ReleaseMode)
+	engine := gin.New()
+	//engine.Use(gin.BasicAuth(gin.Accounts{
+	//	"admin": "123456",
+	//}))
+	//engine.GET("/ping", func(c *gin.Context) {
+	//	c.JSON(200, gin.H{
+	//		"message": "pong",
+	//	})
+	//})
+	engine.GET("/", func(c *gin.Context) {
+		c.String(200, strings.Repeat("s", 4))
+	})
+
+	engine.Run(":8090")
+	//for i := 0; i < 100; i++ {
+	//	go func() {
+	//		fmt.Println("i:", i)
+	//		time.Sleep(time.Second * 100)
+	//	}()
+	//	time.Sleep(time.Second)
+	//}
+
+	select {}
+}

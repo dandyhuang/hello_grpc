@@ -1,0 +1,18 @@
+syntax = "proto3";
+package feed.api;
+option go_package =  "feed.api";
+enum FeedQueueType {
+
+    FEED_QUEUE_TYPE_DEFAULT = 0;
+
+    //  100开头策略词典召回
+    LIKE_TAG_RECALL = 100;
+
+    //  200开头 redis召回
+    ICF_RECALL = 201;
+
+    //  300开头 模型召回
+    EXCALIBUR_RECALL = 301;
+
+
+}

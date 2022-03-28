@@ -83,9 +83,9 @@ func main() {
 		})
 	})
 	ginAddr := cfg.Server.Addr + ":" + cfg.Server.Port
-	engine.Run(ginAddr)
+	go engine.Run(ginAddr)
 
-	lis, err := net.Listen("tcp", ":"+cfg.Server.Port)
+	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

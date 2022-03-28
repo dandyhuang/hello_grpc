@@ -18,7 +18,7 @@ func main() {
 	g.Go(func() error {
 		g.Go(func() error {
 			<-ctx.Done()
-			fmt.Println("http ctx done")
+			fmt.Println("http ctx doe")
 			return s.Shutdown(context.TODO())
 		})
 		fmt.Println("http")

@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func foo1(x *int) func() {
 	return func() {
@@ -15,8 +18,25 @@ func foo2(x int) func() {
 	}
 }
 func main() {
+	c := make(chan int, 3)
+	//	quit := make(chan int, 3)
+	x := 5
+
+	go func() {
+		time.Sleep(100000000000)
+		c <- 5
+	}()
+
+	for {
+		select {
+		case i := <-c:
+			fmt.Println("i:", i)
+
+			fmt.Println("quit")
+		}
+	}
+
 	// Q1第一组实验
-	x := 133
 	f1 := foo1(&x)
 	f2 := foo2(x)
 	f1()

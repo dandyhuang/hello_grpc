@@ -1,40 +1,33 @@
-
 package main
 
-import (
-"context"
-"fmt"
-)
+import "fmt"
 
-func main() {
-	// gen generates integers in a separate goroutine and
-	// sends them to the returned channel.
-	// The callers of gen need to cancel the context once
-	// they are done consuming generated integers not to leak
-	// the internal goroutine started by gen.
-	gen := func(ctx context.Context) <-chan int {
-		dst := make(chan int)
-		n := 1
-		go func() {
-			for {
-				select {
-				case <-ctx.Done():
-					return // returning not to leak the goroutine
-				case dst <- n:
-					n++
-				}
-			}
-		}()
-		return dst
-	}
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel() // cancel when we are finished consuming integers
-
-	for n := range gen(ctx) {
-		fmt.Println(n)
-		if n == 5 {
-			break
+func guess(left, right uint) (guessed uint) {
+	guessed = (left + right) / 2
+	var getFromInput string
+	//fmt.Scanln(&guessed)
+	fmt.Println("猜测结果:", guessed)
+	fmt.Println("如果高了，输入1，低了输入0，对了输入9")
+	fmt.Scanln(&getFromInput)
+	switch getFromInput {
+	case "1":
+		if left == right {
+			fmt.Println("赖皮")
+			return
 		}
+		guess(left, guessed-1)
+
+	case "0":
+		if left == right {
+			fmt.Println("赖皮")
+			return
+		}
+		guess(guessed+1, right)
+	case "9":
+		fmt.Println(guessed)
 	}
+	return
+}
+func main() {
+	guess(1, 100)
 }

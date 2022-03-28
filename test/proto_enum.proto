@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package proto_enum;
+option go_package = "proto/gen";
+
+enum UserStatus {
+  AWAY = 0;
+  ONLINE = 1;
+  OFFLINE = 2;
+}
+
+
+// The request message containing the user's name.
+message HelloRequest {
+  UserStatus userStatus = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}

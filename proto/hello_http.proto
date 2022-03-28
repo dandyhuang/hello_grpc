@@ -18,6 +18,6 @@ message HelloHTTPRequest {
   string name = 1;
 }
 // HelloResponse 响应结构
-message HelloHTTPResponse {
+message HelloHTTPResponsee {
   string message = 1;
 }

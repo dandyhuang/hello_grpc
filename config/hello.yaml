@@ -1,6 +1,6 @@
 server:
   address: 127.0.0.1
-  port: 50050
+  port: 50053
 mysql:
   user : root
   password : Tech2501
