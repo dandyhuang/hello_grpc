@@ -1,0 +1,237 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// option optimize_for = LITE_RUNTIME;
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.vivo.internet.recom";
+option java_outer_classname = "RecomProto";
+option objc_class_prefix = "HLW";
+option  go_package="./;rec";
+
+package rec;
+
+//Begin---------实验平台
+//目的：支持多层实验平台，通过配置化方式实现多组实验统计
+
+// 代表流量经过该层，所附带的算法参数和系统参数
+message AlgMultiTestInfo {
+
+    //暂未使用
+    int32 testID = 1;
+
+    //标识实验流量进入哪个so执行，灰度过程中ruleID 和实验参数中都填入                                   
+    int32 ruleID = 2;   
+
+    //实验参数 由实验者和系统设定参数，各自识别并执行
+    //算法参数:被相应的so识别并执行
+    //系统参数:，IDC路由参数,参数
+    //参数名，参数值 比如 ruleID="10"
+    map<string, string> mapParams = 3; 
+
+
+    // 模块层标识
+
+    // 1 -> scoring
+    // 2 -> sorting
+    // 3 -> filter
+    // R(ascii) -> retrieval
+    // ....
+    uint32 expLayer  = 4;
+
+    // 实验名称
+    string expName   = 5;
+    uint64 pageid    = 6;           
+};
+//End---------实验平台
+
+message AllTestInfo
+{
+	repeated AlgMultiTestInfo vecTestInfo = 1;
+    string debug_error  = 2;
+}
+
+//Begin---------用户相关
+//设备相关信息
+//目的：用于个性化推荐
+message DeviceInfo{
+    string androidId = 1;  
+    string imei = 2;  
+    int64  superUser = 3;                                 //jail break/root
+    string language = 4;                                 //语言
+    string manufacturer = 5;                                  //手机厂商 htc, LG, ...
+    string modelName = 6;                                  //手机型号 Nexus 5, ...
+    string osVersion = 7;                                  //安卓版本号 4.4.1
+    string resolution = 8;                                  //400x800, 400*600
+    string macAddr = 9;                                  //34:34:f3:...
+    string clientVersion = 10;                                //客户端版本号 TMA_411_DEV/040411&NA/040411&2.3.4_10_1&20_15_14&samsung_GTS5570&NA&NA&V3
+    int64 addAttribute = 11;                             //设备附加属性
+    repeated int32 preferInfos = 12;                     //偏好列表
+	string udid = 13;                                    //用户设备统一唯一标识符
+	string oaid = 14;                                    
+	string vaid = 15;                                    
+};
+
+//位置相关信息
+//目的：LBS相关推荐
+message LocationInfo{
+    string city = 1;                                          //城市
+    string longitude = 2;                                    //经纬度
+    string timezone = 3;                                     //时区
+};
+
+//网络相关信息
+//目的：网络相关过滤
+message NetworkInfo{
+    string imsi = 1;                                           //sim卡号
+    string networkType = 2;                                   //wifi, 2g, 3g...
+    string networkOperator = 3;                               //运营商
+    string phoneNumber = 4;                                   //手机号
+    string clientIp = 5;                                      //客户端用户的ip
+    string wifiSsid = 6;                                       //wifi名(Vivo-Freewifi)
+    string wifiBssid = 7;                                      //wifi路由器的mac地址
+};
+//End---------用户相关
+
+enum AD_TYPE {
+    AD_TYPE_COMMON = 0;
+    AD_TYPE_GENERNAL = 1;
+    AD_TYPE_DYNAMIC = 2;
+};
+
+message ResponseRecommendItem {
+    repeated int64 id = 1;             //creativeid
+    repeated int64 child_id = 2;       //派生广告id,动态创意id
+    repeated float score = 3;
+    repeated float cvr = 4;
+    repeated float rvr = 5;
+    repeated float cvr2 = 6;
+};
+
+message RequestRecommendItem {
+    repeated int64 id = 1;             //creativeid
+    repeated int64 child_id = 2;       //派生广告id,动态创意id
+    repeated int64 appid = 3;
+    repeated int32 stage = 4;          //ocpc阶段, 非ocpc广告=0, ocpc第一阶段=1, ocpc第二阶段=2, ocpc第三阶段=3
+    repeated int32 costType = 5;       // 区分广告的计费类型，如是否cpt
+    repeated int32 secondCostType = 6; //ocpc阶段, 第二目标转化目标
+    repeated int32 scoreTypes = 7;     // 1-ctr; 2-cvr; 4-rvr; 8-cvr2;
+    repeated AD_TYPE adType = 8;       // enum AdType {普通广告、通投广告、动态创意};
+    repeated float bid = 9;            // cpc广告主出价， ocpc风控出价
+    repeated int32 titleType = 10;     //dpa广告标题类型：0-模板标题；1商品标题；2-动态标题
+};
+
+//推荐信息
+message RecommendInfo{
+    int64 positionId = 1;                                        // 广告位ID(int64)
+    int32 refreshTimes = 2;
+    int32 ssp_media_type = 3; // add by luojianhui 20200715, 1表示自有流量，2表示联盟开发者平台的媒体流量，3表示联盟ssp流量
+    RequestRecommendItem reqItems = 4;  // 请求广告集合
+    ResponseRecommendItem resItems = 5; // 返回广告集合
+    map<string, string> mapContext = 6; // 推荐上下文信息
+    int32 areaDldType = 7; // 1表示 自动下载；2表示手动下载
+    string expName = 8; // 实验信息
+    repeated int64 multiPositionId = 9;     // 位次信息
+    map<int64, ResponseRecommendItem> multiResItems= 10; //多位次信息返回结果
+    repeated int64 multiPositionIdBidFloor = 11; // add by shaodi(20210419), 上游传过来的底价，跟广告位相关。 后续跟广告位相关的抽象出一个message
+};
+
+
+//Rank相关
+message Module{
+	string moduleId = 1;
+	int32  moduleType = 2; //0:相关推荐 1：同标签推荐 2：同专题推荐
+	string strategyId = 3; //游戏调参策略ID
+	string rerankAlg = 4;  //游戏调参算法
+	string strategyType = 5; //游戏调参类型
+	string tuningMethod = 6; //游戏调参方式
+};
+
+//请求Item信息
+message RankItemInfo{
+	int64 appId = 1;
+	int64 creativeId = 2;  								//创意id，与appid的关系是多对
+    string adTxt = 3;                                      // 广告语
+    int32 startTime = 4;                                   // 广告开始时间
+    int32 endTime = 5;                                     //广告结束时间
+	int32 costType = 6;                                    // 计费类型: 1、表示cpc；2、表示 ocpc; 3、表示cpd；4、表示 ocpd;
+    double price = 7;                                       // 广告的价格
+    int32 chargeMode = 8; 									// 计费模式：1、cpd；2、ocpd；4、动态出价
+	int32 secondCvType = 9; 								//ocpc阶段, 第二目标转化目标
+    double bid = 10; 										//广告主出价
+	
+	map<string, string> map_context = 99;     				//扩展字段，性能不高，字段序号必须小于99
+	
+	//推荐响应字段
+	double recallScore= 100;								//召回打分(公共)
+	double strategyRecallScore= 101;						//策略召回打分(搜索公共)
+	double filterScore= 102;								//粗排打分(搜索)
+	double filterCtrScore = 103;							//粗排Ctr打分(CPD)
+	double filterCvrScore = 104;							//粗排Cvr打分(CPD)
+	double ctrScore= 105;									//ctr打分(公共)
+	double cvrScore= 106;									//cvr打分(公共)
+	double cvr2Score = 107;									//cvr2打分(搜索)
+	double ltvScore = 108;									//ltv打分(游戏)
+	double ltv2Score = 109;									//ltv2(游戏)
+	double ltv3Score = 110;									//ltv3(游戏)
+	double payWillScore = 111;								//pay_wil打分(游戏)
+	double payWill2Score = 112;								//pay_will2 打分(游戏)
+	double retentionScore = 113;							//retention 打分(游戏)
+	int32 recallType = 114;							        //召回类型
+	string tagA = 130;
+    string tagB = 131;
+	string strategyId = 132;      //游戏调参策略ID
+	string rerankAlg = 133;       //游戏调参算法
+	
+};
+
+
+message RankRecommendInfo{
+    int32 sceneId = 1;                        			//场景定义 9999以下就场景，10000~19999:搜索，20000~29999：CPD:30000~39999，游戏：40000~49999，内外销：50000~59999
+    string sceneSubAlg = 2;                  			//目前流量还是通过二部来划分，用来标识一个场景下的子流量
+    string context = 3;                        			//上下文信息，比如搜索的精准搜索匹配结果
+    int32 platformVersion = 4;                			//平台版本号：比如应用商店、浏览器、游戏中心
+	string query = 5;						   			//query 
+	string adxAppList = 6;				   				//混排列表
+    repeated RankItemInfo vecItems = 7;     			//item列表信息
+	Module module = 8;						   			//模块信息
+	map<string, string> map_context = 99;    	   			//扩展字段
+};
+
+
+
+//请求参数
+message RankRecommendRequest{
+	string reqId = 1;
+    DeviceInfo device = 2;						//用户设备信息
+    LocationInfo location = 3;					//用户LBS
+    NetworkInfo network = 4;					//用户网络信息
+    repeated RankRecommendInfo recommend = 5;	//请求详情
+	repeated AlgMultiTestInfo vecTestInfo = 6;	//abt参数信息
+    bool needDebug = 7; 						//是否需要debug，目前只有白名单看板需要
+    bytes userFeature = 8;                      //用户特征
+	map<string, string> context = 99;    		//扩展字段
+};
+
+
+
+message RankRecommendResponse{
+    int32 code=1;							//0：成功，其他：失败
+	string reqId = 2;						//req_id 与RankRecommendRequest 对齐
+    repeated RankRecommendInfo recommend = 3;//响应
+    string version=4;						 //版本信息
+	string debug_info=5;					//debug信息
+};

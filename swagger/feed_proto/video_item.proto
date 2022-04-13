@@ -1,7 +1,7 @@
 syntax = "proto3";
 package feed.api;
 
-option go_package =  "feed.api";
+option go_package =  "feed/api";
 message VideoItem {
 
     string id = 1;
