@@ -1,33 +1,53 @@
 syntax = "proto3";
 package feed.api;
+import "google/api/annotations.proto";
 
-option go_package =  "feed/api";
+option go_package =  "../feed_proto/";
 message VideoItem {
 
     string id = 1;
-    uint64 gmt_create = 2;                          //  创建时间
-    uint64 gmt_modified = 3;                        //  修改时间
-    string title = 4;                               //  标题
-    string channel_id = 5;                          //  channel_id
-    string published_at = 6;                        //  视频发布日期
-    string channel_title = 7;                       //  channelTitle
-    string category_id = 8;                         //  视频类别id
-    string category = 9;                            //  category
-    string video_url = 10;                          //  视频url，youtube原生页面地址
-    string region = 11;                             //  国家和地区代码
-    string language= 12;                            //  语言代码
-    uint64 duration = 13;                           //  视频时长 单位 s
-    string cover_img = 14;                          //  视频图片url
-    repeated string tags = 15;                      //  tags （看着像关键词）
-    uint64 expire_time = 16;                        //  过期时间
-    uint32 status = 17;                             //  在架状态  1在架 0下架
+    //  创建时间
+    uint64 gmt_create = 2;
+    //  修改时间
+    uint64 gmt_modified = 3;
+    //  标题
+    string title = 4;
+    //  channel_id
+    string channel_id = 5;
+    //  视频发布日期
+    string published_at = 6;
+    //  channelTitle
+    string channel_title = 7;
+    //  视频类别id
+    string category_id = 8;
+    //  category
+    string category = 9;
+    //  视频url，youtube原生页面地址
+    string video_url = 10;
+    //  国家和地区代码
+    string region = 11;
+    //  语言代码
+    string language= 12;
+    //  视频时长 单位 s
+    uint64 duration = 13;
+    //  视频图片url
+    string cover_img = 14;
+    //  tags （看着像关键词）
+    repeated string tags = 15;
+    //  过期时间
+    uint64 expire_time = 16;
+    //  在架状态  1在架 0下架
+    uint32 status = 17;
 
 
-    //  ~ 199  静态信息保留字段， 以下为统计值字段
-    uint64 comment_count = 200;                     //  视频评论数
-    uint64 dislike_count = 201;                     //  不喜欢个数
-    uint64 like_count = 202;                        //  点赞的个数
-    uint64 view_count = 203;                        //  观看个数
+    //  视频评论数
+    uint64 comment_count = 200;
+    //  不喜欢个数
+    uint64 dislike_count = 201;
+    //  点赞的个数
+    uint64 like_count = 202;
+    //  观看个数
+    uint64 view_count = 203;
 
 
 

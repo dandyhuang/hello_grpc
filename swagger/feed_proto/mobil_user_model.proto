@@ -1,20 +1,29 @@
 syntax = "proto3";
 package feed.api;
-option go_package =  "feed.api";
+import "google/api/annotations.proto";
+
+option go_package =  "../feed_proto/";
 
 message ActionExpoItem {
-    string item = 4;    //  itemId 视频id
-    uint64 ts = 6;      // 时间戳  (ms)
-    double dur = 7;    // 观看时长 (ms)   仅曝光列表需要
-    uint32 play_type = 9; // 播放类型  (自动播放，还是用户主动播放)   仅曝光列表需要
+    //  itemId 视频id
+    string item = 4;
+    // 时间戳  (ms)
+    uint64 ts = 6;
+    // 观看时长 (ms)   仅曝光列表需要
+    double dur = 7;
+    // 播放类型  (自动播放，还是用户主动播放)   仅曝光列表需要
+    uint32 play_type = 9;
 }
 
-//  端侧用户模型
-message MobilUserModel{
-
-    repeated ActionExpoItem expose_list = 4; // 曝光列表，1天内或20条截断
-    repeated ActionExpoItem click_list = 13; // 点击列表，1天内或20条截断
-    repeated ActionExpoItem like_list = 9;   // 点赞item操作列表, 1天内或20条截断
-    repeated ActionExpoItem di = 10;   // 取消点赞item操作列表, 1天内或20条截断
-    repeated ActionExpoItem share_list = 11;    // 分享操作列表, 1天内或20条截断
+message MobilUserModel{ //  端侧用户模型
+    // 曝光列表，1天内或20条截断
+    repeated ActionExpoItem expose_list = 4;
+    // 点击列表，1天内或20条截断
+    repeated ActionExpoItem click_list = 13;
+    // 点赞item操作列表, 1天内或20条截断
+    repeated ActionExpoItem like_list = 9;
+    // 取消点赞item操作列表, 1天内或20条截断
+    repeated ActionExpoItem di = 10;
+    // 分享操作列表, 1天内或20条截断
+    repeated ActionExpoItem share_list = 11;
 }

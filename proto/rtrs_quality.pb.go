@@ -10,6 +10,7 @@ import (
 	proto "github.com/golang/protobuf/proto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	"hello_grpc/proto/rec"
 	reflect "reflect"
 	sync "sync"
 )
@@ -136,11 +137,11 @@ type QualityReqBody_ReqPosInfo struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	PosId         uint32              `protobuf:"varint,1,opt,name=pos_id,json=posId,proto3" json:"pos_id,omitempty"`                          // 推荐位置定义 与scene含义相同
-	MixReq        *Request            `protobuf:"bytes,2,opt,name=mix_req,json=mixReq,proto3" json:"mix_req,omitempty"`                        // 保存从guard发送过来的包体，仅scheduler so理解，下游rtrs so不用该成员
-	PosDetailInfo *RecommendInfo      `protobuf:"bytes,3,opt,name=pos_detail_info,json=posDetailInfo,proto3" json:"pos_detail_info,omitempty"` //描述该场景的具体信息，schedule so传递信息给下游rtrs so
-	AbtestReq     *AbtestReq          `protobuf:"bytes,4,opt,name=abtest_req,json=abtestReq,proto3" json:"abtest_req,omitempty"`               //仅在访问abtest时使用，abtest请求包信息
-	ExpInfo       []*AlgMultiTestInfo `protobuf:"bytes,5,rep,name=exp_info,json=expInfo,proto3" json:"exp_info,omitempty"`                     //schedule传递给下游的实验信息
+	PosId         uint32                  `protobuf:"varint,1,opt,name=pos_id,json=posId,proto3" json:"pos_id,omitempty"`                          // 推荐位置定义 与scene含义相同
+	MixReq        *Request                `protobuf:"bytes,2,opt,name=mix_req,json=mixReq,proto3" json:"mix_req,omitempty"`                        // 保存从guard发送过来的包体，仅scheduler so理解，下游rtrs so不用该成员
+	PosDetailInfo *rec.RecommendInfo      `protobuf:"bytes,3,opt,name=pos_detail_info,json=posDetailInfo,proto3" json:"pos_detail_info,omitempty"` //描述该场景的具体信息，schedule so传递信息给下游rtrs so
+	AbtestReq     *AbtestReq              `protobuf:"bytes,4,opt,name=abtest_req,json=abtestReq,proto3" json:"abtest_req,omitempty"`               //仅在访问abtest时使用，abtest请求包信息
+	ExpInfo       []*rec.AlgMultiTestInfo `protobuf:"bytes,5,rep,name=exp_info,json=expInfo,proto3" json:"exp_info,omitempty"`                     //schedule传递给下游的实验信息
 }
 
 func (x *QualityReqBody_ReqPosInfo) Reset() {
@@ -189,7 +190,7 @@ func (x *QualityReqBody_ReqPosInfo) GetMixReq() *Request {
 	return nil
 }
 
-func (x *QualityReqBody_ReqPosInfo) GetPosDetailInfo() *RecommendInfo {
+func (x *QualityReqBody_ReqPosInfo) GetPosDetailInfo() *rec.RecommendInfo {
 	if x != nil {
 		return x.PosDetailInfo
 	}
@@ -203,7 +204,7 @@ func (x *QualityReqBody_ReqPosInfo) GetAbtestReq() *AbtestReq {
 	return nil
 }
 
-func (x *QualityReqBody_ReqPosInfo) GetExpInfo() []*AlgMultiTestInfo {
+func (x *QualityReqBody_ReqPosInfo) GetExpInfo() []*rec.AlgMultiTestInfo {
 	if x != nil {
 		return x.ExpInfo
 	}
@@ -218,11 +219,11 @@ type QualityReqBody_GlobalInfo struct {
 	LogId             []byte             `protobuf:"bytes,1,opt,name=log_id,json=logId,proto3" json:"log_id,omitempty"`                                         // 用于唯一确定某次请求
 	RuleAppDirectInfo *RuleAppDirectInfo `protobuf:"bytes,2,opt,name=rule_app_direct_info,json=ruleAppDirectInfo,proto3" json:"rule_app_direct_info,omitempty"` //每个app的定向条件
 	//设备相关信息
-	RecomDevice *DeviceInfo `protobuf:"bytes,3,opt,name=recom_device,json=recomDevice,proto3" json:"recom_device,omitempty"`
+	RecomDevice *rec.DeviceInfo `protobuf:"bytes,3,opt,name=recom_device,json=recomDevice,proto3" json:"recom_device,omitempty"`
 	//位置相关信息
-	RecomLocation *LocationInfo `protobuf:"bytes,4,opt,name=recom_location,json=recomLocation,proto3" json:"recom_location,omitempty"`
+	RecomLocation *rec.LocationInfo `protobuf:"bytes,4,opt,name=recom_location,json=recomLocation,proto3" json:"recom_location,omitempty"`
 	//网络相关信息
-	RecomNetwork *NetworkInfo `protobuf:"bytes,5,opt,name=recom_network,json=recomNetwork,proto3" json:"recom_network,omitempty"`
+	RecomNetwork *rec.NetworkInfo `protobuf:"bytes,5,opt,name=recom_network,json=recomNetwork,proto3" json:"recom_network,omitempty"`
 }
 
 func (x *QualityReqBody_GlobalInfo) Reset() {
@@ -271,21 +272,21 @@ func (x *QualityReqBody_GlobalInfo) GetRuleAppDirectInfo() *RuleAppDirectInfo {
 	return nil
 }
 
-func (x *QualityReqBody_GlobalInfo) GetRecomDevice() *DeviceInfo {
+func (x *QualityReqBody_GlobalInfo) GetRecomDevice() *rec.DeviceInfo {
 	if x != nil {
 		return x.RecomDevice
 	}
 	return nil
 }
 
-func (x *QualityReqBody_GlobalInfo) GetRecomLocation() *LocationInfo {
+func (x *QualityReqBody_GlobalInfo) GetRecomLocation() *rec.LocationInfo {
 	if x != nil {
 		return x.RecomLocation
 	}
 	return nil
 }
 
-func (x *QualityReqBody_GlobalInfo) GetRecomNetwork() *NetworkInfo {
+func (x *QualityReqBody_GlobalInfo) GetRecomNetwork() *rec.NetworkInfo {
 	if x != nil {
 		return x.RecomNetwork
 	}
@@ -297,10 +298,10 @@ type QualityRspBody_RspPosInfo struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	MixRsp        *Response      `protobuf:"bytes,1,opt,name=mix_rsp,json=mixRsp,proto3" json:"mix_rsp,omitempty"`                        //仅schedule so使用，保存schedule返回给guard的回包
-	PosDetailInfo *RecommendInfo `protobuf:"bytes,2,opt,name=pos_detail_info,json=posDetailInfo,proto3" json:"pos_detail_info,omitempty"` //描述该场景的具体信息
-	AbtestRsp     *AbtestRsp     `protobuf:"bytes,3,opt,name=abtest_rsp,json=abtestRsp,proto3" json:"abtest_rsp,omitempty"`               //仅在访问abtest时使用，abtest回包信息
-	RtrsCode      int32          `protobuf:"varint,1000,opt,name=rtrs_code,json=rtrsCode,proto3" json:"rtrs_code,omitempty"`
+	MixRsp        *Response          `protobuf:"bytes,1,opt,name=mix_rsp,json=mixRsp,proto3" json:"mix_rsp,omitempty"`                        //仅schedule so使用，保存schedule返回给guard的回包
+	PosDetailInfo *rec.RecommendInfo `protobuf:"bytes,2,opt,name=pos_detail_info,json=posDetailInfo,proto3" json:"pos_detail_info,omitempty"` //描述该场景的具体信息
+	AbtestRsp     *AbtestRsp         `protobuf:"bytes,3,opt,name=abtest_rsp,json=abtestRsp,proto3" json:"abtest_rsp,omitempty"`               //仅在访问abtest时使用，abtest回包信息
+	RtrsCode      int32              `protobuf:"varint,1000,opt,name=rtrs_code,json=rtrsCode,proto3" json:"rtrs_code,omitempty"`
 }
 
 func (x *QualityRspBody_RspPosInfo) Reset() {
@@ -342,7 +343,7 @@ func (x *QualityRspBody_RspPosInfo) GetMixRsp() *Response {
 	return nil
 }
 
-func (x *QualityRspBody_RspPosInfo) GetPosDetailInfo() *RecommendInfo {
+func (x *QualityRspBody_RspPosInfo) GetPosDetailInfo() *rec.RecommendInfo {
 	if x != nil {
 		return x.PosDetailInfo
 	}
@@ -459,13 +460,13 @@ var file_rtrs_quality_proto_goTypes = []interface{}{
 	(*QualityReqBody_GlobalInfo)(nil), // 3: so_rtrs.QualityReqBody.GlobalInfo
 	(*QualityRspBody_RspPosInfo)(nil), // 4: so_rtrs.QualityRspBody.RspPosInfo
 	(*Request)(nil),                   // 5: so_rtrs.schedule.Request
-	(*RecommendInfo)(nil),             // 6: so_rtrs.RecommendInfo
+	(*rec.RecommendInfo)(nil),         // 6: so_rtrs.RecommendInfo
 	(*AbtestReq)(nil),                 // 7: so_rtrs.AbtestReq
-	(*AlgMultiTestInfo)(nil),          // 8: so_rtrs.AlgMultiTestInfo
+	(*rec.AlgMultiTestInfo)(nil),      // 8: so_rtrs.AlgMultiTestInfo
 	(*RuleAppDirectInfo)(nil),         // 9: so_rtrs.RuleAppDirectInfo
-	(*DeviceInfo)(nil),                // 10: so_rtrs.DeviceInfo
-	(*LocationInfo)(nil),              // 11: so_rtrs.LocationInfo
-	(*NetworkInfo)(nil),               // 12: so_rtrs.NetworkInfo
+	(*rec.DeviceInfo)(nil),            // 10: so_rtrs.DeviceInfo
+	(*rec.LocationInfo)(nil),          // 11: so_rtrs.LocationInfo
+	(*rec.NetworkInfo)(nil),           // 12: so_rtrs.NetworkInfo
 	(*Response)(nil),                  // 13: so_rtrs.schedule.Response
 	(*AbtestRsp)(nil),                 // 14: so_rtrs.AbtestRsp
 }
@@ -496,7 +497,7 @@ func file_rtrs_quality_proto_init() {
 	if File_rtrs_quality_proto != nil {
 		return
 	}
-	file_recommend_proto_init()
+	rec.file_recommend_proto_init()
 	file_rtrs_schedule_proto_init()
 	file_rtrs_abtest_proto_init()
 	file_rtrs_expinfo_proto_init()

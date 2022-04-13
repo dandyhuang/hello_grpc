@@ -59,6 +59,10 @@ type Student struct {
 	name string
 }
 
+type person struct {
+	Name string
+}
+
 func main() {
 	//var s1 Student
 	//var sex int
@@ -68,9 +72,15 @@ func main() {
 	//p := (*[2]unsafe.Pointer)(unsafe.Pointer(&s1))[1]
 	//pi := (*Student)(p)
 	//fmt.Println(pi, &s1)
+	p := person{}
+	var o map[string]interface{}
+
+	src := "{\"name\":\"你好的师傅打了\"}"
+	json.Unmarshal([]byte(src), &p)
+
+	fmt.Println(p)
 
 	obj := `{"key3":"value3","key2":"value2","key1":"value1"}`
-	var o map[string]interface{}
 	json.Unmarshal([]byte(obj), &o)
 	fmt.Println(o)
 	r, _ := json.Marshal(o)

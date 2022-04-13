@@ -10,6 +10,7 @@ import (
 	proto "github.com/golang/protobuf/proto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	"hello_grpc/proto/rec"
 	reflect "reflect"
 	sync "sync"
 )
@@ -176,7 +177,7 @@ func file_batch_recommend_proto_init() {
 	if File_batch_recommend_proto != nil {
 		return
 	}
-	file_recommend_proto_init()
+	rec.file_recommend_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_batch_recommend_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*BatchRequest); i {

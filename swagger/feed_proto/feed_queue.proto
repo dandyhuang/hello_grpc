@@ -1,6 +1,9 @@
 syntax = "proto3";
 package feed.api;
-option go_package =  "feed.api";
+import "google/api/annotations.proto";
+
+// option go_package =  "feed.api";
+option go_package =  "../feed_proto/";
 enum FeedQueueType {
 
     FEED_QUEUE_TYPE_DEFAULT = 0;

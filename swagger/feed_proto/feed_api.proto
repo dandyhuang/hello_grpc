@@ -1,12 +1,12 @@
 syntax = "proto3";
 package feed.api;
 
-import "feed_proto/feed_common.proto";
-import "feed_proto/mobil_user_model.proto";
-option go_package =  "feed.api";
+import "feed_common.proto";
+import "mobil_user_model.proto";
+import "google/api/annotations.proto";
+option go_package =  "../feed_proto/";
 option cc_generic_services = true;
 
-// 代表流量经过该层，所附带的算法参数和系统参数
 message AlgMultiTestInfo {
     //暂未使用
     int32 test_id = 1;
@@ -36,43 +36,71 @@ message AlgMultiTestInfo {
 }
 
 message AbtInfo {
-    string scene_id = 1;    // 场景ID
-    string sub_alg = 2;     // 算法名
+    // 场景ID
+    string scene_id = 1;
+    // 算法名
+    string sub_alg = 2;
     map<int32, AlgMultiTestInfo> test_infos = 3;
 }
 
 
 message FeedRequest {
-    string session_id = 1;                          // 【必须】 （连续打开app间隔时间小于15min,算一次session） // TODO 目前没有，可以添加 具体策略细节给客户端
-    string req_id = 2;                              // 【必须】log_id，用于关联一次刷新请求 全局唯一 客户端生成 【必须】 //  TODO 目前没有 需要添加并上报埋点  【重要】
-    string gaid = 3;                                // 用户id 【必须】  //  TODO  确认下gaid怎么关联imei或者其他的userid
-    string imei = 4;                                // 用户id 【必须】  //  TODO  相对gaid，优先使用imei  各方确认下相关字段的可行性。
-    feed.api.SceneId scene_id = 5;                  // 场景id 【必须】 //  TODO 需要规划，上下游对齐
-    MobilUserModel mobil_user_model = 6;            // 端侧用户实时数据 【必须】(服务端透传)  // TODO 需要重点对齐 【重要】
-    feed.api.CommonRequest common_request = 7;      // 公共的request信息 【部分必须，见内部标注】，包括req_id, imei, 设备相关, 地域相关, 网络相关, 刷新相关
-    string openid = 8;                              // vivo账号，只有登录用户才会有 // TODO 暂时没有，后续有再加上
-    feed.api.ChannelType channel_id = 9;            // 子频道id （体育、音乐等） // TODO  上下游需对齐
-    string country = 10;                            // 国家码 【有则必须】
-    string state = 11;                              // 州、 邦、 省 【有则必须】
-    string scene_subalg = 12;                       // 后续实验分流字段
-    map<string, string> extra_info = 13;            // 可扩展字段
-                                                    // 13 ~30 位置预留给上游 以下为算法内部使用字段
+    // 【必须】 （连续打开app间隔时间小于15min,算一次session） // TODO 目前没有，可以添加 具体策略细节给客户端
+    string session_id = 1;
+    // 【必须】log_id，用于关联一次刷新请求 全局唯一 客户端生成 【必须】
+    string req_id = 2;
+    // 用户id 【必须】 //  TODO  相对gaid，优先使用imei  各方确认下相关字段的可行性。
+    string gaid = 3;
+    // 用户id 【必须】
+    string imei = 4;
+    // 场景id 【必须】
+    feed.api.SceneId scene_id = 5;
+    // 端侧用户实时数据 【必须】(服务端透传)
+    MobilUserModel mobil_user_model = 6;
+    // 公共的request信息 【部分必须，见内部标注】，包括req_id, imei, 设备相关, 地域相关, 网络相关, 刷新相关
+    feed.api.CommonRequest common_request = 7;
+    // vivo账号，只有登录用户才会有 // TODO 暂时没有，后续有再加上
+    string openid = 8;
+    // 子频道id （体育、音乐等）
+    feed.api.ChannelType channel_id = 9;
+    // 国家码 【有则必须】
+    string country = 10;
+    // 州、 邦、 省 【有则必须】
+    string state = 11;
+    // 后续实验分流字段
+    string scene_subalg = 12;
+    // 可扩展字段
+    map<string, string> extra_info = 13;
 
-    feed.api.UserInfo user_info = 31;            // 用户特征相关
-    AbtInfo abt_info = 32;             // ab平台相关
-    feed.api.StrategyInfo strategy_info = 33;    // 各模块下游策略需要的字段
+    // 用户特征相关
+    feed.api.UserInfo user_info = 31;
+    // ab平台相关
+    AbtInfo abt_info = 32;
+    // 各模块下游策略需要的字段
+    feed.api.StrategyInfo strategy_info = 33;
 }
 
 message FeedResponse {
-    int32 err_no = 1;                               //错误码定义后续后端给
+    //错误码定义后续后端给
+    int32 err_no = 1;
     string err_msg = 2;
-    int32 item_num = 3;                             // 返回的item条数  TODO 确认下条数目前是8条
-    repeated ItemInfo feed_list = 4;    // 返回的item列表
-    map<string,string> extra_info = 5;              // 可扩展字段
-                                                    //  11 ~20 位置预留给上游  以下为内部使用字段
+    // 返回的item条数  TODO 确认下条数目前是8条
+    int32 item_num = 3;
+    // 返回的item列表
+    repeated ItemInfo feed_list = 4;
+    // 可扩展字段
+    map<string,string> extra_info = 5;
+    //  11 ~20 位置预留给上游  以下为内部使用字段
     map<string, ItemQueue> recall_queue_map = 21;
 }
 
 service FeedService {
-    rpc feed(FeedRequest) returns(FeedResponse);
+    rpc feed(FeedRequest) returns(FeedResponse) {
+        option (google.api.http) = {
+
+            post: "/feed/predict"
+            body: "*"
+        };
+    };
+
 }

@@ -10,6 +10,7 @@ import (
 	proto "github.com/golang/protobuf/proto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	"hello_grpc/proto/rec"
 	reflect "reflect"
 	sync "sync"
 )
@@ -93,8 +94,8 @@ type AbtestRsp struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	PageItems  []*AlgMultiTestInfo `protobuf:"bytes,1,rep,name=page_items,json=pageItems,proto3" json:"page_items,omitempty"`
-	DebugError string              `protobuf:"bytes,2,opt,name=debug_error,json=debugError,proto3" json:"debug_error,omitempty"`
+	PageItems  []*rec.AlgMultiTestInfo `protobuf:"bytes,1,rep,name=page_items,json=pageItems,proto3" json:"page_items,omitempty"`
+	DebugError string                  `protobuf:"bytes,2,opt,name=debug_error,json=debugError,proto3" json:"debug_error,omitempty"`
 }
 
 func (x *AbtestRsp) Reset() {
@@ -129,7 +130,7 @@ func (*AbtestRsp) Descriptor() ([]byte, []int) {
 	return file_rtrs_abtest_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AbtestRsp) GetPageItems() []*AlgMultiTestInfo {
+func (x *AbtestRsp) GetPageItems() []*rec.AlgMultiTestInfo {
 	if x != nil {
 		return x.PageItems
 	}
@@ -178,9 +179,9 @@ func file_rtrs_abtest_proto_rawDescGZIP() []byte {
 
 var file_rtrs_abtest_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_rtrs_abtest_proto_goTypes = []interface{}{
-	(*AbtestReq)(nil),        // 0: so_rtrs.AbtestReq
-	(*AbtestRsp)(nil),        // 1: so_rtrs.AbtestRsp
-	(*AlgMultiTestInfo)(nil), // 2: so_rtrs.AlgMultiTestInfo
+	(*AbtestReq)(nil),            // 0: so_rtrs.AbtestReq
+	(*AbtestRsp)(nil),            // 1: so_rtrs.AbtestRsp
+	(*rec.AlgMultiTestInfo)(nil), // 2: so_rtrs.AlgMultiTestInfo
 }
 var file_rtrs_abtest_proto_depIdxs = []int32{
 	2, // 0: so_rtrs.AbtestRsp.page_items:type_name -> so_rtrs.AlgMultiTestInfo

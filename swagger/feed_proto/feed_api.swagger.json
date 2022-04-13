@@ -1,0 +1,661 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "feed_api.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/feed/predict": {
+      "post": {
+        "operationId": "FeedService_feed",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiFeedResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiFeedRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FeedService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "apiAbtInfo": {
+      "type": "object",
+      "properties": {
+        "scene_id": {
+          "type": "string",
+          "title": "场景ID"
+        },
+        "sub_alg": {
+          "type": "string",
+          "title": "算法名"
+        },
+        "test_infos": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/apiAlgMultiTestInfo"
+          }
+        }
+      }
+    },
+    "apiActionExpoItem": {
+      "type": "object",
+      "properties": {
+        "item": {
+          "type": "string",
+          "title": "itemId 视频id"
+        },
+        "ts": {
+          "type": "string",
+          "format": "uint64",
+          "title": "时间戳  (ms)"
+        },
+        "dur": {
+          "type": "number",
+          "format": "double",
+          "title": "观看时长 (ms)   仅曝光列表需要"
+        },
+        "play_type": {
+          "type": "integer",
+          "format": "int64",
+          "title": "播放类型  (自动播放，还是用户主动播放)   仅曝光列表需要"
+        }
+      }
+    },
+    "apiAlgMultiTestInfo": {
+      "type": "object",
+      "properties": {
+        "test_id": {
+          "type": "integer",
+          "format": "int32",
+          "title": "暂未使用"
+        },
+        "rule_id": {
+          "type": "integer",
+          "format": "int32",
+          "title": "标识实验流量进入哪个so执行，灰度过程中rule_id 和实验参数中都填入"
+        },
+        "map_params": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "实验参数 由实验者和系统设定参数，各自识别并执行\n算法参数:被相应的so识别并执行\n系统参数:，IDC路由参数,参数\n参数名，参数值 比如 rule_id=\"10\""
+        },
+        "exp_layer": {
+          "type": "integer",
+          "format": "int64",
+          "description": "1 -\u003e scoring\n2 -\u003e sorting\n3 -\u003e filter\nR(ascii) -\u003e retrieval\n...."
+        },
+        "exp_name": {
+          "type": "string",
+          "title": "实验名称"
+        },
+        "page_id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "apiChannelType": {
+      "type": "string",
+      "enum": [
+        "FAKE_CHANNEL",
+        "SPORTS",
+        "MUSIC"
+      ],
+      "default": "FAKE_CHANNEL"
+    },
+    "apiCommonRequest": {
+      "type": "object",
+      "properties": {
+        "device_info": {
+          "$ref": "#/definitions/apiDeviceInfo",
+          "title": "设备相关"
+        },
+        "location_info": {
+          "$ref": "#/definitions/apiLocationInfo",
+          "title": "地域相关"
+        },
+        "network_info": {
+          "$ref": "#/definitions/apiNetworkInfo",
+          "title": "网络相关"
+        }
+      }
+    },
+    "apiDeviceInfo": {
+      "type": "object",
+      "properties": {
+        "android_id": {
+          "type": "string"
+        },
+        "imei": {
+          "type": "string"
+        },
+        "super_user": {
+          "type": "string",
+          "format": "int64",
+          "title": "jail break/root"
+        },
+        "language": {
+          "type": "string",
+          "title": "语言  【必须】"
+        },
+        "manufacturer": {
+          "type": "string",
+          "title": "手机厂商 htc, LG, ... 【必须】"
+        },
+        "model_name": {
+          "type": "string",
+          "title": "手机型号 Nexus 5, ... 【必须】"
+        },
+        "os_version": {
+          "type": "string",
+          "title": "安卓版本号 4.4.1  【必须】"
+        },
+        "resolution": {
+          "type": "string",
+          "title": "400x800, 400*600 【必须】"
+        },
+        "mac_addr": {
+          "type": "string",
+          "description": "34:34:f3:..."
+        },
+        "client_version": {
+          "type": "string",
+          "title": "客户端版本号  【必须】TMA_411_DEV/040411\u0026NA/040411\u00262.3.4_10_1\u002620_15_14\u0026samsung_GTS5570\u0026NA\u0026NA\u0026V3"
+        },
+        "udid": {
+          "type": "string",
+          "title": "用户设备统一唯一标识符  【有则必须】"
+        },
+        "oaid": {
+          "type": "string",
+          "title": "【有则必须】"
+        }
+      }
+    },
+    "apiFeedRequest": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string",
+          "title": "【必须】 （连续打开app间隔时间小于15min,算一次session） // TODO 目前没有，可以添加 具体策略细节给客户端"
+        },
+        "req_id": {
+          "type": "string",
+          "title": "【必须】log_id，用于关联一次刷新请求 全局唯一 客户端生成 【必须】"
+        },
+        "gaid": {
+          "type": "string",
+          "title": "用户id 【必须】 //  TODO  相对gaid，优先使用imei  各方确认下相关字段的可行性。"
+        },
+        "imei": {
+          "type": "string",
+          "title": "用户id 【必须】"
+        },
+        "scene_id": {
+          "$ref": "#/definitions/apiSceneId",
+          "title": "场景id 【必须】"
+        },
+        "mobil_user_model": {
+          "$ref": "#/definitions/apiMobilUserModel",
+          "title": "端侧用户实时数据 【必须】(服务端透传)"
+        },
+        "common_request": {
+          "$ref": "#/definitions/apiCommonRequest",
+          "title": "公共的request信息 【部分必须，见内部标注】，包括req_id, imei, 设备相关, 地域相关, 网络相关, 刷新相关"
+        },
+        "openid": {
+          "type": "string",
+          "title": "vivo账号，只有登录用户才会有 // TODO 暂时没有，后续有再加上"
+        },
+        "channel_id": {
+          "$ref": "#/definitions/apiChannelType",
+          "title": "子频道id （体育、音乐等）"
+        },
+        "country": {
+          "type": "string",
+          "title": "国家码 【有则必须】"
+        },
+        "state": {
+          "type": "string",
+          "title": "州、 邦、 省 【有则必须】"
+        },
+        "scene_subalg": {
+          "type": "string",
+          "title": "后续实验分流字段"
+        },
+        "extra_info": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "可扩展字段"
+        },
+        "user_info": {
+          "$ref": "#/definitions/apiUserInfo",
+          "title": "用户特征相关"
+        },
+        "abt_info": {
+          "$ref": "#/definitions/apiAbtInfo",
+          "title": "ab平台相关"
+        },
+        "strategy_info": {
+          "$ref": "#/definitions/apiStrategyInfo",
+          "title": "各模块下游策略需要的字段"
+        }
+      }
+    },
+    "apiFeedResponse": {
+      "type": "object",
+      "properties": {
+        "err_no": {
+          "type": "integer",
+          "format": "int32",
+          "title": "错误码定义后续后端给"
+        },
+        "err_msg": {
+          "type": "string"
+        },
+        "item_num": {
+          "type": "integer",
+          "format": "int32",
+          "title": "返回的item条数  TODO 确认下条数目前是8条"
+        },
+        "feed_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiItemInfo"
+          },
+          "title": "返回的item列表"
+        },
+        "extra_info": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "可扩展字段"
+        },
+        "recall_queue_map": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/apiItemQueue"
+          },
+          "title": "11 ~20 位置预留给上游  以下为内部使用字段"
+        }
+      }
+    },
+    "apiFollowInfo": {
+      "type": "object",
+      "properties": {
+        "follow_partner": {
+          "type": "string"
+        },
+        "follow_id": {
+          "type": "string"
+        },
+        "follow_channel": {
+          "type": "string"
+        },
+        "follow_time": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "apiHistoryInfo": {
+      "type": "object",
+      "properties": {
+        "history_term_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiHistoryTerm"
+          }
+        }
+      }
+    },
+    "apiHistoryTerm": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "ts": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "apiItemInfo": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "title": "标识Feed资讯的唯一id [必填]"
+        },
+        "item_type": {
+          "$ref": "#/definitions/apiItemType",
+          "title": "资讯类型，如图文、视频、竖短视频等"
+        },
+        "trace_id": {
+          "type": "string",
+          "title": "算法各个模块进行append，用于跟踪一个item使用的算法策略  TODO 需要上报埋点！ 【重要】"
+        },
+        "extra_info": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "算法透传字段  可扩展"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题"
+        },
+        "author": {
+          "type": "string",
+          "title": "视频来源(author)"
+        },
+        "cover_img": {
+          "type": "string",
+          "title": "视频图片url"
+        },
+        "video_duration": {
+          "type": "string",
+          "format": "uint64",
+          "title": "视频时长 单位 s"
+        },
+        "up_count": {
+          "type": "string",
+          "format": "uint64",
+          "title": "点赞数"
+        },
+        "duplicate_id": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "重复视频id  用于相同内容不同id的视频去重"
+        },
+        "predict_scores": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "format": "float"
+          },
+          "title": "模型打分 key自定义  如a_validScore标识 模型a的valid目标打分"
+        },
+        "queue_type": {
+          "type": "string",
+          "format": "uint64",
+          "description": "按位进行判断，标识item属于哪个队列，如0x0001标识冷启队列，0x0002标识普通队列，0x0004标识..."
+        },
+        "rec_id": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "item通道号"
+        }
+      }
+    },
+    "apiItemQueue": {
+      "type": "object",
+      "properties": {
+        "item_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiItemInfo"
+          }
+        },
+        "size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "weight": {
+          "type": "integer",
+          "format": "int32",
+          "title": "召回通道权值"
+        },
+        "rec_id": {
+          "type": "string",
+          "title": "召回通道"
+        }
+      }
+    },
+    "apiItemType": {
+      "type": "string",
+      "enum": [
+        "FAKE_TYPE",
+        "SHORT_VIDEO",
+        "SMALL_VIDEO"
+      ],
+      "default": "FAKE_TYPE"
+    },
+    "apiLocationInfo": {
+      "type": "object",
+      "properties": {
+        "longitude": {
+          "type": "number",
+          "format": "float",
+          "title": "经度  【有则必须】"
+        },
+        "latitude": {
+          "type": "number",
+          "format": "float",
+          "title": "维度  【有则必须】"
+        },
+        "timezone": {
+          "type": "string",
+          "title": "时区 【有则必须】"
+        }
+      }
+    },
+    "apiMobilUserModel": {
+      "type": "object",
+      "properties": {
+        "expose_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiActionExpoItem"
+          },
+          "title": "曝光列表，1天内或20条截断"
+        },
+        "click_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiActionExpoItem"
+          },
+          "title": "点击列表，1天内或20条截断"
+        },
+        "like_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiActionExpoItem"
+          },
+          "title": "点赞item操作列表, 1天内或20条截断"
+        },
+        "di": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiActionExpoItem"
+          },
+          "title": "取消点赞item操作列表, 1天内或20条截断"
+        },
+        "share_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiActionExpoItem"
+          },
+          "title": "分享操作列表, 1天内或20条截断"
+        }
+      }
+    },
+    "apiNetworkInfo": {
+      "type": "object",
+      "properties": {
+        "imsi": {
+          "type": "string",
+          "title": "sim卡号"
+        },
+        "network_type": {
+          "type": "string",
+          "title": "wifi, 2g, 3g...【有则必须】"
+        },
+        "network_operator": {
+          "type": "string",
+          "title": "运营商"
+        },
+        "phone_number": {
+          "type": "string",
+          "title": "手机号"
+        },
+        "client_ip": {
+          "type": "string",
+          "title": "客户端用户的ip 【有则必须】"
+        },
+        "wifi_ssid": {
+          "type": "string",
+          "title": "wifi名(Vivo-Freewifi)"
+        },
+        "wifi_bssid": {
+          "type": "string",
+          "title": "wifi路由器的mac地址"
+        }
+      }
+    },
+    "apiSceneId": {
+      "type": "string",
+      "enum": [
+        "FAKE_SCENE",
+        "VIVO_RECOM_PAGE"
+      ],
+      "default": "FAKE_SCENE"
+    },
+    "apiStrategyInfo": {
+      "type": "object",
+      "properties": {
+        "mobil_user_model": {
+          "$ref": "#/definitions/apiMobilUserModel"
+        },
+        "follow_info": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiFollowInfo"
+          }
+        },
+        "positive_items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "实时正向行为列表"
+        },
+        "tag3_dislike_factor": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "tag2_dislike_factor": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "tag1_dislike_factor": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "issued_authors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "下发作者, 用于grc_video中的下发作者前置频控过滤"
+        },
+        "extra_info": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "策略所需信息，由gr填充到StrategyInfo 透传给下游使用，原先由grc获取，后改为gr获取"
+        }
+      }
+    },
+    "apiUserInfo": {
+      "type": "object",
+      "properties": {
+        "issued_list_info": {
+          "$ref": "#/definitions/apiHistoryInfo",
+          "title": "用户的下发历史"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
