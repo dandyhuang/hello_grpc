@@ -62,6 +62,9 @@ func main() {
 		},
 		ReqId: "e423sdfs",
 	}
+	req.Recommend = append(req.Recommend, &rec.RankRecommendInfo{
+		SceneId: 1001,
+	})
 	details, err := ptypes.MarshalAny(&req)
 	if err != nil {
 		panic(err)
