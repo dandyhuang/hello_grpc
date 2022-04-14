@@ -71,7 +71,11 @@ func main() {
 	}
 	cr:=&rec.CommonRequest{}
 	cr.Request = details
-
+	anyName, err := ptypes.AnyMessageName(cr.Request )
+	if err != nil {
+		log.Println("msg name", err)
+	}
+	log.Println("anyName:", anyName)
 	r, err := c.Process(ctx, cr)
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
