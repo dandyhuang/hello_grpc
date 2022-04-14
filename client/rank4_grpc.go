@@ -32,7 +32,7 @@ import (
 )
 
 const (
-	addr     = "localhost:50050"
+	addr      = "10.193.49.142:19802"
 )
 
 func main() {
