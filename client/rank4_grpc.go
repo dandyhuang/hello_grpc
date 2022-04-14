@@ -76,5 +76,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	log.Printf("Greeting: %v", r)
+	foo := &rec.RankRecommendResponse{}
+	if err := ptypes.UnmarshalAny(r.Response, foo); err != nil {
+		log.Println("error")
+	}
+	log.Printf("Greeting: %v", foo)
 }
