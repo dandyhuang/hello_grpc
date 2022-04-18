@@ -76,14 +76,18 @@ func main() {
 	if err != nil {
 		log.Println("msg name", err)
 	}
-	log.Println("anyName:", anyName)
+	req2:=&rec.RankRecommendRequest{}
+	if err = ptypes.UnmarshalAny(cr.Request, req2); err != nil {
+		log.Println("test 1 error", err)
+	}
+	log.Println("anyName:", anyName, "req2", req2)
 	r, err := c.Process(ctx, cr)
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
 	foo := &rec.RankRecommendResponse{}
-	if err := ptypes.UnmarshalAny(r.Response, foo); err != nil {
-		log.Println("error")
+	if err = ptypes.UnmarshalAny(r.Response, foo); err != nil {
+		log.Println("error", err)
 	}
 	log.Printf("Greeting: %v", foo)
 }
