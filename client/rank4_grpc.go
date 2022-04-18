@@ -23,7 +23,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
@@ -79,7 +78,7 @@ func main() {
 		log.Println("msg name", err)
 	}
 	req2:=&rec.RankRecommendRequest{}
-	if err = ptypes.UnmarshalAny(cr.Request, req2); err != nil {
+	if err = proto.Unmarshal(cr.Request.Value, req2); err != nil {
 		log.Println("test 1 error", err)
 	}
 	log.Println("anyName:", anyName, "req2", req2)
@@ -88,13 +87,6 @@ func main() {
 		log.Fatalf("could not greet: %v", err)
 	}
 	foo := &rec.RankRecommendResponse{}
-	if err = ptypes.UnmarshalAny(r.Response, foo); err != nil {
-		log.Println("error", err)
-	}
-	log.Printf("Greeting: %v", foo)
-	m := jsonpb.Marshaler{}
-	result, err := m.MarshalToString(r.Response)
-	fmt.Println("res;", result)
 
 	err = proto.Unmarshal(r.Response.Value, foo)
 	fmt.Println("value:",err,  foo)
