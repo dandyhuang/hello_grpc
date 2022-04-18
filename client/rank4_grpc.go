@@ -23,6 +23,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/balancer/roundrobin"
@@ -90,4 +91,7 @@ func main() {
 		log.Println("error", err)
 	}
 	log.Printf("Greeting: %v", foo)
+	m := jsonpb.Marshaler{}
+	result, err := m.MarshalToString(r.Response)
+	fmt.Println("res;", result)
 }
