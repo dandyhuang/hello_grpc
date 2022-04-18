@@ -42,6 +42,7 @@ func main() {
 	var addr string
 	flag.StringVar(&addr, "addr", "10.193.49.142:19802", "配置文件")
 	flag.Parse()
+	fmt.Println("addr:", addr)
 	conn, err := grpc.Dial(addr, grpc.WithInsecure(), grpc.WithBlock(),
 		grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"LoadBalancingPolicy": "%s"}`, roundrobin.Name)))
 	if err != nil {
