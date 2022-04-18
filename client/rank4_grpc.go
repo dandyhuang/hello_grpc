@@ -58,13 +58,13 @@ func main() {
 	ctx = metadata.NewOutgoingContext(ctx, md)
 	req:=rec.RankRecommendRequest{
 		Device:&rec.DeviceInfo{
-			Imei: "sdfdsf",
+			Imei: "864022038223938",
 			ModelName: "hello_world",
 		},
 		ReqId: "e423sdfs",
 	}
 	req.Recommend = append(req.Recommend, &rec.RankRecommendInfo{
-		SceneId: 1001,
+		SceneId: 836,
 	})
 	details, err := ptypes.MarshalAny(&req)
 	if err != nil {
