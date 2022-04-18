@@ -24,6 +24,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/golang/protobuf/jsonpb"
+	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/balancer/roundrobin"
@@ -94,4 +95,7 @@ func main() {
 	m := jsonpb.Marshaler{}
 	result, err := m.MarshalToString(r.Response)
 	fmt.Println("res;", result)
+
+	err = proto.Unmarshal(r.Response.Value, foo)
+	fmt.Println("value:",err,  foo)
 }
