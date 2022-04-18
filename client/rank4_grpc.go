@@ -21,6 +21,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
@@ -31,10 +32,6 @@ import (
 	"time"
 )
 
-const (
-	addr      = "10.193.49.142:19802"
-)
-
 func main() {
 	//conn, err := grpc.Dial("", grpc.WithInsecure(),
 	//	grpc.WithBalancer(
@@ -42,6 +39,9 @@ func main() {
 	//			grpclb.NewConsulResolver("127.0.0.1:8500", "grpc.health.v1.add"))))
 
 	// Set up a connection to the stream_server.
+	var addr string
+	flag.StringVar(&addr, "addr", "10.193.49.142:19802", "配置文件")
+	flag.Parse()
 	conn, err := grpc.Dial(addr, grpc.WithInsecure(), grpc.WithBlock(),
 		grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"LoadBalancingPolicy": "%s"}`, roundrobin.Name)))
 	if err != nil {
