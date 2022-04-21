@@ -10,7 +10,7 @@ require (
 	github.com/confluentinc/confluent-kafka-go v1.5.2
 	github.com/dgraph-io/ristretto v0.1.0
 	github.com/gin-gonic/gin v1.6.3
-	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/go-redis/redis/v8 v8.11.4
 	github.com/gogo/protobuf v1.2.1 // indirect
 	github.com/golang/glog v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2
