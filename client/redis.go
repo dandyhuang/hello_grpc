@@ -8,6 +8,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -37,36 +38,38 @@ func main() {
 		log.Error("redis ping", err)
 		os.Exit(1)
 	}
-	start:=time.Now().Unix()
+	start:=time.Now().UnixNano()/1e6
 	pipeline := rdb.Pipeline()
 	result := make([]*redis.StringCmd, 0)
 	for i:=0; i< num; i++ {
-	 	pipeline.Set(ctx,"dandy"+string(i), i, 100*time.Second)
+	 	pipeline.Set(ctx, "dandy"+ strconv.Itoa(i), i, 100*time.Second)
 	}
 	_, _ = pipeline.Exec(ctx)
 	result = result[:0]
-	set:=time.Now().Unix()
+	pipeline.Discard()
+	set:=time.Now().UnixNano()/1e6
 	for i:=0; i< num; i++ {
-		result = append(result, pipeline.Get(ctx,"dandy"+string(i)))
+		result = append(result, pipeline.Get(ctx,"dandy"+ strconv.Itoa(i)))
 	}
 	cmds, err := pipeline.Exec(ctx)
-	get:=time.Now().Unix()
+	get:=time.Now().UnixNano()/1e6
 	fmt.Println("set cost:", set -start, get-set)
 	fmt.Print(result, "cmds:", cmds)
 
+	pipeline.Discard()
 	result = result[:0]
-	errstart:=time.Now().Unix()
+	errstart:=time.Now().UnixNano()/1e6
 	g, ctx := errgroup.WithContext(context.Background())
 	for i:=0; i <  num ; i++{
 		g.Go(func() error {
-			result = append(result, rdb.Get(ctx, "dandy"+string(i)))
+			result = append(result, rdb.Get(ctx, "dandy"+ strconv.Itoa(i)))
 			return nil
 		})
 	}
 	if err := g.Wait(); err != nil {
 		return
 	}
-	errend:=time.Now().Unix()
+	errend:=time.Now().UnixNano()/1e6
 	fmt.Println("errcostl:", errend- errstart)
 	fmt.Print(result)
 }
