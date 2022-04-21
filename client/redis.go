@@ -37,7 +37,7 @@ func main() {
 		log.Error("redis ping", err)
 		os.Exit(1)
 	}
-	start:=time.Now().UnixNano()
+	start:=time.Now().Unix()
 	pipeline := rdb.Pipeline()
 	result := make([]*redis.StringCmd, 0)
 	for i:=0; i< num; i++ {
@@ -45,17 +45,17 @@ func main() {
 	}
 	_, _ = pipeline.Exec(ctx)
 	result = result[:0]
-	set:=time.Now().UnixNano()
+	set:=time.Now().Unix()
 	for i:=0; i< num; i++ {
 		result = append(result, pipeline.Get(ctx,"dandy"+string(i)))
 	}
-	_, _ = pipeline.Exec(ctx)
-	get:=time.Now().UnixNano()
+	cmds, err := pipeline.Exec(ctx)
+	get:=time.Now().Unix()
 	fmt.Println("set cost:", set -start, get-set)
-	fmt.Print(result)
+	fmt.Print(result, "cmds:", cmds)
 
 	result = result[:0]
-	errstart:=time.Now().UnixNano()
+	errstart:=time.Now().Unix()
 	g, ctx := errgroup.WithContext(context.Background())
 	for i:=0; i <  num ; i++{
 		g.Go(func() error {
@@ -66,7 +66,7 @@ func main() {
 	if err := g.Wait(); err != nil {
 		return
 	}
-	errend:=time.Now().UnixNano()
+	errend:=time.Now().Unix()
 	fmt.Println("errcostl:", errend- errstart)
 	fmt.Print(result)
 }
