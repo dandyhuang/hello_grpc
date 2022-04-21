@@ -40,8 +40,10 @@ func main() {
 	//			grpclb.NewConsulResolver("127.0.0.1:8500", "grpc.health.v1.add"))))
 
 	// Set up a connection to the stream_server.
-	var addr string
+	var addr,imei string
 	flag.StringVar(&addr, "addr", "10.193.49.142:19802", "配置文件")
+	flag.StringVar(&imei, "imei", "864022038223938", "配置文件")
+
 	flag.Parse()
 	fmt.Println("addr:", addr)
 	conn, err := grpc.Dial(addr, grpc.WithInsecure(), grpc.WithBlock(),
@@ -59,7 +61,7 @@ func main() {
 	ctx = metadata.NewOutgoingContext(ctx, md)
 	req:=rec.RankRecommendRequest{
 		Device:&rec.DeviceInfo{
-			Imei: "864022038223938",
+			Imei: imei,
 			ModelName: "hello_world",
 		},
 		ReqId: "e423sdfs",
