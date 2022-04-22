@@ -9,11 +9,12 @@ import (
 	"golang.org/x/sync/errgroup"
 	"os"
 	"strconv"
+	"sync/atomic"
 	"time"
 )
 
 func main() {
-	num:=50
+	num:=500
 	addr:="12"
 	flag.StringVar(&addr, "addr", "addrss", "配置文件")
 	var addrss []string
@@ -60,9 +61,12 @@ func main() {
 	result = result[:0]
 	errstart:=time.Now().UnixNano()/1e6
 	g, ctx := errgroup.WithContext(context.Background())
+	var res atomic.Value
+	res.Store(make([]*redis.StringCmd, 0))
 	for i:=0; i <  num ; i++{
 		g.Go(func() error {
-			result = append(result, rdb.Get(ctx, "dandy"+ strconv.Itoa(i)))
+			result = append(result,rdb.Get(ctx, "dandy"+ strconv.Itoa(i)))
+			// res.Store(rdb.Get(ctx, "dandy"+ strconv.Itoa(i)))
 			return nil
 		})
 	}
