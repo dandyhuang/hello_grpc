@@ -54,8 +54,13 @@ func main() {
 	}
 	cmds, err := pipeline.Exec(ctx)
 	get:=time.Now().UnixNano()/1e6
-	fmt.Println("set cost:", set -start, get-set)
+	fmt.Println("get cost:", set -start, get-set)
 	fmt.Print(result, "cmds:", cmds)
+
+	for _, v:= range cmds {
+
+		fmt.Println("value:", v.String())
+	}
 
 	pipeline.Discard()
 	result = result[:0]
