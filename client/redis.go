@@ -60,7 +60,8 @@ func main() {
 	for _, v:= range cmds {
 		value, err :=v.(*redis.StringCmd).Result()
 
-		fmt.Println("value: ",v.(*redis.StringCmd).Name(), v.(*redis.StringCmd).String(), " | ",  v.String(), value, err )
+		fmt.Println("value: ",v.(*redis.StringCmd).Args(),
+			v.(*redis.StringCmd).FullName(),v.(*redis.StringCmd).String(), " | ",  v.String(), value, err )
 	}
 
 	pipeline.Discard()
