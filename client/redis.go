@@ -59,7 +59,11 @@ func main() {
 
 	for _, v:= range cmds {
 		value, err :=v.(*redis.StringCmd).Result()
-
+		if len(v.(*redis.StringCmd).Args()) > 1 {
+			var key string
+			key = v.(*redis.StringCmd).Args()[1].(string)
+			fmt.Println("", key)
+		}
 		fmt.Println("value: ",v.(*redis.StringCmd).Args(),
 			v.(*redis.StringCmd).FullName(),v.(*redis.StringCmd).String(), " | ",  v.String(), value, err )
 	}
