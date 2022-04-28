@@ -12,6 +12,8 @@ var host = flag.String("host", "10.192.10.35", "host")
 var port = flag.String("port", "3112", "port")
 
 func main() {
+
+
 	flag.Parse()
 	conn, err := net.Dial("tcp", *host+":"+*port)
 	if err != nil {

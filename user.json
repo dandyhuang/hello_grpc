@@ -1,0 +1,23 @@
+{
+  "reqId": "sdfdfs",
+  "device": {
+    "imei": "860032040898431",
+    "osVersion": "4.4.1"
+  },
+  "recommend": [{
+    "sceneId": 836,
+    "sceneSubAlg": "offline_toucan",
+    "vecItems": [{
+      "creativeId": "31652802"
+    },{
+      "creativeId": "31652620"
+    }
+    ,{
+        "creativeId": "31595573"
+      }
+    ,{
+        "creativeId": "31363074"
+      }
+    ]
+  }]
+}

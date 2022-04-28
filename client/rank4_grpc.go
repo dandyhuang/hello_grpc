@@ -23,13 +23,17 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/balancer/roundrobin"
 	"google.golang.org/grpc/metadata"
+	"github.com/go-kratos/kratos/v2/config"
 	"hello_grpc/proto/rec"
+	"io/ioutil"
 	"log"
+	"os"
 	"time"
 )
 
@@ -40,9 +44,10 @@ func main() {
 	//			grpclb.NewConsulResolver("127.0.0.1:8500", "grpc.health.v1.add"))))
 
 	// Set up a connection to the stream_server.
-	var addr,imei string
+	var addr,imei, flagconf string
 	flag.StringVar(&addr, "addr", "10.193.49.142:19802", "配置文件")
 	flag.StringVar(&imei, "imei", "864022038223938", "配置文件")
+	flag.StringVar(&flagconf, "conf", "user.json", "配置文件")
 
 	flag.Parse()
 	fmt.Println("addr:", addr)
@@ -59,16 +64,24 @@ func main() {
 	// metadata 使用
 	md := metadata.New(map[string]string{"key1": "val1", "key2": "val2"})
 	ctx = metadata.NewOutgoingContext(ctx, md)
-	req:=rec.RankRecommendRequest{
-		Device:&rec.DeviceInfo{
-			Imei: imei,
-			ModelName: "hello_world",
-		},
-		ReqId: "e423sdfs",
+
+	c1 := config.New(
+		config.WithSource(
+			file.NewSource(flagconf),
+		),
+	)
+	defer c1.Close()
+
+	if err := c1.Load(); err != nil {
+		panic(err)
 	}
-	req.Recommend = append(req.Recommend, &rec.RankRecommendInfo{
-		SceneId: 836,
-	})
+	req:=rec.RankRecommendRequest{}
+	if err := c1.Scan(&req); err != nil {
+		panic(err)
+	}
+
+	log.Println("req:", req)
+
 	details, err := ptypes.MarshalAny(&req)
 	if err != nil {
 		panic(err)
