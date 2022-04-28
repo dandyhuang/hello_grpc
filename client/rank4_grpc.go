@@ -31,9 +31,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"github.com/go-kratos/kratos/v2/config"
 	"hello_grpc/proto/rec"
-	"io/ioutil"
 	"log"
-	"os"
 	"time"
 )
 
