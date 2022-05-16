@@ -50,15 +50,14 @@ func main() {
 	flag.Parse()
 	fmt.Println("addr:", addr)
 	conn, err := grpc.Dial(addr, grpc.WithInsecure(), // grpc.WithBlock(),
-		grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"LoadBalancingPolicy": "%s"}`, roundrobin.Name)),
-		grpc.WithTimeout(time.Second * 20))
+		grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"LoadBalancingPolicy": "%s"}`, roundrobin.Name)))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
 	c := rec.NewCommonServiceClient(conn)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	// metadata 使用
 	md := metadata.New(map[string]string{"key1": "val1", "key2": "val2"})
