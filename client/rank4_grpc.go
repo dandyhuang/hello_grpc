@@ -51,7 +51,7 @@ func main() {
 	fmt.Println("addr:", addr)
 	conn, err := grpc.Dial(addr, grpc.WithInsecure(), // grpc.WithBlock(),
 		grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"LoadBalancingPolicy": "%s"}`, roundrobin.Name)),
-		grpc.WithTimeout(time.Second * 2))
+		grpc.WithTimeout(time.Second * 20))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
