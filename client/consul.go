@@ -9,6 +9,7 @@ import (
 const (
 	consulAddress = "localhost:8500"
 	serviceId     = "111"
+	port = "9000"
 )
 
 func getClientIp() (string ,error) {
@@ -30,6 +31,28 @@ func getClientIp() (string ,error) {
 
 	return "", errors.New("Can not find the client ip address!")
 
+}
+
+func ConsulCheckHeath() {
+	// 创建连接consul服务配置
+	config := consulapi.DefaultConfig()
+	config.Address = consulAddress
+	client, err := consulapi.NewClient(config)
+	if err != nil {
+		fmt.Println("consul client error : ", err)
+	}
+
+	// 健康检查
+	ip, err :=getClientIp()
+	if err != nil {
+		fmt.Println("err:", err)
+	}
+
+
+	a, b, _ := client.Agent().AgentHealthServiceByID(ip+port)
+	fmt.Println("val1:", a)
+	fmt.Println("val2:", b)
+	fmt.Println("ConsulCheckHeath done")
 }
 
 func ConsulFindServer() {
@@ -63,4 +86,5 @@ func ConsulFindServer() {
 func main() {
 	ConsulFindServer()
 	fmt.Println(getClientIp())
+	ConsulCheckHeath()
 }
