@@ -1,13 +1,37 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	consulapi "github.com/hashicorp/consul/api"
+	"net"
 )
 const (
 	consulAddress = "localhost:8500"
 	serviceId     = "111"
 )
+
+func getClientIp() (string ,error) {
+	addrs, err := net.InterfaceAddrs()
+
+	if err != nil {
+		return "", err
+	}
+
+	for _, address := range addrs {
+		// 检查ip地址判断是否回环地址
+		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				return ipnet.IP.String(), nil
+			}
+
+		}
+	}
+
+	return "", errors.New("Can not find the client ip address!")
+
+}
+
 func ConsulFindServer() {
 	// 创建连接consul服务配置
 	config := consulapi.DefaultConfig()
@@ -38,4 +62,5 @@ func ConsulFindServer() {
 
 func main() {
 	ConsulFindServer()
+	fmt.Println(getClientIp())
 }
