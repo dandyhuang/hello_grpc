@@ -9,7 +9,7 @@ import (
 const (
 	consulAddress = "localhost:8500"
 	serviceId     = "111"
-	port = "9000"
+	consulPort = "9000"
 )
 
 func getClientIp() (string ,error) {
@@ -49,7 +49,7 @@ func ConsulCheckHeath() {
 	}
 
 
-	a, b, _ := client.Agent().AgentHealthServiceByID(ip+port)
+	a, b, _ := client.Agent().AgentHealthServiceByID(ip+"-"+consulPort)
 	fmt.Println("val1:", a)
 	fmt.Println("val2:", b)
 	fmt.Println("ConsulCheckHeath done")
