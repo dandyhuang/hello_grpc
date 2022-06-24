@@ -18,6 +18,7 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/gomodule/redigo v2.0.0+incompatible
+	github.com/hashicorp/consul/api v1.13.0
 	github.com/infobloxopen/atlas-app-toolkit v0.23.0
 	github.com/infobloxopen/protoc-gen-gorm v0.20.0
 	github.com/jinzhu/gorm v1.9.16
@@ -31,6 +32,7 @@ require (
 	github.com/pkg/profile v1.6.0
 	github.com/segmentio/ksuid v1.0.3
 	github.com/sirupsen/logrus v1.4.2
+	github.com/tjfoc/gmsm v1.4.1
 	github.com/valyala/fastrand v1.0.0
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
 	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
