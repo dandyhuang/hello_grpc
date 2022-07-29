@@ -1,0 +1,79 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// option optimize_for = LITE_RUNTIME;
+
+syntax = "proto3";
+import "protocol/common/enum.proto";
+import "protocol/common/user.proto";
+import "protocol/abt/rtrs_abtest.proto";
+import "protocol/common/uac.proto";
+option go_package = "./;rec5";
+option java_multiple_files = true;
+option java_package = "com.vivo.internet.recom";
+option java_outer_classname = "RecomProto";
+option objc_class_prefix = "HLW";
+
+package rec5;
+
+message ResponseRecommendItem {
+    repeated int64 id = 1;             //creativeid
+    repeated int64 child_id = 2;       //派生广告id,动态创意id
+    repeated float score = 3;          // ctr
+    repeated float cvr = 4;
+    repeated float rvr = 5;
+    repeated float cvr2 = 6;
+    repeated float rank_score = 7;     // 粗排打分, 不启用时size为0
+    repeated int32 style_id = 8;       // 样式ID
+    //原始打分列表，所有创意ID对应的ctr,cvr,rvr,cvr2 打平放到一个列表中（获取不到数据，这边会填充默认值）（按照顺序排列：ctr,cvr,rvr,cvr2）
+    //逻辑计算规则：wild_score_info.size() / id.size() = 4 (代表目前存储了4个类型的数据)
+    repeated float wild_score_info = 9;
+};
+
+message RequestRecommendItem {
+    repeated int64 id = 1;             //creativeid
+    repeated int64 child_id = 2;       //派生广告id,动态创意id
+    repeated int64 appid = 3;
+    repeated int32 stage = 4;          //ocpc阶段, 非ocpc广告=0, ocpc第一阶段=1, ocpc第二阶段=2, ocpc第三阶段=3
+    repeated int32 costType = 5;       // 区分广告的计费类型，如是否cpt
+    repeated int32 secondCostType = 6; //ocpc阶段, 第二目标转化目标
+    repeated int32 scoreTypes = 7;     // 1-ctr; 2-cvr; 4-rvr; 8-cvr2;
+    repeated AD_TYPE adType = 8;       // enum AdType {普通广告、通投广告、动态创意};
+    repeated float bid = 9;            // cpc广告主出价， ocpc风控出价
+    repeated int32 titleType = 10;     //dpa广告标题类型：0-模板标题；1商品标题；2-动态标题
+    repeated float secondSmartBid = 11;// 双出价广告-第二目标风控出价
+    repeated int64 material_id = 12;   // 物料ID列表，所有创意ID对应的物料ID打平后放到一个列表
+    repeated int64 material_id_pos = 13; // 每个创意ID对应的物料ID列表在所有物料ID列表中的结束偏移，比如第一个创意ID对应四个物料ID，则material_id_pos中第一个元素为4，创意对应的物料ID列表为[上一个创意结束偏移, 当前创意结束偏移)
+    repeated int32 style_id = 14;      // 样式ID列表，所有创意ID对应的样式ID打平后放到一个列表
+    repeated int32 style_id_pos = 15;  // 每个创意ID对应的样式ID列表在所有样式ID列表中的结束偏移，比如第一个创意ID对应四个样式ID，则style_id_pos中第一个元素为4，创意对应的样式ID列表为[上一个创意结束偏移, 当前创意结束偏移)
+};
+
+//推荐信息
+message RecommendInfo{
+    int64 positionId = 1;                                        // 广告位ID(int64)
+    int32 refreshTimes = 2;
+    int32 ssp_media_type = 3; // add by luojianhui 20200715, 1表示自有流量，2表示联盟开发者平台的媒体流量，3表示联盟ssp流量
+    RequestRecommendItem reqItems = 4;  // 请求广告集合
+    ResponseRecommendItem resItems = 5; // 返回广告集合
+    map<string, string> mapContext = 6; // 推荐上下文信息
+    int32 areaDldType = 7; // 1表示 自动下载；2表示手动下载
+    string expName = 8; // 实验信息
+    repeated int64 multiPositionId = 9;     // 位次信息
+    map<int64, ResponseRecommendItem> multiResItems= 10; //多位次信息返回结果
+    repeated int64 multiPositionIdBidFloor = 11; // add by shaodi(20210419), 上游传过来的底价，跟广告位相关。 后续跟广告位相关的抽象出一个message
+    int32 dldBitCtl = 12;  //第一个广告位的dldBitCtl(广告联盟手动自动下载配置能力，按位获取)   取值为-1表示为空   取值大于等于0为有效值
+    int32 clickableBitCtl = 13; // 联盟广告区域是否可点，按位获取
+};
+
+

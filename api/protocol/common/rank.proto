@@ -1,0 +1,80 @@
+syntax = "proto3";
+option go_package = "./;rec5";
+option java_multiple_files = true;
+option java_package = "com.vivo.internet.recom";
+option java_outer_classname = "RecomProto";
+option objc_class_prefix = "HLW";
+import "protocol/abt/rtrs_abtest.proto";
+package rank;
+//Rank相关
+message Module{
+    string module_id = 1;
+    int32  module_type = 2; //0:相关推荐 1：同标签推荐 2：同专题推荐
+    string strategy_id = 3; //游戏调参策略ID
+    string rerank_alg = 4;  //游戏调参算法
+    string strategy_type = 5; //游戏调参类型
+    string tuning_method = 6; //游戏调参方式
+};
+
+//请求Item信息
+message RankItemInfo{
+    int64 appid = 1;
+    int64 creativeid = 2;                                  //创意id，与appid的关系是多对
+    int32 pricing_type = 3;                                    // 计费类型: 1、表示cpc；2、表示 ocpc; 3、表示cpd；4、表示 ocpd;
+    int32 charge_mode = 4;                                     // 计费模式：1、cpd；2、ocpd；4、动态出价
+    int32 second_cv_type = 5;                                 //ocpc阶段, 第二目标转化目标
+    float price = 6;                                       // 广告的价格
+    float bid = 7;                                         //广告主出价
+    bool general_switch =8;                                  //通投
+    
+    map<string, string> map_context = 99;                     //扩展字段，性能不高，字段序号必须小于99
+    
+    //推荐响应字段 repeated 兼容多目标打分(一个创意一个打分有多个分值)
+    int32 recall_type = 100;                                    //召回类型
+    repeated float recall= 101;                                //召回打分(公共)
+    repeated float strategy_recall = 102;                        //策略召回打分(搜索公共)
+    repeated float filter = 103;                                //粗排打分(搜索)
+    repeated float filter_ctr = 104;                            //粗排Ctr打分(CPD)
+    repeated float filter_cvr = 105;                            //粗排Cvr打分(CPD)
+    repeated float ctr = 106;                                   //ctr打分(公共)
+    repeated float cvr = 107;                                   //cvr打分(公共)
+    repeated float cvr2 = 108;                                 //cvr2打分(公共)
+    
+    repeated float ltv = 109;                                  //ltv打分(游戏)
+    repeated float ltv2 = 110;                                 //ltv2(游戏)
+    repeated float ltv3 = 111;                                 //ltv3(游戏)
+    repeated float pay_will = 112;                              //pay_wil打分(游戏)
+    repeated float pay_will2 = 113;                             //pay_will2 打分(游戏)
+    repeated float retention = 114;                            //retention 打分(游戏)
+   
+    string tag_a = 130;
+    string tag_b = 131;
+    string strategy_id = 132;      //游戏调参策略ID
+    string rerank_alg = 133;       //游戏调参算法
+    
+};
+
+
+message RankRecommendInfo{
+    repeated RankItemInfo vec_items = 1;                  //item列表信息
+    Module module = 2;                                   //模块信息
+	string query = 3;									 //query 词
+    map<string, string> map_context = 99;                //扩展字段
+};
+
+
+
+//请求参数
+message RankRecommendRequest{
+    repeated RankRecommendInfo recommend = 1;    //请求详情
+    repeated rec5.AlgMultiTestInfo vec_test_info = 2;    //abt参数信息
+    bytes user_feature = 3;                      //用户特征
+    map<string, string> context = 99;            //扩展字段
+};
+
+
+
+message RankRecommendResponse{
+    int32 code=1;                            //0：成功，其他：失败
+    repeated RankRecommendInfo recommend = 2;//响应
+};
