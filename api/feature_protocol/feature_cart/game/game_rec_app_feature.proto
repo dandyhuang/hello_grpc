@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package vmic.game_rec;
+
+option java_package = "com.vivo.iai.proto.feature.app.game.rec";
+option java_outer_classname = "GameRecAppFeaturePro";
+
+import "protocol/feature_protocol/feature_cart/game/game_rec_user_feature.proto";
+import "protocol/feature_protocol/feature_shop/item/app/game/game_item_feature.proto";
+
+import "protocol/feature_protocol/feature_cart/game/v0/user.proto";
+import "protocol/feature_protocol/feature_cart/game/v0/context.proto";
+import "protocol/feature_protocol/feature_cart/game/v0/event.proto";
+import "protocol/feature_protocol/feature_cart/game/v0/item.proto";
+
+import "protocol/feature_protocol/feature_shop/user_realtime/appstore_cn/so_rtrs_user_abe_info.proto";
+import "protocol/feature_protocol/feature_shop/user_realtime/appstore_cn/so_rtrs_user_app_download.proto";
+import "protocol/feature_protocol/feature_shop/user_realtime/appstore_cn/so_rtrs_user_app_install.proto";
+import "protocol/feature_protocol/feature_shop/user_realtime/appstore_cn/so_rtrs_user_app_uninstall.proto";
+import "protocol/feature_protocol/feature_shop/user_realtime/appstore_cn/so_rtrs_user_click_info.proto";
+import "protocol/feature_protocol/feature_shop/user_realtime/appstore_cn/so_rtrs_user_duration_info.proto";
+import "protocol/feature_protocol/feature_shop/user_realtime/appstore_cn/so_rtrs_user_expose_info_new.proto";
+import "protocol/feature_protocol/feature_shop/user_realtime/appstore_cn/so_rtrs_user_update_info.proto";
+import "protocol/feature_protocol/feature_shop/user_realtime/game/game_search_info.proto";
+import "protocol/feature_protocol/feature_shop/user_realtime/game/game_user_action_info_list.proto";
+import "protocol/feature_protocol/feature_shop/user_realtime/game/game_user_action_session.proto";
+//import "protocol/snapshot_protocol/cpd_search_feature/so_rtrs_user_first_last_abe_list.proto";
+
+message Feature {
+    v0.User userData=1;
+    v0.Context contextData=2;
+    v0.Event eventData=3;
+    string lineId = 4;
+    repeated v0.Item itemsData=5;
+    //    UserFeature user = 1;              // 用户特征
+//    repeated vmic.game.ItemFeature item = 2;   // 物品特征
+//    ContextFeature context = 3;   // 上下文特征
+//    repeated LabelFeature label = 4;    // label，同item条目数相同且一一对应
+    vmic.appstore.UserAbeInfo user_abe_info = 6;
+    vmic.appstore.UserAppDownloadInfo app_download_info = 7;
+    vmic.appstore.UserAppInstallInfo app_install_info = 8;
+    vmic.appstore.UserAppInstallInfoEx app_install_info_ex = 9;
+    vmic.appstore.UserAppUninstallInfo app_uninstall_info = 10;
+    vmic.appstore.UserClickDetailInfo click_detail_info = 11;
+    vmic.appstore.UserDurationInfo duration_info = 12;
+    vmic.appstore.CpdUserExposeInfoListNew expose_info_list = 13;
+    vmic.appstore.UserAppUpdateInfo app_update_info = 14;
+    GameUserActionInfoList game_useraction_info_list = 15;
+    UserGameSearchInfo user_game_search_info = 16;
+    GameUserActionSession user_action_session = 17;
+    //so_rtrs.UserFirstLastABEList user_first_last_abe_list = 18;
+}
+
+message ContextFeature {
+    int32 mod = 1;
+    string timestamp = 2;
+    string media_type = 3;
+    string position = 4;
+    string query = 5;
+    string column = 6;
+}
+
+message LabelFeature  {
+    enum TYPE {
+        DOWNLOAD_CTR = 0;
+    }
+    repeated TYPE type = 1;    // 转化类型
+    repeated int32 label = 2;  // label值
+}
+
+

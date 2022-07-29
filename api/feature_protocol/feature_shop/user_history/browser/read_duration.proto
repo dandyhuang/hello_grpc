@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package vmic.browser;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.user.history.browser";
+option java_outer_classname = "ReadDurationPro";
+
+// Redis:user-offline-value-prd4.redis.dba.vivo.lan.:11189,user-offline-value-prd3.redis.dba.vivo.lan.:11189,user-offline-value-prd2.redis.dba.vivo.lan.:11190,user-offline-value-prd1.redis.dba.vivo.lan.:11189,user-offline-value-prd0.redis.dba.vivo.lan.:11190
+// Key_pattern: u_r_d:v0:{imei}
+message UserReadDuration {
+    int32 read_day              = 1;  //最近30天文章的阅读天数，默认值0
+    int32 total_read_duration   = 2;  //最近30天总的文章阅读时间，单位秒，默认值0
+    int32 avg_read_duration     = 3;  //最近30天平均每天的文章阅读时间，单位秒，默认值0
+
+    int32 video_watch_day              = 4; //最近30天视频的观看天数，默认值0
+    int32 total_video_watch_duration   = 5; //最近30天总的视频观看时间，单位秒，默认值0
+    int32 avg_video_watch_duration     = 6; //最近30天平均每天的视频观看时间，单位秒，默认值0
+}
+

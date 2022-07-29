@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package vmic.game;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.user.history.game";
+option java_outer_classname = "GameUserItemExpStatPro";
+
+message UserItemExpStat{
+    int32 app_id = 1;
+    int32 exp_count = 2;
+    int32 click_count = 3;
+}
+
+message UserItemExpStatList{
+    repeated UserItemExpStat user_item_exp_stat_list = 1;
+}
+
+message UserItemExpStatFeature {
+    UserItemExpStatList user_item_exp_stat3_list = 1;
+    UserItemExpStatList user_item_exp_stat15_list = 2;
+    UserItemExpStatList all_plat_game_behavior7_day = 3;
+}

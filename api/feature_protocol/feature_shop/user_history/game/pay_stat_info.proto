@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package vmic.game;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.user.history.game";
+option java_outer_classname = "GamePayStatInfoPro";
+
+message PayStatInfo {
+    float min = 1; // x天内，天级付费最小值
+    float max = 2; // x天内，天级付费最大值
+    float avg = 3; // x天内，天级付费平均值
+    float variance = 4; // x天内，天级付费方差
+    int32 days = 5; // x天内，付费天数
+    float amount = 6; // x天内，订单总额
+    int32 order_count = 7; // x天内，订单总数
+}
+
+message PayStatInfoFeature {
+    PayStatInfo local_pay_info = 1;
+    PayStatInfo online_pay_info = 2;
+}

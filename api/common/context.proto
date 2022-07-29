@@ -1,0 +1,34 @@
+syntax = "proto3";
+import "protocol/common/cpc_context.proto";
+import "protocol/common/cpd_context.proto";
+package rec5;
+
+//Context 分为公共信息Common-Context和业务Context(cpc_context.proto,cpd_context.proto) 增加字段是注意区分
+
+// 广告位信息
+message PositionInfo {
+    int64 positionId = 1;              // 广告位ID(int64)
+    int64 bidFloor = 2;                // 广告位底价
+};
+
+// 广告上下文信息
+message AdContext {
+    repeated PositionInfo multiPositionInfo = 1;     // 位次信息
+    int32 refreshTimes = 2;
+    int32 ssp_media_type = 3; // add by luojianhui 20200715, 1表示自有流量，2表示联盟开发者平台的媒体流量，3表示联盟ssp流量
+    map<string, string> mapContext = 4; // 推荐上下文信息
+    int32 areaDldType = 5; // 1表示 自动下载；2表示手动下载
+};
+
+
+message Context {
+    uint32 scene_id = 1;
+    string alg_name = 2;  
+    string alg_group = 3;
+    string alg_version = 4;
+    int32 reqn_um = 5; // 请求中的广告数
+
+    AdContext ad = 60;
+    CPCContext cpc_context = 61;
+    CPDContext cpd_context = 62;
+};

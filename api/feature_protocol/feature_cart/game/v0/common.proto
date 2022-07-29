@@ -1,0 +1,27 @@
+syntax = "proto3";
+package vmic.game_rec.v0;
+
+option java_package = "com.vivo.iai.proto.feature.app.game.rec.v0";
+option java_outer_classname = "CommonData";
+
+message StatInfo {
+    float min = 1;
+    float max = 2;
+    float avg = 3;
+    float var = 4;
+    float amount = 5;
+}
+
+message StatInfoSeq {
+    repeated StatInfo statInfoSeq = 1;
+}
+
+message FloatSeq {
+    repeated float valueSeq = 1;
+    int64 size = 2;
+}
+
+message LongSeq {
+    repeated int64 valueSeq = 1;
+    int64 size = 2;
+}

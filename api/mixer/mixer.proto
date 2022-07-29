@@ -1,0 +1,42 @@
+syntax = "proto3";
+package rec5;
+import "protocol/common/context.proto";
+import "protocol/common/flow.proto";
+import "protocol/common/user.proto";
+import "google/protobuf/any.proto";
+
+option cc_generic_services = true;
+
+message RankHttpRequest {};
+
+message RankHttpResponse {};
+
+message RankRequest {
+    int32 version = 1; // 接口版本，用于非兼容接口升级
+    int32 service_type = 2;// enum.proto ServiceType 值
+    string req_id = 3; // 请求ID，商业化传过来，不是纯数字
+    User user = 4;  //用户设备信息
+    Context context = 5; //推荐上下文
+    google.protobuf.Any recommend = 6;  //业务内容
+    FlowInfo flow_info = 7; //流量信息
+    map<string, string> map_context = 99;     				//扩展字段，性能不高，字段序号必须小于99
+};
+
+message RankResponse {
+    int32 version = 1; // 接口版本，用于非兼容版本升级
+    int32 ret = 2;  //返回值0：成功，其他：失败
+    int32 retnum = 3; // 响应中的广告数
+    string req_id = 4; //请求ID，商业化传过来，不是纯数字
+    string msg = 5; //ret 返回值状态描述
+    google.protobuf.Any recommend = 6; //业务响应内容
+    google.protobuf.Any debug_info = 7; //debug 调试信息
+};
+
+service RankService {
+    rpc Rank(RankRequest) returns (RankResponse);
+};
+
+service RankHttpService {
+    rpc Check(RankHttpRequest) returns (RankHttpResponse);
+    rpc Rank(RankHttpRequest) returns (RankHttpResponse);
+};

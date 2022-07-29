@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package vmic.game_rec.v0;
+
+option java_package = "com.vivo.iai.proto.feature.app.game.rec.v0";
+option java_outer_classname = "CrossData";
+
+message Cross {
+  double postCTRConditionedByDepItem = 1;
+}

@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+package vmic.game_rec.v0;
+
+option java_package = "com.vivo.iai.proto.feature.app.game.rec.v0";
+
+message QueryCorrectReq {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    string imei = 2;  // 手机imei，作为客户端的标识
+    string query = 3;  // 客户端输入query词
+}
+
+message QueryCorrectRes {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    float query_confidence_level = 2;  // query词置信度，取值范围[0~1]
+    string answer = 3;  // 纠错结果
+    float answer_confidence_level = 4;  // 纠错结果置信度，取值范围[0~1]
+}
+
+message QueryIntentReq {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    string imei = 2;  // 手机imei，作为客户端的标识
+    string query = 3;  // 客户端输入query词
+}
+
+message AppData {
+    int64 appid = 1;  // appid, 保留添加其它属性的扩展性
+    string appname = 2; // appname, 方便调试
+}
+
+message QueryIntentRes {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    float precise_word = 2;  // query是精准词的置信度，取值范围[0~1]
+    float clustering_word = 3;  // query是类别词的置信度，取值范围[0~1]
+    float normal_word = 4;  // query是普通词的置信度，取值范围[0~1]
+    repeated AppData app_data = 5;  // 精准词对应的appid列表
+}
+
+message QueryRewriteReq {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    string imei = 2;  // 手机imei，作为客户端的标识 
+    string query = 3;  // 客户端输入query词
+}
+
+message RewriteInfo {
+    string answer = 1;  // 查询补全结果
+    float answer_confidence_level = 2;  // 查询补全置信度，取值范围[0~1]
+}
+
+message QueryRewriteRes {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    float query_confidence_level = 2;  // 不补全query的置信度
+    repeated RewriteInfo rewrites = 3;  // 可补全列表
+}
+
+message QueryClusteringPredictReq {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    string imei = 2;  // 手机imei，作为客户端的标识
+    string query = 3;  // 客户端输入query词
+}
+
+message ClusteringPredict {
+    float weight = 1;  // 类目预测权重
+    int32 first_level_id = 2;  // 一级类目ID
+    string first_level = 3;  // 一级类目名称
+    int32 second_level_id = 4;  // 二级类目ID
+    string second_level = 5;  // 二级类目名称
+}
+
+message QueryClusteringPredictRes {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    repeated ClusteringPredict clustering_predicts = 2;
+}
+
+message QueryKeywordReq {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    string imei = 2;  // 手机imei，作为客户端的标识
+    string query = 3;  // 客户端输入query词
+}
+
+message QueryKeywordRes {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    string keyword = 2;  // query归一后关键词
+}
+
+message QueryAdjustReq {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    string imei = 2;  // 手机imei，作为客户端的标识
+    string query = 3;  // 客户端输入query词
+}
+
+message QueryAdjustRes {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    string answer = 2;  // 改写结果
+    float answer_confidence_level = 3;  // 改写结果置信度
+}
+
+message QueryNlpReq {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    string imei = 2;  // 手机imei，作为客户端的标识
+    string query = 3;  // 客户端输入query词
+}
+
+message QueryNlpRes {
+    int32 version = 1;
+    QueryCorrectRes query_correct = 2;
+    QueryRewriteRes query_rewrite = 3;
+    QueryClusteringPredictRes query_clustering_predict = 4;
+    QueryIntentRes query_intent = 5;
+    QueryClusteringPredictRes correct_clustering_predict = 6;
+    QueryIntentRes correct_intent = 7;
+    QueryClusteringPredictRes rewrite_clustering_predict = 8;
+    QueryIntentRes rewrite_intent = 9;
+    QueryKeywordRes query_keyword = 10;
+    QueryAdjustRes query_adjust = 11;
+    QueryGroupWordRes query_group_word = 12;
+}
+
+message QueryGroupWordReq {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    string imei = 2;  // 手机imei，作为客户端的标识
+    string query = 3;  // 客户端输入查询词
+}
+
+message QueryGroupWordRes {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    bool answer = 2;  // 是否聚类词
+}
+
+message QueryNoSenseReq {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    string imei = 2;  // 手机imei，作为客户端的标识
+    string query = 3;  // 客户端输入查询词
+}
+
+message QueryNoSenseRes {
+    int32 version = 1;  // 协议版本号，设为1，目前没有做处理
+    bool answer = 2;  // 是否无意义词
+}
+

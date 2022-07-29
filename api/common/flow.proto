@@ -1,0 +1,37 @@
+syntax = "proto3";
+package rec5;
+
+// 流量信息
+message FlowInfo {
+    uint32 debug_switch = 1; // 0 不需要调试信息， 1打开调试信息
+    uint32 flow_type = 2; // 0 online, 1 passby, 2 test, 3 pressure
+    double sampling_rate = 3; // 采样率 0 ~ 1之间
+    string debug_id = 4; // 唯一id
+    int32  flow_target = 5; // 0-rank3, 1-头条
+    int32  flow_source = 6; // 1-vivo, 2-非vivo 标识流量来源，目前只有vivo和非vivo，默认应该为1
+    int32  enter_detail_page_type = 7; // 进入详情页场景 0.默认，非push 1-通知栏push 2-应用内push
+    int32  push_level = 8; // push等级 1.一级push 2.二级push 3.三级push
+};
+
+// 模块内条目粒度Debug信息
+message DebugItemValue {
+    string key = 1;
+    string value = 2;
+};
+ 
+// 模块粒度Debug信息
+message DebugModuleInfo {
+    string module_name = 1;
+    repeated DebugItemValue item_value = 2;
+};
+ 
+// 服务粒度Debug信息
+message DebugServiceInfo {
+    string service_name = 1;
+    repeated DebugModuleInfo module_info = 2;
+};
+ 
+// Debug信息
+message DebugInfo {
+    repeated DebugServiceInfo service_info = 1;
+};

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package vmic.game_rec.v0;
+
+
+import "protocol/feature_protocol/feature_cart/game/v0/context.proto";
+import "protocol/feature_protocol/feature_cart/game/v0/item.proto";
+import "protocol/feature_protocol/feature_cart/game/v0/user.proto";
+import "protocol/feature_protocol/feature_cart/game/v0/event.proto";
+import "protocol/feature_protocol/feature_cart/game/v0/cross.proto";
+
+option java_package = "com.vivo.iai.proto.feature.app.game.rec.v0";
+option java_outer_classname = "DataFactory";
+
+message Data {
+//    Item itemData=1;
+    User userData=2;
+    Context contextData=3;
+    Event eventData=4;
+//    Cross crossData=5;
+//    Item itemParentData=6;
+    string lineId = 7;
+    repeated Item itemsData=8;
+}

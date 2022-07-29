@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package vmic.game;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.app.game";
+option java_outer_classname = "GameAppUninstallInfoPro";
+
+message AppUninstallInfo {
+    int32 uv1_day = 1;
+    int32 uv7_day = 2;
+    int32 uv14_day = 3;
+}

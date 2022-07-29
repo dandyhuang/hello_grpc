@@ -1,0 +1,395 @@
+syntax = "proto3";
+
+package vmic.game_rec.v0;
+
+import "protocol/feature_protocol/feature_cart/game/v0/common.proto";
+
+option java_package = "com.vivo.iai.proto.feature.app.game.rec.v0";
+option java_outer_classname = "ItemData";
+
+message AppInfo{
+    int64 appId = 1; // 应用ID
+    string packageName = 2; // 游戏包名
+    repeated int32 cate1List = 3;
+    repeated int32 cate2List = 4;
+    string author = 5;  // 游戏开发者
+    int32 appCategory = 6; // 0:应用， 1:单机，2:网游
+    string appName = 7; // 游戏名称
+    int32 apkSize = 8; // 包体大小
+    int64 downloadCount = 9; // 运营下载量(取的是真实下载量)
+    int32 commentCount = 10; // 评论总数
+    double averageComment = 11;  //商店评分
+    int64 gameId = 12; // 游戏ID，基本不会使用，使用app_id
+    repeated int32 gameCate1List = 13;
+    repeated int32 gameCate2List = 14;
+    int32 isApp = 15;
+    int32 isGame = 16;
+    GameOrder orderInfo = 17;
+    double dlRatio3d = 18;
+    double dlRatio15d = 19;
+    double dlRatioGrowth = 20;
+    double retention3d = 21;
+    double retention15d = 22;
+    double gameCate2Ratio3d = 23;
+    double gameCate2Ratio15d = 24;
+    repeated int32 gameCate2ListForSearch = 25;
+    AppUsageAggInfo usageInfo = 26;         //package的使用热度信息
+    GcFrontExpInfo gcFrontExpFea = 27;      //gc列表页的展示信息
+    AppUninstallInfo uninstallInfo = 28;    //package卸载统计
+    float ltvV5Daily = 29; // 统计ltv值, source: dm_recommender_prd.da_game_distr_ltv_v5_value_d
+    int32 onOffSaleDiffDt = 30; // 当前时间与上架时间差, source: bi_game_recommend.dim_game_info_df
+    int32 isOffSaleSince = 31; //是否下架过
+    ItemCsmeAmtStatistics csmeAmtStatistics = 32;
+    repeated string appNameUniGram = 33;
+    repeated string appNameBiGram = 34;
+    double pre_ltv = 35; // 统计LTV14预估ltv14V1 source: dm_recommender_prd.dm_pre_ltv14_v1
+    repeated int32 newGameTags = 36; //
+    int32 gcExplicitTagId = 37;
+    string gcExplicitTagName = 38;
+
+    /// 新添加=----------
+    string game_one_nm = 39; // 	一级分类名称
+    uint32 game_one_id = 40; // 一级分类ID
+    string game_two_nm = 41; // 二级分类名称
+    string game_two_id = 42; // 二级分类ID
+    uint32 game_type = 43; // 游戏类型：0为应用， 1:单机，2:网游
+    uint32 is_tencent = 44; // 是否腾讯游戏：1:是，0:否
+    uint32 is_buz = 45; // 是否商业化： 0:no,1:yes
+    uint32 grade = 46; // 等级：0:白名单,1:灰名单,2:黑名单,3:初始化名单
+    uint32 game_src = 47; // 应用来源：1：商店，2：百度，3：wdj，4：应用宝, 5：开发者
+    string on_sale_dt = 48; // 如果有首发时间就就取首发时间，否则取上架时间
+    string off_sale_dt = 49; // 下架日期
+    string upgrade_dt = 50; // 升级时间
+    uint32 is_indie = 51; // 是否独立游戏：1是，0否
+    uint32 game_status = 52; // 新版本安全的上下架状态，12:下架, 0:上架，13:部分机型上架
+    string status_update_dt = 53; // 上下架更新时间
+    string op_type = 54; // 应用运营类型：1:cpd，2:cpa，3:cpt，4:cps，5:游戏联运，6:应用联运， 空为其他
+    double gc_avg_score = 55; // 游戏中心评分
+    string on_sale_date = 56; // 上架时间
+    string publish_date = 57; // 首发时间
+    uint64 op_download_count = 58; // 运营下载量
+    // source：bi_gamecenter_dev.dim_gc_dynamic_game_info_ds
+    string actv_flag = 59; // 是否有活动（0无，1有）
+    string gift_flag = 60; // 是否有礼包（0无，1有）
+    // source: dm_recommender_prd.da_game_distr_ltv_v5_adx_value_d, 格式：op_ltv, alliance_ltv, ltv
+    string da_game_distr_ltv_v5_adx_value_d = 61; // 统计LTV45（分联运、联盟）
+    // source: dim_rec_game_type_info_df(游戏分类信息表)
+    string type1_ids = 62; // 1级分类ID
+    string type2_ids = 63; // 2级分类ID（包含新二级分类和老二级分类）
+    string old_tag_ids = 64; // 老的标签ID
+    string new_tag_ids = 65; // 新的标签ID
+    string old_type2_ids = 66; // 游戏直接挂二级分类ID（老二级分类）
+    string new_type2_ids = 67; // 游戏挂新、老标签关联二级分类ID（新二级分类）
+    string level = 68; // 评级（取自游戏中心）,ods_gamecenter_t_game_level_df的level字段
+    string first_type_id_as = 69; // 一级分类ID_商店
+    string first_type_name_as = 70; // 一级分类名称_商店
+    string second_type_id_as = 71; // 二级分类ID_商店
+    string second_type_name_as = 72; // 二级分类名称_商店
+    // source: bi_gamecenter_dev.dw_gc_apotgame_info
+    uint32 apot = 73;
+    // source: bi_appcontent_prd.dw_appcontent_app_info_ds
+    string app_remark = 74; //  小编编语
+}
+
+message AppUninstallInfo {
+    int32 uv1Day = 1;
+    int32 uv7Day = 2;
+    int32 uv14Day = 3;
+}
+
+message AppUsageAggInfo {
+    AppUsageInfo app1DaysUseInfo = 1;
+    AppUsageInfo app7DaysUseInfo = 2;
+    AppUsageInfo app14DaysUseInfo = 3;
+}
+
+message AppUsageInfo {
+    int64 uv = 1;            //使用人数
+    float timesPerUser = 2;  //人均使用次数
+    float durPerUser = 3;    //人均使用时长
+}
+
+message GcFrontExpInfo {
+    string appRemark = 1;    //小编推荐语
+    string activityTag = 2;  //是否有活动（gc的列表页右上角显示图标）
+    string giftTag = 3;      //是否有礼包（gc的列表页左下角显示图标）
+    int32 showDl = 4;        //外显下载量 (gc)
+    repeated string appRemarkBiGram = 5;
+}
+
+message GameOrder {
+    float order_revenue=1;
+    int32 order_people=2;
+}
+
+message NewsTags{
+    repeated string newsTags1 =1;
+    repeated string newsTags2 =2;
+    repeated string newsTags3 =3;
+    repeated string newsTags4 =4;
+    repeated string newsTags5 =5;
+    repeated string newsSourceTag =6;
+
+}
+message BasicAttr {
+    string entity = 1;
+    float score = 3;
+}
+message FeedInfos {
+    repeated BasicAttr classlevel1 = 1;
+    repeated BasicAttr classlevel2 = 2;
+    repeated BasicAttr tag = 3;
+    string author = 4;
+    string itemType = 5;
+    int32 isHot = 6;
+    int32 leve1Size=7;
+    int32 level2Size=8;
+    int32 tagSize=9;
+
+}
+
+message SequenceLTVItemPayedFeature {
+    vmic.game_rec.v0.LongSeq dlTimeSeq = 1;
+    vmic.game_rec.v0.FloatSeq orderAmountSeq = 2;
+    vmic.game_rec.v0.FloatSeq orderTicketSeq = 3;
+    vmic.game_rec.v0.FloatSeq revenueSeq = 4;
+    vmic.game_rec.v0.LongSeq orderCountSeq = 5;
+    vmic.game_rec.v0.LongSeq payedTimeSeq = 6;
+    vmic.game_rec.v0.FloatSeq usageDurationSeq = 7;
+    vmic.game_rec.v0.LongSeq usageCountSeq = 8;
+    vmic.game_rec.v0.LongSeq usagedTimeSeq = 9;
+}
+
+message SequenceLTVItemPayedFeatureList {
+    repeated SequenceLTVItemPayedFeature seqLTVItemPayedFeatureList = 1;
+}
+
+message ItemStatistics {
+    int64 loginCount = 1; // 登陆次数
+    int64 loginNum = 2; // 登陆人数
+    int64 downloadCount = 3; // 下载次数
+    int64 downloadNum = 4; // 下载人数
+    int64 payCount = 5; // 付费次数
+    int64 payNum = 6; // 付费人数
+    float payAmount = 7; // 付费金额
+}
+
+message RetentionCount {
+    int32 retentionCount1d = 1;
+    int32 retentionCount2d = 2;
+    int32 retentionCount3d = 3;
+    int32 retentionCount4d = 4;
+    int32 retentionCount5d = 5;
+    int32 retentionCount6d = 6;
+    int32 retentionCount7d = 7;
+}
+
+message PayStatic{
+    float payRate = 1;
+    float payUserPer = 2;
+    float payAmtPer = 3;
+    float payUserCate1Per = 4;
+    float payAmtCate1Per = 5;
+    float payUserCate2Per = 6;
+    float payAmtCate2Per = 7;
+    float payActiveCount =8;
+    float payExpoCount =9;
+    float payCount=10;
+}
+
+message ItemStatisticsAgg {
+    ItemStatistics itemStatistics3d = 1;
+    ItemStatistics itemStatistics7d = 2;
+    ItemStatistics itemStatistics30d = 3;
+    ItemStatistics itemStatistics90d = 4;
+
+    ItemStatistics cate1Statistics3d = 5;
+    ItemStatistics cate1Statistics7d = 6;
+    ItemStatistics cate1Statistics30d = 7;
+    ItemStatistics cate1Statistics90d = 8;
+
+    ItemStatistics cate2Statistics3d = 9;
+    ItemStatistics cate2Statistics7d = 10;
+    ItemStatistics cate2Statistics30d = 11;
+    ItemStatistics cate2Statistics90d = 12;
+
+    int32 activateNum1d = 13; // 1天前激活人数
+    int32 activateNum7d = 14; // 7天前激活人数
+    int32 activateNum30d = 15; // 30天激活人数
+    float retention1d = 16; // 激活口径，次日留存
+    float retention7d = 17; // 激活口径，次日留存
+    float retention30d = 18; // 激活口径，次日留存
+    RetentionCount retentionCountIn7d = 19;
+    PayStatic payStatic14d=20;
+    PayStatic payStatic30d=21;
+    float itemActiveRate=22;
+    float itemPayRate=23;
+}
+
+//dsp投放创意相关信息
+message DspGameInfos {
+    int64 dsp_ad_id = 1; // 广告创意id
+    int64 ad_id = 2; //广告位置id
+    int64 game_config_id = 3; //链接到的游戏id
+    string creative_name = 4; // 广告创意名字
+    int64 material_standards_id = 5; //广告素材规格id
+    string url = 6; // 图片或资源位置描述
+    string ad_desc = 7; //广告资源描述
+    string update_date = 8; // 创意更新时间
+    string create_date = 9; //创意创建时间
+}
+
+message Item {
+    string itemId = 1;
+    string adId = 2;
+    NewsTags newTag = 3;
+    AppInfo appInfo = 4;
+    SequenceLTVItemPayedFeature seqLTVItemPayedFeature = 5;
+    GameOrder gameOrder = 6;
+    FeedInfos feedInfo = 7;
+    SequenceLTVItemPayedFeatureList cate1SeqLTVItemPayedFeature = 8;
+    SequenceLTVItemPayedFeatureList cate2SeqLTVItemPayedFeature = 9;
+    string paywillV4ItemFeature = 10;
+    ItemStatisticsAgg itemStatisticsAgg = 11;
+    DspGameInfos dspGameInfos = 12;
+    QgStatisticInfo qgStatInfo = 13;
+    // 新添加-------
+    // source: bi_game_recommend.dm_rec_exposure_di(游戏推荐每天曝光明细表)
+    string top10_query = 14; // top10搜索词
+    // source: bi_gamecenter_dev.dw_gc_page_log_d(游戏中心页面点击天级日志表)
+    uint64 enter_detail_cnt = 15; // 进入详情页人数
+    uint64 enter_detail_imei_cnt = 16; // 进入详情页次数
+    // source: 联运游戏games_op.dw_games_op_game_duration_detail_d
+    uint64 usage_cnt = 17; // 使用频次
+    uint64 usage_duration = 18; // 使用时长
+    // source: appstore.user_installed_list
+    uint64 uninstall_cnt = 19; // 卸载量
+    uint64 uninstall_imei_cnt = 20; // 卸载人数
+    // source: bi_gamecenter_dev.dim_gc_dynamic_game_info_ds
+    uint64 dl_uv = 21;
+    // source: cpd_search.dm_mwang_duration_info
+    string uvs = 22; // 近1天/7天uv量
+    string avg_usage_duration = 23; // 近1天/7天平均使用时长
+    string avg_usage_cnt = 24; // 近1天/7天平均使用次数
+    // source：comm_dw.dw_rec_game_register_d
+    uint64 registration_cnt = 25; // 注册量
+    uint64 registration_imei_cnt = 26; // 注册人数
+    // source：comm_dw.dw_rec_game_installed_d
+    uint64 install_cnt = 27; // 安装量
+    uint64 install_imei_cnt = 28; // 安装人数
+    //
+    repeated SceneInfo scene_info = 29; // 场景相关的用户行为信息
+    repeated PayInfo pay_info = 30; // 分平台收入信息
+    repeated StrategyInfo strategyInfo = 33;
+    uint64 version = 34;
+    string query = 35;//搜索词
+    uint64 query_expo_cnt = 36;//曝光次数
+    uint64 query_dl_cnt = 37;//下载次数
+
+    ItemPushStatistics itemPushStatistics = 38;
+    string pushTitle = 39;
+    repeated string pushTitleSeg = 40;
+    string push_type = 41;
+    string push_content = 42;
+}
+
+message QgStatisticInfo{
+    int32 act1 = 1;
+    int32 actAvg3 = 2;
+    int32 actAvg7 = 3;
+    int32 actAvg15 = 4;
+    int32 retain1 = 5;
+    int32 retainAvg3 = 6;
+    int32 retainAvg7 = 7;
+    int32 retainAvg15 = 8;
+    double ctr = 9;
+    int32 t = 10;
+    int32 active1 = 11;
+    int32 active3 = 12;
+    int32 active7 = 13;
+    int32 active15 = 14;
+    int32 active30 = 15;
+    double avgActive1 = 16;
+    double avgActive3 = 17;
+    double avgActive7 = 18;
+    double avgDuration1 = 19;
+    double avgDuration3 = 20;
+    double avgDuration7 = 21;
+    double remainRate1 = 22;
+    double remainRate3 = 23;
+    double remainRate7 = 24;
+}
+
+message ItemVector{
+    string itemId =1;
+    repeated float value = 2;
+}
+
+message ItemVectorList{
+    repeated ItemVector itemList = 1;
+}
+
+message ItemCsmeAmtStatistic {
+    repeated int32 csmeAmtStatistics = 1;
+    int64  csmeAmtNum = 2;
+}
+
+message ItemCsmeAmtStatistics {
+    ItemCsmeAmtStatistic csmeAmtStatistic1d = 1;
+    ItemCsmeAmtStatistic csmeAmtStatistic7d = 2;
+    ItemCsmeAmtStatistic csmeAmtStatistic14d = 3;
+    ItemCsmeAmtStatistic csmeAmtStatistic21d = 4;
+    ItemCsmeAmtStatistic csmeAmtStatistic28d = 5;
+}
+
+message SceneInfo {
+    // source: bi_game_recommend.dm_rec_exposure_di(游戏推荐每天曝光明细表)
+    string scene = 1; // 场景code
+    uint64 expo_cnt = 2; // 曝光量
+    uint64 expo_imei_cnt = 3; // 曝光人数
+    // source: bi_game_recommend.dm_rec_download_di(游戏推荐每天下载明细表)
+    uint64 dl_cnt = 4; // 下载量
+    uint64 dl_imei_cnt = 5; // 下载人数
+    // source: bi_game_recommend.dm_rec_dl_act_7_di
+    uint64 active_cnt = 6; // 激活量
+    uint64 active_imei_cnt = 7; // 激活人数
+    // source: bi_gamecenter_dev.dw_gc_page_log_d
+    string retention_rate = 8; // 次日留存、3日留存、7日留存、15日留存
+    // source: bi_game_recommend.dm_rec_game_income_ascribed_without_cheat_di(游戏推荐收入归因表_去除作弊)
+    string pay_cnt = 9; // 付费次数 （1日、7日、14日、45日）
+    string pay_imei_cnt = 10; // 付费人数 （1日、7日、14日、45日）
+    string op_csme = 11; // 联运收入（1日、7日、14日、45日）
+    string ad_csme = 12; // 广告收入（1日、7日、14日、45日）
+    string all_csme = 13; // 总分成收入（1日、7日、14日、45日）, op_csme + ad_csme
+}
+
+message PayInfo {
+
+    // source: bi_game_recommend.dm_rec_game_income_ascribed_without_cheat_di(游戏推荐收入归因表_去除作弊)
+    string plat = 1;
+    string pay_cnt = 2; // 付费次数 （1日、7日、14日、45日）
+    string pay_imei_cnt = 3; // 付费人数 （1日、7日、14日、45日）
+    string op_csme = 4; // 联运收入（1日、7日、14日、45日）
+    string ad_csme = 5; // 广告收入（1日、7日、14日、45日）
+    string all_csme = 6; // 总分成收入（1日、7日、14日、45日）, op_csme + ad_csme
+}
+
+message StrategyInfo {
+    uint64 timestamp = 1;
+    string reqId = 2;
+    string strategyId = 3;
+    string strategyType = 4;
+    double exposure = 5;
+}
+
+message ItemPushStatistics {
+    int32 clickNum3d = 1;
+    int32 clickNum10d = 2;
+    int32 clickNum30d = 3;
+    int32 expoNum3d = 4;
+    int32 expoNum10d = 5;
+    int32 expoNum30d = 6;
+    float ctr3d = 7;
+    float ctr10d = 8;
+    float ctr30d = 9;
+}

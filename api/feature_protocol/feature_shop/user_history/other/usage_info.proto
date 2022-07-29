@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package vmic.other;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.user.history.other";
+option java_outer_classname = "UsageInfoPro";
+
+import "protocol/feature_protocol/feature_shop/item/app/game/game_item_feature.proto";
+
+message UsageInfo{
+    string package_name = 1;
+    vmic.game.ItemFeature item_feature = 2;
+    int32 time = 3;//使用时长
+    int32 count = 4;//使用次数
+    int32 day_count = 5; // 使用的天数
+}
+
+message UsageInfoList {
+    string date = 1;
+    repeated UsageInfo usage_infos = 2;
+}
+
+message UsageAggFeature {
+    UsageInfoList usage_agg_1d_list = 1;
+    UsageInfoList usage_agg_3d_list = 2;
+    UsageInfoList usage_agg_15d_list = 3;
+}

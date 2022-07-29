@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package vmic.game_rec;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.user.realtime.game";
+option java_outer_classname = "GameUserActionSessionPro";
+
+
+message GameUserActionSession{
+
+    //点击详情页
+    repeated GameActionSession curr_game_clk = 1; // 点击详情页日志中抽取
+    //下载
+    repeated GameActionSession curr_game_dl = 2; // 下载
+    // 搜索词
+    repeated GameQuerySession curr_search_query = 3; // 曝光中抽取
+
+    //点击下载行为
+    message GameActionSession {
+        // game id
+        int32 game_id = 1;
+        int32 game_one_id = 2;
+        int32 game_two_id = 3;
+        uint32 game_type = 4;
+        string game_author = 5;
+        bool is_tencent = 6;
+        // 场景
+        bytes scene = 7;
+        // unix时间戳
+        int64 timestamp = 8;
+        //点击0, 搜索1
+        int32 action_type = 9;
+    }
+
+    //搜索行为
+    message GameQuerySession {
+        string search_query = 1;
+        int64 timestamp = 2;
+    }
+}

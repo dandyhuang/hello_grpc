@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package vmic.game;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.app.game";
+option java_outer_classname = "GameItemStatisticsPro";
+
+message ItemStatistics {
+    int64 login_count = 1; // 登陆次数
+    int64 login_num = 2; // 登陆人数
+    int64 download_count = 3; // 下载次数
+    int64 download_num = 4; // 下载人数
+    int64 pay_count = 5; // 付费次数
+    int64 pay_num = 6; // 付费人数
+    float pay_amount = 7; // 付费金额
+}
+
+message ItemStatisticsAgg {
+    ItemStatistics item_statistics_3d = 1;
+    ItemStatistics item_statistics_7d = 2;
+    ItemStatistics item_statistics_30d = 3;
+    ItemStatistics item_statistics_90d = 4;
+
+    ItemStatistics cate1_statistics_3d = 5;
+    ItemStatistics cate1_statistics_7d = 6;
+    ItemStatistics cate1_statistics_30d = 7;
+    ItemStatistics cate1_statistics_90d = 8;
+
+    ItemStatistics cate2_statistics_3d = 9;
+    ItemStatistics cate2_statistics_7d = 10;
+    ItemStatistics cate2_statistics_30d = 11;
+    ItemStatistics cate2_statistics_90d = 12;
+
+    int32 activate_num_1d = 13; // 1天前激活人数
+    int32 activate_num_7d = 14; // 7天前激活人数
+    int32 activate_num_30d = 15; // 30天激活人数
+    float retention_1d = 16; // 激活口径，次日留存
+    float retention_7d = 17; // 激活口径，次日留存
+    float retention_30d = 18; // 激活口径，次日留存
+}
+
+message ItemOtherAgg {
+    double dl_ratio_3d = 1;
+    double dl_ratio_15d = 2;
+    double dl_ratio_growth = 3;
+    double retention_3d = 4;
+    double retention_15d = 5;
+    double game_cate2_ratio_3d = 6;
+    double game_cate2_ratio_15d = 7;
+}

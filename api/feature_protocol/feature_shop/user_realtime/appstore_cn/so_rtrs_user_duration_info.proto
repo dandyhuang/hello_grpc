@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package vmic.appstore;
+
+option java_package = "com.vivo.stream.game";
+option java_outer_classname = "UserDurationInfoPb";
+
+// area: 8
+// dp: rtrs_user_duration
+// key: dur_${imei}
+message UserDurationInfo {
+
+    repeated UserDurationDayInfo user_duration_day_info = 1;
+    int32 timestamp = 2;
+
+    message UserDurationDayInfo {
+        repeated AppDurationInfo app_duration_info = 1;
+        int32 day = 2;
+
+        message AppDurationInfo {
+            // app id
+            int32 app_id = 1;
+            // 当日累计时长
+            int32 dur = 2;
+            // unix时间戳
+            int32 timestamp = 3;
+            // 使用次数
+            int32 num = 4;
+       }
+   }
+}
+

@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package vmic.appstore;
+
+option java_package = "com.vivo.stream.game";
+option java_outer_classname = "CpdUserExposeInfoListNewPb";
+
+message CpdUserExposeInfoListNew{
+
+     repeated UserExposeDayInfoNew userExposeDayInfo = 1;
+     int64 timestamp = 2;
+                
+     message UserExposeDayInfoNew {
+
+        // 用户当天曝光的各app累计信息
+        repeated AppExposeInfoNew appExposeInfo = 1;
+        // 日期
+        int32 day = 2;
+        // 当天最后一次更新的时间戳
+        int64 timestamp = 3;
+        // 最近30s的曝光序列
+        repeated BufferAppExposeInfo bufferAppExposeInfo = 4;
+                                                       
+        // 场景和appid都相同算一个，进行合并
+        message AppExposeInfoNew {
+            // app id
+            int32 app_id = 1;
+            // 当日累计曝光时长
+            int32 dur = 2;
+            // 当日累计曝光次数
+            int32 num = 3;
+            // 场景：曝光是page
+            bytes scene = 4; 
+            // 最后一次曝光的unix时间戳
+            int64 timestamp = 5;
+        }
+                                                                  
+        // 曝光序列
+        message BufferAppExposeInfo {
+            // app id
+            int32 app_id = 1;
+            // 曝光时长
+            int32 dur = 2;
+            // 场景：曝光是page
+            bytes scene = 3; 
+            // 曝光的unix时间戳
+            int64 timestamp = 4;
+       }
+
+   }
+}
+

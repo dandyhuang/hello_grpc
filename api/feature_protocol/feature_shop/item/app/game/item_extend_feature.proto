@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package vmic.game;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.app.game";
+option java_outer_classname = "ItemExtendInfoPro";
+
+import "protocol/feature_protocol/feature_shop/item/app/game/gc_front_exp_info.proto";
+
+message ItemExtendInfo {
+    int64 download_count = 1;
+    int32 comment_count = 2;
+    double average_comment = 3;
+    float order_revenue = 4;
+    int32 order_people = 5;
+    repeated int32 game_cate2_list_for_search = 6;
+    GcFrontExpInfo gc_front_exp_info = 7;      //gc列表页的展示信息
+    string paywill_v4_item_feature = 8;
+}

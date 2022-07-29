@@ -1,0 +1,21 @@
+syntax = "proto3";
+package vmic.game_rec.v0;
+
+
+import "protocol/feature_protocol/feature_cart/game/v0/common.proto";
+option java_package = "com.vivo.iai.proto.feature.app.game.rec.v0";
+option java_outer_classname = "EventData";
+
+message Event {
+    float label = 1;
+    string timeStamp= 2;
+    string requestId = 3;
+    string userId = 4;
+    string itemId = 5;
+    map<int64, int32> softmaxLabel =6; // app_id ->
+    FloatSeq sequenceLTVLabel = 7;
+    repeated int32 payProbLabel = 8;
+    repeated int32 seqLabels = 9; // 用作序列化label
+    LongSeq sequencePayProbLabel = 10;
+
+}

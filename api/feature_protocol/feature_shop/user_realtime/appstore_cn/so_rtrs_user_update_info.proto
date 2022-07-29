@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package vmic.appstore;
+
+option java_package = "com.vivo.stream.game";
+option java_outer_classname = "UserAppUpdateInfoPb";
+
+// area: 11
+// dp: rtrs_user_update
+// key: up_${imei}
+message UserAppUpdateInfo {
+
+    repeated AppUpdateInfo updateInfo = 1;
+    int32 timestamp = 2;
+    repeated DayUpdateInfo dayUpdateInfo = 3;
+
+    message AppUpdateInfo {
+        // app id
+        int32 app_id = 1;
+        // unix时间戳
+        int32 timestamp = 2;
+        // 更新次数
+        int32 num = 3;
+    }
+
+    message DayUpdateInfo {
+        // app id
+        int32 app_id = 1;
+        // unix时间戳
+        int32 timestamp = 2;
+    }
+}
+

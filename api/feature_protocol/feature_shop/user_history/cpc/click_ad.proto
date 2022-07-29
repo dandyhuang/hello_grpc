@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package vmic.effect_ads;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.user.history.effectad";
+option java_outer_classname = "ClickAdPro";
+
+message ClickedAd {
+    string ad_id = 1; // ad_id
+    int64 timestamp = 2; // 点击时间戳
+    int32 adv_id = 3; // 广告主id
+    int32 app_id = 4; // appid
+}
+
+// Src Hive: comm_dw.dw_ssp_expo_click_hi
+// Dst Hive: da_user_advertising_clicked_daily(Delta partition)
+message ClickAdFea {
+    repeated ClickedAd click_ad = 1;
+}

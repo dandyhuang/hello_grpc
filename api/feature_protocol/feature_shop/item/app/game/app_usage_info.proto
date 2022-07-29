@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package vmic.game;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.app.game";
+option java_outer_classname = "AppUsageInfoPro";
+
+message AppUsageAggInfo {
+    AppUsageInfo app1_days_use_info = 1;
+    AppUsageInfo app7_days_use_info = 2;
+    AppUsageInfo app14_days_use_info = 3;
+}
+
+message AppUsageInfo {
+    int64 uv = 1;            //使用人数
+    float times_per_user = 2;  //人均使用次数
+    float duration_per_user = 3;    //人均使用时长
+}

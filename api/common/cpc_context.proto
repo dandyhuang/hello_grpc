@@ -1,0 +1,22 @@
+syntax = "proto3";
+package rec5;
+
+
+// 特指浏览器中，推荐页请求的上下文的文章信息
+// 后续可以扩展到详情页中
+message ArticleInfo {
+    string source = 1;
+    // 列表序是合作方给出来的序
+    repeated Article articles = 2;
+};
+
+message Article {
+    string id = 1;
+    // 合作方给出来的打分
+    float score = 2;
+};
+
+message CPCContext {
+    ArticleInfo article_info = 1;
+    string session_id = 2 ; // 会话ID
+};

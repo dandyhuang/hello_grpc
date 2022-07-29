@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package vmic.browser;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.user.history.browser";
+option java_outer_classname = "BrowserGgmzClickPro";
+
+message BrowserGgmzClick {
+    string title = 1; // 宫格title
+    string url = 2; // 宫格url
+    int64 timestamp = 3; // 点击宫格时间
+}
+
+// Src Hive: browser.browser_click
+// Dst Hive: da_user_clicked_ggmz_daily(Delta Partition)
+message BrowserGgmzClickFea {
+    repeated BrowserGgmzClick browser_ggmz_click = 1;
+}

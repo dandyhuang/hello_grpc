@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package vmic.game;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.app.game";
+option java_outer_classname = "GameItemFeaturePro";
+
+import "protocol/feature_protocol/feature_shop/item/app/game/item_common.proto";
+import "protocol/feature_protocol/feature_shop/item/app/game/item_extend_feature.proto";
+import "protocol/feature_protocol/feature_shop/item/app/game/item_agg_feature.proto";
+
+message ItemFeature {
+    int32 version = 1;
+    ItemCommonInfo item_common_feature = 2;
+    ItemExtendInfo item_extend_feature = 3;
+    ItemAggInfo item_agg_feature = 4;
+}

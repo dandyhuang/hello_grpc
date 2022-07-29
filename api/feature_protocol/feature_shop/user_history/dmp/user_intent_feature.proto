@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package vmic.dmp;
+
+option java_package = "com.vivo.iai.proto.feature.featureshop.user.history.dmp";
+option java_outer_classname = "UserIntentFeaturePro";
+
+// Redis: ads-user-gamefeature-prd4.redis.dba.vivo.lan.:11215,ads-user-gamefeature-prd3.redis.dba.vivo.lan.:11215,ads-user-gamefeature-prd2.redis.dba.vivo.lan.:11215
+// Key_pattern: u_i_f:v0:{imei}
+message UserIntentFeature {
+    repeated string intent_word               = 1; //意图词
+    repeated int32 frequency                  = 2; //出现频次
+    repeated int64 timestamp                  = 3; // 用户点击时间戳
+}
+
