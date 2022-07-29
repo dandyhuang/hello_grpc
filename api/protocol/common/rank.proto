@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "./;rec5";
+option go_package = "hello_grpc/api/protocol/common/;common";
 option java_multiple_files = true;
 option java_package = "com.vivo.internet.recom";
 option java_outer_classname = "RecomProto";
@@ -67,7 +67,7 @@ message RankRecommendInfo{
 //请求参数
 message RankRecommendRequest{
     repeated RankRecommendInfo recommend = 1;    //请求详情
-    repeated rec5.AlgMultiTestInfo vec_test_info = 2;    //abt参数信息
+    repeated abt.AlgMultiTestInfo vec_test_info = 2;    //abt参数信息
     bytes user_feature = 3;                      //用户特征
     map<string, string> context = 99;            //扩展字段
 };

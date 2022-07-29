@@ -1,6 +1,7 @@
 syntax = "proto3";
-package rec5;
-option go_package = "./;rec5";
+package abt;
+option go_package = "hello_grpc/api/protocol/abt/;abt";
+
 //目的：支持多层实验平台，通过配置化方式实现多组实验统计
 //代表流量经过该层，所附带的算法参数和系统参数
 message AlgMultiTestInfo {
@@ -40,6 +41,6 @@ message AbtestReq
 
 message AbtestRsp
 {
-    repeated rec5.AlgMultiTestInfo  page_items = 1; 
+    repeated abt.AlgMultiTestInfo  page_items = 1;
     string debug_error  = 2;
 };

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"google.golang.org/grpc"
 	pb "hello_grpc/api/protocol/mixer"
 	"log"

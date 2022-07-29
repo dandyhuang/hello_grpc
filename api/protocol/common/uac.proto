@@ -1,6 +1,6 @@
 syntax = "proto3";
-package rec5;
-option go_package = "./;rec5";
+package common;
+option go_package = "hello_grpc/api/protocol/common/;common";
 // Uac接口响应
 message MixItem {
     float mixia = 1; //新增广告内部排序超参

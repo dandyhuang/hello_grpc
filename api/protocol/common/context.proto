@@ -1,8 +1,8 @@
 syntax = "proto3";
 import "protocol/common/cpc_context.proto";
 import "protocol/common/cpd_context.proto";
-package rec5;
-option go_package = "./;rec5";
+package common;
+option go_package = "hello_grpc/api/protocol/common/;common";
 
 //Context 分为公共信息Common-Context和业务Context(cpc_context.proto,cpd_context.proto) 增加字段是注意区分
 

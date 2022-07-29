@@ -1,11 +1,12 @@
 syntax = "proto3";
 
-package rec5;
-option go_package = "./;rec5";
+package abt;
+option go_package = "hello_grpc/api/protocol/abt/;abt";
+
 import "protocol/abt/rtrs_abtest.proto";
 option cc_generic_services = true;
 
 service AbtService{
-    rpc route (rec5.AbtestReq) returns (rec5.AbtestRsp) {}
+    rpc route (abt.AbtestReq) returns (abt.AbtestRsp) {}
 }
 

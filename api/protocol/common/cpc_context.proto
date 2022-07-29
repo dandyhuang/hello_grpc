@@ -1,6 +1,6 @@
 syntax = "proto3";
-package rec5;
-option go_package = "./;rec5";
+package common;
+option go_package = "hello_grpc/api/protocol/common/;common";
 
 // 特指浏览器中，推荐页请求的上下文的文章信息
 // 后续可以扩展到详情页中

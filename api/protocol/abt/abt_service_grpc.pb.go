@@ -4,7 +4,7 @@
 // - protoc             v3.17.2
 // source: protocol/abt/abt_service.proto
 
-package rec5
+package abt
 
 import (
 	context "context"
@@ -35,7 +35,7 @@ func NewAbtServiceClient(cc grpc.ClientConnInterface) AbtServiceClient {
 
 func (c *abtServiceClient) Route(ctx context.Context, in *AbtestReq, opts ...grpc.CallOption) (*AbtestRsp, error) {
 	out := new(AbtestRsp)
-	err := c.cc.Invoke(ctx, "/rec5.AbtService/route", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/abt.AbtService/route", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func _AbtService_Route_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rec5.AbtService/route",
+		FullMethod: "/abt.AbtService/route",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AbtServiceServer).Route(ctx, req.(*AbtestReq))
@@ -92,7 +92,7 @@ func _AbtService_Route_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var AbtService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "rec5.AbtService",
+	ServiceName: "abt.AbtService",
 	HandlerType: (*AbtServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

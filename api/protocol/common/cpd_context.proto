@@ -1,6 +1,6 @@
 syntax = "proto3";
-package rec5;
-option go_package = "./;rec5";
+package common;
+option go_package = "hello_grpc/api/protocol/common/;common";
 //母应用
 message ParentAppInfo{
     int32 appId = 1;

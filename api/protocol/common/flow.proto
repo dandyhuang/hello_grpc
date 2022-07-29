@@ -1,6 +1,6 @@
 syntax = "proto3";
-package rec5;
-option go_package = "./;rec5";
+package common;
+option go_package = "hello_grpc/api/protocol/common/;common";
 // 流量信息
 message FlowInfo {
     uint32 debug_switch = 1; // 0 不需要调试信息， 1打开调试信息
