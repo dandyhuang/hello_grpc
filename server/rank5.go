@@ -13,10 +13,14 @@ type server struct {
 }
 
 // SayHello implements helloworld.GreeterServer
-func (s *server) SayHello(ctx context.Context, in *pb.RankRequest) (*pb.RankResponse, error) {
+func (s *server) Rank(ctx context.Context, in *pb.RankRequest) (*pb.RankResponse, error) {
 	log.Printf("Received: %v", in)
 	return &pb.RankResponse{Version: in.Version}, nil
 }
+
+//func (UnimplementedRankServiceServer) Rank(context.Context, *RankRequest) (*RankResponse, error) {
+//	return nil, status.Errorf(codes.Unimplemented, "method Rank not implemented")
+//}
 
 func main()  {
 	lis, err := net.Listen("tcp", "127.0.0.1:8090")

@@ -4,7 +4,7 @@
 // - protoc             v3.17.2
 // source: protocol/mixer/mixer.proto
 
-package mixer
+package rec5
 
 import (
 	context "context"
@@ -35,7 +35,7 @@ func NewRankServiceClient(cc grpc.ClientConnInterface) RankServiceClient {
 
 func (c *rankServiceClient) Rank(ctx context.Context, in *RankRequest, opts ...grpc.CallOption) (*RankResponse, error) {
 	out := new(RankResponse)
-	err := c.cc.Invoke(ctx, "/mixer.RankService/Rank", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rec5.RankService/Rank", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func _RankService_Rank_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mixer.RankService/Rank",
+		FullMethod: "/rec5.RankService/Rank",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RankServiceServer).Rank(ctx, req.(*RankRequest))
@@ -92,7 +92,7 @@ func _RankService_Rank_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var RankService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mixer.RankService",
+	ServiceName: "rec5.RankService",
 	HandlerType: (*RankServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -122,7 +122,7 @@ func NewRankHttpServiceClient(cc grpc.ClientConnInterface) RankHttpServiceClient
 
 func (c *rankHttpServiceClient) Check(ctx context.Context, in *RankHttpRequest, opts ...grpc.CallOption) (*RankHttpResponse, error) {
 	out := new(RankHttpResponse)
-	err := c.cc.Invoke(ctx, "/mixer.RankHttpService/Check", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rec5.RankHttpService/Check", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +131,7 @@ func (c *rankHttpServiceClient) Check(ctx context.Context, in *RankHttpRequest, 
 
 func (c *rankHttpServiceClient) Rank(ctx context.Context, in *RankHttpRequest, opts ...grpc.CallOption) (*RankHttpResponse, error) {
 	out := new(RankHttpResponse)
-	err := c.cc.Invoke(ctx, "/mixer.RankHttpService/Rank", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rec5.RankHttpService/Rank", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +180,7 @@ func _RankHttpService_Check_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mixer.RankHttpService/Check",
+		FullMethod: "/rec5.RankHttpService/Check",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RankHttpServiceServer).Check(ctx, req.(*RankHttpRequest))
@@ -198,7 +198,7 @@ func _RankHttpService_Rank_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mixer.RankHttpService/Rank",
+		FullMethod: "/rec5.RankHttpService/Rank",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RankHttpServiceServer).Rank(ctx, req.(*RankHttpRequest))
@@ -210,7 +210,7 @@ func _RankHttpService_Rank_Handler(srv interface{}, ctx context.Context, dec fun
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var RankHttpService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mixer.RankHttpService",
+	ServiceName: "rec5.RankHttpService",
 	HandlerType: (*RankHttpServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

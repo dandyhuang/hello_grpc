@@ -1,10 +1,10 @@
 syntax = "proto3";
-package mixer;
+package rec5;
 import "protocol/common/context.proto";
 import "protocol/common/flow.proto";
 import "protocol/common/user.proto";
 import "google/protobuf/any.proto";
-option go_package = "hello_grpc/api/protocol/mixer/;mixer";
+option go_package = "hello_grpc/api/protocol/mixer/;rec5";
 option cc_generic_services = true;
 
 message RankHttpRequest {};
