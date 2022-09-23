@@ -32,13 +32,18 @@ require (
 	github.com/pkg/profile v1.6.0
 	github.com/segmentio/ksuid v1.0.3
 	github.com/sirupsen/logrus v1.4.2
+	github.com/smartystreets/goconvey v1.7.2 // indirect
+	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/tjfoc/gmsm v1.4.1
 	github.com/valyala/fastrand v1.0.0
+	github.com/yangwenmai/ratelimit v0.0.0-20180104140304-44221c2292e1
+	go.uber.org/ratelimit v0.2.0
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
 	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/sys v0.0.0-20220422013727-9388b58f7150 // indirect
 	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/time v0.0.0-20220722155302-e5dcc9cfc0b9
 	golang.org/x/xerrors v0.0.0-20220411194840-2f41105eb62f // indirect
 	google.golang.org/genproto v0.0.0-20220324131243-acbaeb5b85eb
 	google.golang.org/grpc v1.45.0
