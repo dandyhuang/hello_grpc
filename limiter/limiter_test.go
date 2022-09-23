@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/go-redis/redis/v8"
+	"github.com/panjf2000/ants/v2"
 	"log"
 	"math/rand"
 	"os"
@@ -223,9 +224,15 @@ func TestRedis(t *testing.T) {
 		fmt.Println("redis ping", err)
 		os.Exit(1)
 	}
-
-	for i:=0; i < 100000; i++ {
-		key:=RandStringBytesMaskImprSrc(10)
-		rdb.SetEX(ctx,key, strings.Repeat("A",100000), time.Second * 100)
+	pool, _ := ants.NewPool(10000, ants.WithNonblocking(true))
+	defer pool.Release()
+	for i:=0; i < 1000000; i++ {
+		err := ants.Submit(func() {
+			key:=RandStringBytesMaskImprSrc(10)
+			rdb.SetEX(ctx,key, strings.Repeat("A",100000), time.Second * 100)
+		})
+		if err != nil {
+			fmt.Println("err:", err)
+		}
 	}
 }
