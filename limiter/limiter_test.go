@@ -11,6 +11,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -194,7 +195,7 @@ func RandStringBytesMaskImprSrc(n int) string {
 	}
 	return string(b)
 }
-
+// go test ./limiter/ -v
 func TestRedis(t *testing.T) {
 	str := "123"
 	index, _ := strconv.Atoi(string(str[0]))
@@ -224,15 +225,21 @@ func TestRedis(t *testing.T) {
 		fmt.Println("redis ping", err)
 		os.Exit(1)
 	}
-	pool, _ := ants.NewPool(10000, ants.WithNonblocking(true))
+	pool, _ := ants.NewPool(10000)
 	defer pool.Release()
+	var wg sync.WaitGroup
 	for i:=0; i < 1000000; i++ {
+		index:=i
+		wg.Add(1)
 		err := ants.Submit(func() {
-			key:=RandStringBytesMaskImprSrc(10)
-			rdb.SetEX(ctx,key, strings.Repeat("A",100000), time.Second * 100)
+			key := "dandytest" + strconv.FormatInt(int64(index), 10);
+			//key:=RandStringBytesMaskImprSrc(10)
+			rdb.SetEX(ctx,key, strings.Repeat("A",100000), time.Second * 10000)
+			wg.Done()
 		})
 		if err != nil {
 			fmt.Println("err:", err)
 		}
 	}
+	wg.Wait()
 }
