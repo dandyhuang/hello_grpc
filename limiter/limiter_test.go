@@ -212,7 +212,7 @@ func TestRedis(t *testing.T) {
 		//ReadOnly:     c.config.ReadOnly,
 		//Password:     c.config.Password,
 		//MaxRetries:   c.config.MaxRetries,
-		//DialTimeout:  c.config.DialTimeout,
+		DialTimeout:  3*time.Second,
 		//ReadTimeout:  c.config.ReadTimeout,
 		//WriteTimeout: c.config.WriteTimeout,
 		//PoolSize:     c.config.PoolSize,
@@ -225,7 +225,7 @@ func TestRedis(t *testing.T) {
 		fmt.Println("redis ping", err)
 		os.Exit(1)
 	}
-	pool, _ := ants.NewPool(10000)
+	pool, _ := ants.NewPool(1000)
 	defer pool.Release()
 	var wg sync.WaitGroup
 	for i:=0; i < 1000000; i++ {
