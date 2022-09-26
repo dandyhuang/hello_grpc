@@ -203,7 +203,7 @@ func TestRedis(t *testing.T) {
 	var address []string
 	addr:="12"
 	flag.StringVar(&addr, "addr", "addrss", "配置文件")
-//	addr:="game-redis-pre-pre0.redis.dba.vivo.lan.:11282"
+	addr ="game-redis-pre-pre0.redis.dba.vivo.lan.:11282"
 	address = append(address, addr)
 
 	rdb := redis.NewClusterClient(&redis.ClusterOptions{
