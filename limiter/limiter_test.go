@@ -234,7 +234,10 @@ func TestRedis(t *testing.T) {
 		err := ants.Submit(func() {
 			key := "dandytest" + strconv.FormatInt(int64(index), 10);
 			//key:=RandStringBytesMaskImprSrc(10)
-			rdb.SetEX(ctx,key, strings.Repeat("A",100000), time.Second * 10000)
+			err:=rdb.SetEX(ctx,key, strings.Repeat("A",100000), time.Second * 10000).Err()
+			if err !=nil {
+				fmt.Println(" redis error: ", err)
+			}
 			wg.Done()
 		})
 		if err != nil {
