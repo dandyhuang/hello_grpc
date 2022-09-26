@@ -5,6 +5,7 @@ import (
 	"fmt"
 	consulapi "github.com/hashicorp/consul/api"
 	"net"
+	"strconv"
 )
 const (
 	consulAddress = "localhost:8500"
@@ -55,7 +56,7 @@ func ConsulCheckHeath() {
 	fmt.Println("ConsulCheckHeath done")
 }
 
-func ConsulFindServer() {
+func ConsulFindServer1() {
 	// 创建连接consul服务配置
 	config := consulapi.DefaultConfig()
 	config.Address = consulAddress
@@ -83,8 +84,33 @@ func ConsulFindServer() {
 	}
 }
 
+func ConsulFindServer(scheduleSchema string) {
+
+	// 创建连接consul服务配置
+	config := consulapi.DefaultConfig()
+	config.Address = consulAddress
+	client, err := consulapi.NewClient(config)
+	if err != nil {
+		fmt.Println("consul client error : ", err)
+	}
+	var lastIndex uint64
+	services, metainfo, err := client.Health().Service(scheduleSchema, "v1000", true, &consulapi.QueryOptions{
+		WaitIndex: lastIndex, // 同步点，这个调用将一直阻塞，直到有新的更新
+	})
+	if err != nil {
+		fmt.Println("error retrieving instances from Consul: %v", err)
+	}
+	lastIndex = metainfo.LastIndex
+
+	addrs := map[string]struct{}{}
+	for _, service := range services {
+		fmt.Println("service.Service.Address:", service.Service.Address, "service.Service.Port:", service.Service.Port)
+		addrs[net.JoinHostPort(service.Service.Address, strconv.Itoa(service.Service.Port))] = struct{}{}
+	}
+}
+
 func main() {
-	ConsulFindServer()
+	ConsulFindServer("schedule_comm_824_prd")
 	fmt.Println(getClientIp())
 	ConsulCheckHeath()
 }

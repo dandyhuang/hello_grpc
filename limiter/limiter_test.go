@@ -218,6 +218,7 @@ func TestRedis(t *testing.T) {
 		//PoolSize:     c.config.PoolSize,
 		//MinIdleConns: c.config.MinIdleConns,
 		//IdleTimeout:  c.config.IdleTimeout,
+		PoolTimeout: 3*time.Second,
 	})
 	ctx:=context.Background()
 	_, err := rdb.Ping(ctx).Result()
