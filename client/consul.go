@@ -90,6 +90,7 @@ func HealthCheck(name string) {
 	client, _ := consulapi.NewClient(config)
 	var lastIndex uint64
 	for {
+		fmt.Println("health start")
 		services, metainfo, err := client.Health().Service(name, "", true, &consulapi.QueryOptions{WaitIndex: lastIndex})
 		if err != nil {
 			fmt.Printf("error retrieving instances from Consul: %v", err)
