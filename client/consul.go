@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	consulapi "github.com/hashicorp/consul/api"
+	"google.golang.org/grpc/resolver"
 	"net"
 	"strconv"
 )
@@ -83,7 +84,30 @@ func ConsulFindServer1() {
 		fmt.Println("ConsulFindServer done")
 	}
 }
+func HealthCheck(name string) {
+	config := consulapi.DefaultConfig()
+	config.Address = consulAddress
+	client, _ := consulapi.NewClient(config)
+	var lastIndex uint64
+	for {
+		services, metainfo, err := client.Health().Service(name, "", true, &consulapi.QueryOptions{WaitIndex: lastIndex})
+		if err != nil {
+			fmt.Printf("error retrieving instances from Consul: %v", err)
+		}
 
+		lastIndex = metainfo.LastIndex
+		var newAddrs []resolver.Address
+		for _, service := range services {
+			addr := fmt.Sprintf("%v:%v", service.Service.Address, service.Service.Port)
+			newAddrs = append(newAddrs, resolver.Address{Addr: addr})
+		}
+		fmt.Printf("adding service addrs\n")
+		fmt.Printf("newAddrs: %v lastIndex: %d\n", newAddrs, lastIndex)
+		// cr.cc.NewAddress(newAddrs)
+		// cr.cc.UpdateState(resolver.State{Addresses: newAddrs})
+		// cr.cc.NewServiceConfig(cr.name)
+	}
+}
 func ConsulFindServer(scheduleSchema string) {
 
 	// 创建连接consul服务配置
@@ -94,7 +118,7 @@ func ConsulFindServer(scheduleSchema string) {
 		fmt.Println("consul client error : ", err)
 	}
 	var lastIndex uint64
-	services, metainfo, err := client.Health().Service(scheduleSchema, "v1000", true, &consulapi.QueryOptions{
+	services, metainfo, err := client.Health().Service(scheduleSchema, "", true, &consulapi.QueryOptions{
 		WaitIndex: lastIndex, // 同步点，这个调用将一直阻塞，直到有新的更新
 	})
 	if err != nil {
@@ -111,6 +135,14 @@ func ConsulFindServer(scheduleSchema string) {
 
 func main() {
 	ConsulFindServer("schedule_comm_824_prd")
+	HealthCheck("schedule_comm_824_prd")
 	fmt.Println(getClientIp())
+	//conn, err := grpc.Dial(
+	//	// consul服务
+	//	"consul://192.168.1.11:8500/hello?wait=14s",
+	//	// 指定round_robin策略
+	//	grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy": "round_robin"}`),
+	//	grpc.WithTransportCredentials(insecure.NewCredentials()),
+	//)
 	ConsulCheckHeath()
 }

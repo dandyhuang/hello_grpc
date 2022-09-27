@@ -218,7 +218,7 @@ func TestRedis(t *testing.T) {
 		//PoolSize:     c.config.PoolSize,
 		//MinIdleConns: c.config.MinIdleConns,
 		//IdleTimeout:  c.config.IdleTimeout,
-		PoolTimeout: 3*time.Second,
+		PoolTimeout: 10*time.Second,
 	})
 	ctx:=context.Background()
 	_, err := rdb.Ping(ctx).Result()
@@ -235,7 +235,7 @@ func TestRedis(t *testing.T) {
 		err := ants.Submit(func() {
 			key := "dandytest" + strconv.FormatInt(int64(index), 10);
 			//key:=RandStringBytesMaskImprSrc(10)
-			err:=rdb.SetEX(ctx,key, strings.Repeat("A",100000), time.Second * 10000).Err()
+			err:=rdb.SetEX(ctx,key, strings.Repeat("A",1000), time.Second * 10000).Err()
 			if err !=nil {
 				fmt.Println(" redis error: ", err)
 			}
