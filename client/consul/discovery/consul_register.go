@@ -14,10 +14,6 @@ type consulServiceRegistry struct {
 	rwLock           sync.RWMutex
 }
 
-func GetInstances() {
-
-}
-
 func (c consulServiceRegistry) FirstInstances(serviceId string) error {
 	c.rwLock.RLock()
 	if len(c.serviceInstances[serviceId]) == 0 {
@@ -115,5 +111,9 @@ func NewConsulServiceRegistry(host string, port int, token string) (*consulServi
 		return nil, err
 	}
 
-	return &consulServiceRegistry{client: *client}, nil
+	return &consulServiceRegistry{
+		serviceInstances: make(map[string][]ServiceInstance, 0),
+		client:           *client,
+	}, nil
 }
+
