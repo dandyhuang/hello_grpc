@@ -44,6 +44,20 @@ func (c consulServiceRegistry) GetServices() ([]string, error) {
 	return result, nil
 }
 
+func (c consulServiceRegistry) HealthCheckServices(serviceId string) error {
+	catalogService, _, _ := c.client.Catalog().Service(serviceId, "", nil)
+	if len(catalogService) > 0 {
+		checks, _, _ := c.client.Health().Checks(serviceId, nil)
+		for _, check := range checks {
+			if check.Status != "passing" {
+				fmt.Println("check.Status:", check.ServiceID, check)
+				//c.client.Agent().ServiceDeregister(check.ServiceID)
+			}
+		}
+	}
+	return nil
+}
+
 // new a consulServiceRegistry instance
 // token is optional
 func NewConsulServiceRegistry(host string, port int, token string) (*consulServiceRegistry, error) {
