@@ -3,13 +3,29 @@ package main
 import (
 	"fmt"
 	"net/http"
+	_ "net/http/pprof"
 	"runtime"
 	"sync"
 	"time"
-	_ "net/http/pprof"
 )
 
+var g_trss []string
+
+func test1(args ...string) { //可以接受任意个string参数
+	for _, v := range args {
+		fmt.Println(v)
+	}
+	g_trss = args
+}
 func main2() {
+	var strss = []string{
+		"qwr",
+		"234",
+		"yui",
+	}
+	test1("13", "23")
+	test1(strss...)
+	fmt.Println("g_trss:", g_trss)
 	total := 0
 	defer func() {
 		time.Sleep(time.Second)

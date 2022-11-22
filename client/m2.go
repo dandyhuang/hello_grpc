@@ -67,6 +67,18 @@ func NdDecode1(cipherStr string, privateKey *sm2.PrivateKey) (data string, err e
 }
 
 func main() {
+	s1:=make([]int, 0)
+	s1 = append(s1, 2)
+	s1 = append(s1, 3)
+
+	s2:=s1
+	s3:=make([]int, 0)
+	fmt.Printf("%p, %p, %p\n", s1, s2, s3)
+	fmt.Println(s1, s2, s3)
+	s3 = s1
+
+	fmt.Println(s1, s2, s3)
+	fmt.Printf("%p, %p, %p\n", s1, s2, s3)
 	//1、查询私钥文件
 	//私钥
 	//sign := "MIGTAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBHkwdwIBAQQgvcMW3vYIUdE8kD29nDzqyXkkgDvzw5U8rokoBRjtjuOgCgYIKoEcz1UBgi2hRANCAASCDxuqrcwN6m0CpCzqB38ttaOMyG3b4D9pPI+DbmOH/Dw45wnWJg4+XuqCP8f5jdSnwecaIp2NLFvGW37TALBK"
