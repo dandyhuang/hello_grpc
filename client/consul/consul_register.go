@@ -2,6 +2,7 @@ package consul
 
 import (
 	"errors"
+	"fmt"
 	"github.com/hashicorp/consul/api"
 	"strconv"
 	"unsafe"
@@ -34,6 +35,7 @@ func (c consulServiceRegistry) GetInstances(serviceId string) ([]ServiceInstance
 
 func (c consulServiceRegistry) GetServices() ([]string, error) {
 	services, _, _ := c.client.Catalog().Services(nil)
+	fmt.Println("services:", services)
 	result := make([]string, unsafe.Sizeof(services))
 	index := 0
 	for serviceName, _ := range services {
