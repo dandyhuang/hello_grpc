@@ -31,8 +31,7 @@ func (c consulServiceRegistry) FirstInstances(serviceId string) error {
 func (c consulServiceRegistry) GetInstances(serviceId string) ([]ServiceInstance, error) {
 	c.rwLock.RLock()
 	defer c.rwLock.RLock()
-	var ins []ServiceInstance
-	fmt.Println("len:", len(c.serviceInstances[serviceId]))
+	ins := make([]ServiceInstance, len(c.serviceInstances[serviceId]))
 	copy(ins, c.serviceInstances[serviceId])
 	return ins, nil
 }
