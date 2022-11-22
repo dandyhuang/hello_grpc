@@ -1,17 +1,17 @@
 package main
 
 import (
-	"hello_grpc/client/ consul"
-	pb "hello_grpc/api/protocol/mixer"
 	"context"
 	"google.golang.org/grpc"
+	pb "hello_grpc/api/protocol/mixer"
+	"hello_grpc/client/consul"
 	"log"
 	"os"
 	"time"
 )
 
 const (
-	target      = "consul://127.0.0.1:8500/helloworld"
+	target = "consul://127.0.0.1:8500/helloworld"
 )
 
 func main() {
