@@ -79,10 +79,10 @@ func (c consulServiceRegistry) HealthCheckServices(serviceId string) error {
 				//  schedule_comm_801_prd [] tcp   { map[]    false   false 0s 0s 0s 0 0 0} 3738010626 3738010626}
 				//    client_test.go:17: <nil>
 				err := c.client.Agent().ServiceDeregister(check.ServiceID)
-				fmt.Println("deregister:", err)
+				fmt.Println("deregister:", err, check)
 			}
 			if check.Status == "passing" {
-				fmt.Println("check.Status:", check.ServiceID, "node:", check.Node)
+				fmt.Println("check.Status:", check.ServiceID, "node:", result[check.ServiceID])
 				mSerIns = append(mSerIns, result[check.ServiceID])
 			}
 		}
