@@ -13,5 +13,5 @@ func TestConsulServiceDiscovery(t *testing.T) {
 
 	t.Log(registryDiscoveryClient.GetServices())
 
-	t.Log(registryDiscoveryClient.GetInstances("go-user-server"))
+	t.Log(registryDiscoveryClient.GetInstances("Schedule_701_pre"))
 }
