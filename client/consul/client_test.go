@@ -21,4 +21,9 @@ func TestConsulServiceDiscovery(t *testing.T) {
 	ins, err := registryDiscoveryClient.GetInstances("schedule_comm_801_prd")
 	var f loadbalance.FirstLoadBalance
 	t.Log(f.Pick("schedule_comm_801_prd", ins))
+	t.Log(f.Pick("schedule_comm_801_prd", ins))
+	t.Log(f.Pick("schedule_comm_801_prd", ins))
+	t.Log(f.Pick("schedule_comm_801_prd", ins))
+	t.Log(f.Pick("schedule_comm_801_prd", ins))
+	t.Log(f.Pick("schedule_comm_801_prd", ins))
 }
