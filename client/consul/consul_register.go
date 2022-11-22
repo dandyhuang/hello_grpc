@@ -51,8 +51,13 @@ func (c consulServiceRegistry) HealthCheckServices(serviceId string) error {
 		checks, _, _ := c.client.Health().Checks(serviceId, nil)
 		for _, check := range checks {
 			if check.Status != "passing" {
+				// check.Status: 10.194.19.151-18801 &{cpd-sorting-ctr-prd-10-194-19-151.v-bj-4.vivo.lan 10.194.19.151-18801
+				//   schedule_comm_801_prd critical  dial tcp 10.194.19.151:18801: connect: connection refused 10.194.19.151-18801
+				//  schedule_comm_801_prd [] tcp   { map[]    false   false 0s 0s 0s 0 0 0} 3738010626 3738010626}
+				//    client_test.go:17: <nil>
 				fmt.Println("check.Status:", check.ServiceID, check)
-				c.client.Agent().ServiceDeregister(check.ServiceID)
+				err := c.client.Agent().ServiceDeregister(check.ServiceID)
+				fmt.Println("deregister:", err)
 			}
 		}
 	}
