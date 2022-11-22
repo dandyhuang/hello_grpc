@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"github.com/hashicorp/consul/api"
 	"strconv"
+	"sync"
 )
 
 type consulServiceRegistry struct {
 	serviceInstances     map[string]map[string]ServiceInstance
 	client               api.Client
 	localServiceInstance ServiceInstance
+	rwLock               sync.RWMutex
 }
 
 func (c consulServiceRegistry) GetInstances(serviceId string) ([]ServiceInstance, error) {
@@ -35,7 +37,6 @@ func (c consulServiceRegistry) GetInstances(serviceId string) ([]ServiceInstance
 
 func (c consulServiceRegistry) GetServices() ([]string, error) {
 	services, _, _ := c.client.Catalog().Services(nil)
-	fmt.Println("services:", services)
 	result := make([]string, len(services))
 	index := 0
 	for serviceName, _ := range services {
@@ -55,9 +56,18 @@ func (c consulServiceRegistry) HealthCheckServices(serviceId string) error {
 				//   schedule_comm_801_prd critical  dial tcp 10.194.19.151:18801: connect: connection refused 10.194.19.151-18801
 				//  schedule_comm_801_prd [] tcp   { map[]    false   false 0s 0s 0s 0 0 0} 3738010626 3738010626}
 				//    client_test.go:17: <nil>
-				fmt.Println("check.Status:", check.ServiceID, check)
+				fmt.Println("check.Status:", check.ServiceID, check, "node:", check.Node)
 				err := c.client.Agent().ServiceDeregister(check.ServiceID)
 				fmt.Println("deregister:", err)
+			}
+			if check.Status == "passing" {
+				//s := DefaultServiceInstance{
+				//	InstanceId: check.ServiceID,
+				//	ServiceId:  check.ServiceName,
+				//	Host:       check.Node,
+				//	Port:       check.Node,
+				//Metadata:   check.ServiceMeta,
+				//}
 			}
 		}
 	}
