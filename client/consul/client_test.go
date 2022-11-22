@@ -10,8 +10,12 @@ import (
 
 func SendPost(client *resty.Client, i discovery.ServiceInstance) {
 	body := `{"imei":"86428105997713","gaid":"86428105997713","req_id":"113113","scene_id":10001,"scene_subalg":"vre001","channel_id":0,"personal_switch":"1","extra_info":{"parent_vid":"qutTvtwxiMg"},"mobil_user_model":{"expose_list":[{"item":"item1","dur":10000000, "ts":100000000000000000}]}}`
-	resp, _ := client.R().EnableTrace().SetHeader("Content-Type", "application/json").
+	resp, err := client.R().EnableTrace().SetHeader("Content-Type", "application/json").
 		SetBody(body).Post(i.GetEndPoint() + "/feed/predict?sceneid=10001")
+	if err != nil {
+		fmt.Println("post errr:", err)
+		return
+	}
 	ti := resp.Request.TraceInfo()
 	fmt.Println("Request Trace Info:")
 	fmt.Println("DNSLookup:", ti.DNSLookup)
