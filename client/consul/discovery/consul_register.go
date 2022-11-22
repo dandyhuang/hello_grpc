@@ -63,6 +63,7 @@ func (c consulServiceRegistry) HealthCheckServices(serviceId string) error {
 				Port:       sever.ServicePort,
 				Metadata:   sever.ServiceMeta,
 			}
+			fmt.Println("serverid:", sever.ServiceID)
 			result[sever.ServiceID] = s
 		}
 		mSerIns := make([]ServiceInstance, sSize)
@@ -116,4 +117,3 @@ func NewConsulServiceRegistry(host string, port int, token string) (*consulServi
 		client:           *client,
 	}, nil
 }
-
