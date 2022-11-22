@@ -1,4 +1,4 @@
-package consul
+package discovery
 
 import (
 	"errors"
@@ -9,30 +9,35 @@ import (
 )
 
 type consulServiceRegistry struct {
-	serviceInstances     map[string]map[string]ServiceInstance
-	client               api.Client
-	localServiceInstance ServiceInstance
-	rwLock               sync.RWMutex
+	serviceInstances map[string][]ServiceInstance
+	client           api.Client
+	rwLock           sync.RWMutex
+}
+
+func GetInstances() {
+
+}
+
+func (c consulServiceRegistry) FirstInstances(serviceId string) error {
+	c.rwLock.RLock()
+	if len(c.serviceInstances[serviceId]) == 0 {
+		c.rwLock.RUnlock()
+		err := c.HealthCheckServices(serviceId)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	c.rwLock.RUnlock()
+	return nil
 }
 
 func (c consulServiceRegistry) GetInstances(serviceId string) ([]ServiceInstance, error) {
-	catalogService, _, _ := c.client.Catalog().Service(serviceId, "", nil)
-	fmt.Println(catalogService)
-	if len(catalogService) > 0 {
-		result := make([]ServiceInstance, len(catalogService))
-		for index, sever := range catalogService {
-			s := DefaultServiceInstance{
-				InstanceId: sever.ServiceID,
-				ServiceId:  sever.ServiceName,
-				Host:       sever.Address,
-				Port:       sever.ServicePort,
-				Metadata:   sever.ServiceMeta,
-			}
-			result[index] = s
-		}
-		return result, nil
-	}
-	return nil, nil
+	c.rwLock.RLock()
+	defer c.rwLock.RLock()
+	var ins []ServiceInstance
+	copy(ins, c.serviceInstances[serviceId])
+	return ins, nil
 }
 
 func (c consulServiceRegistry) GetServices() ([]string, error) {
@@ -47,29 +52,46 @@ func (c consulServiceRegistry) GetServices() ([]string, error) {
 }
 
 func (c consulServiceRegistry) HealthCheckServices(serviceId string) error {
-	catalogService, _, _ := c.client.Catalog().Service(serviceId, "", nil)
-	if len(catalogService) > 0 {
-		checks, _, _ := c.client.Health().Checks(serviceId, nil)
+	catalogService, _, err := c.client.Catalog().Service(serviceId, "", nil)
+	if err != nil {
+		return err
+	}
+	sSize := len(catalogService)
+	if sSize > 0 {
+		result := make(map[string]ServiceInstance, sSize)
+		for _, sever := range catalogService {
+			s := DefaultServiceInstance{
+				InstanceId: sever.ServiceID,
+				ServiceId:  sever.ServiceName,
+				Host:       sever.Address,
+				Port:       sever.ServicePort,
+				Metadata:   sever.ServiceMeta,
+			}
+			result[sever.ServiceID] = s
+		}
+		mSerIns := make([]ServiceInstance, sSize)
+
+		checks, _, err := c.client.Health().Checks(serviceId, nil)
+		if err != nil {
+			return err
+		}
 		for _, check := range checks {
 			if check.Status != "passing" {
 				// check.Status: 10.194.19.151-18801 &{cpd-sorting-ctr-prd-10-194-19-151.v-bj-4.vivo.lan 10.194.19.151-18801
 				//   schedule_comm_801_prd critical  dial tcp 10.194.19.151:18801: connect: connection refused 10.194.19.151-18801
 				//  schedule_comm_801_prd [] tcp   { map[]    false   false 0s 0s 0s 0 0 0} 3738010626 3738010626}
 				//    client_test.go:17: <nil>
-				fmt.Println("check.Status:", check.ServiceID, check, "node:", check.Node)
 				err := c.client.Agent().ServiceDeregister(check.ServiceID)
 				fmt.Println("deregister:", err)
 			}
 			if check.Status == "passing" {
-				//s := DefaultServiceInstance{
-				//	InstanceId: check.ServiceID,
-				//	ServiceId:  check.ServiceName,
-				//	Host:       check.Node,
-				//	Port:       check.Node,
-				//Metadata:   check.ServiceMeta,
-				//}
+				fmt.Println("check.Status:", check.ServiceID, "node:", check.Node)
+				mSerIns = append(mSerIns, result[check.ServiceID])
 			}
 		}
+		c.rwLock.Lock()
+		c.serviceInstances[serviceId] = mSerIns
+		c.rwLock.Unlock()
 	}
 	return nil
 }

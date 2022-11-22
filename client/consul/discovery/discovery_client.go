@@ -1,10 +1,11 @@
-package consul
+package discovery
 
 import (
 	"errors"
 	"math/rand"
 	"net"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -36,6 +37,8 @@ type ServiceInstance interface {
 
 	// return The port of the registered service instance.
 	GetPort() int
+
+	GetEndPoint() string
 
 	// return Whether the port of the registered service instance uses HTTPS.
 	IsSecure() bool
@@ -107,6 +110,14 @@ func (serviceInstance DefaultServiceInstance) GetHost() string {
 
 func (serviceInstance DefaultServiceInstance) GetPort() int {
 	return serviceInstance.Port
+}
+
+func (serviceInstance DefaultServiceInstance) GetEndPoint() string {
+	var build strings.Builder
+	build.WriteString(serviceInstance.Host)
+	build.WriteString(":")
+	build.WriteString(strconv.Itoa(serviceInstance.Port))
+	return build.String()
 }
 
 func (serviceInstance DefaultServiceInstance) IsSecure() bool {
