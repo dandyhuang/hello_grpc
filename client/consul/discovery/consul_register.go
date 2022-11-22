@@ -66,12 +66,13 @@ func (c consulServiceRegistry) HealthCheckServices(serviceId string) error {
 			fmt.Println("serverid:", sever.ServiceID)
 			result[sever.ServiceID] = s
 		}
-		mSerIns := make([]ServiceInstance, sSize)
 
 		checks, _, err := c.client.Health().Checks(serviceId, nil)
 		if err != nil {
 			return err
 		}
+		mSerIns := make([]ServiceInstance, len(checks))
+		i := 0
 		for _, check := range checks {
 			if check.Status != "passing" {
 				// check.Status: 10.194.19.151-18801 &{cpd-sorting-ctr-prd-10-194-19-151.v-bj-4.vivo.lan 10.194.19.151-18801
@@ -83,7 +84,8 @@ func (c consulServiceRegistry) HealthCheckServices(serviceId string) error {
 			}
 			if check.Status == "passing" {
 				fmt.Println("check.Status:", check.ServiceID, "node:", result[check.ServiceID])
-				mSerIns = append(mSerIns, result[check.ServiceID])
+				mSerIns[i] = result[check.ServiceID]
+				i++
 			}
 		}
 		c.rwLock.Lock()
