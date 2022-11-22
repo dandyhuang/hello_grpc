@@ -52,7 +52,7 @@ func (c consulServiceRegistry) HealthCheckServices(serviceId string) error {
 		for _, check := range checks {
 			if check.Status != "passing" {
 				fmt.Println("check.Status:", check.ServiceID, check)
-				//c.client.Agent().ServiceDeregister(check.ServiceID)
+				c.client.Agent().ServiceDeregister(check.ServiceID)
 			}
 		}
 	}
