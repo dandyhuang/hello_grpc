@@ -30,6 +30,7 @@ func serviceDiscoveryWithConsul() {
 	if error != nil {
 		fmt.Println(error)
 	}
+	fmt.Println("services:", services)
 
 	service := services["helloworld-server"]
 	address := service.Address
