@@ -9,9 +9,9 @@ import (
 )
 
 func SendPost(client *resty.Client, i discovery.ServiceInstance) {
-	body := `{"imei":"86428105997713","gaid":"86428105997713","req_id":"113113","scene_id":10001,"scene_subalg":"vre001","channel_id":0,"personal_switch":"1","extra_info":{"parent_vid":"qutTvtwxiMg"},"mobil_user_model":{"expose_list":[{"item":"item1","dur":10000000, "ts":100000000000000000}]}}`
+	body := `{"imei":"86428105997713","gaid":"86428105997713","req_id":"113113","scene_id":10001,"scene_subalg":"vre001","channel_id":0,"personal_switch":"1"}`
 	resp, err := client.R().EnableTrace().SetHeader("Content-Type", "application/json").
-		SetBody(body).Post("10.33.36.76:17800/feed/predict?sceneid=10001")
+		SetBody(body).Post("http://10.33.36.76:17800/feed/predict?sceneid=10001")
 	if err != nil {
 		fmt.Println("post errr:", err)
 		return
