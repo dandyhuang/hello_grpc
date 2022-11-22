@@ -13,6 +13,6 @@ func TestConsulServiceDiscovery(t *testing.T) {
 
 	t.Log(registryDiscoveryClient.GetServices())
 
-	t.Log(registryDiscoveryClient.GetInstances("Schedule_701_pre"))
+	t.Log(registryDiscoveryClient.GetInstances("schedule_comm_801_prd"))
 	t.Log(registryDiscoveryClient.HealthCheckServices("schedule_comm_801_prd"))
 }

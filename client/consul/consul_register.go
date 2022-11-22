@@ -15,6 +15,7 @@ type consulServiceRegistry struct {
 
 func (c consulServiceRegistry) GetInstances(serviceId string) ([]ServiceInstance, error) {
 	catalogService, _, _ := c.client.Catalog().Service(serviceId, "", nil)
+	fmt.Println(catalogService)
 	if len(catalogService) > 0 {
 		result := make([]ServiceInstance, len(catalogService))
 		for index, sever := range catalogService {
