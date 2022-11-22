@@ -13,6 +13,7 @@ require (
 	github.com/go-kratos/kratos/v2 v2.2.1
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-redis/redis/v8 v8.11.4
+	github.com/go-resty/resty/v2 v2.7.0
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/glog v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2
@@ -33,13 +34,12 @@ require (
 	github.com/segmentio/ksuid v1.0.3
 	github.com/sirupsen/logrus v1.4.2
 	github.com/smartystreets/goconvey v1.7.2 // indirect
-	github.com/stretchr/testify v1.7.0 // indirect
+	github.com/stretchr/testify v1.7.0
 	github.com/tjfoc/gmsm v1.4.1
 	github.com/valyala/fastrand v1.0.0
 	github.com/yangwenmai/ratelimit v0.0.0-20180104140304-44221c2292e1
 	go.uber.org/ratelimit v0.2.0
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
-	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/sys v0.0.0-20220422013727-9388b58f7150 // indirect
 	golang.org/x/text v0.3.7 // indirect
