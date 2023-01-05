@@ -29,18 +29,31 @@ func testmap2() {
 		name string
 		sex  string
 		age  int
-		good bool
+		Good bool
+		g    bool
 	}
 
 	people := map[uint]Person{
-		0: Person{"张无忌", "男", 18, false},
-		1: Person{"周芷若", "女", 17, false},
+		0: Person{"张无忌", "男", 18, false, true},
+		1: Person{"周芷若", "女", 17, false, true},
 	}
 
-	for name, _ := range people {
+	for k, _ := range people {
 		// 必须改成指针才能修改
-		if people[name].age < 50 {
-			people[name].good = true
+		if people[k].age < 50 {
+			// error
+			// people[k].Good = true
+		}
+	}
+
+	people1 := map[uint]*Person{
+		0: &Person{"张无忌", "男", 18, false, true},
+		1: &Person{"周芷若", "女", 17, false, true},
+	}
+	for k, _ := range people1 {
+		// 必须改成指针才能修改
+		if people1[k].age < 50 {
+			people1[k].Good = true
 		}
 	}
 

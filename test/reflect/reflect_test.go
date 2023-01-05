@@ -8,8 +8,16 @@ import (
 	"testing"
 )
 
+func testPanic(path string) {
+	if path == "" {
+		panic("error")
+	}
+}
 
 func TestReflectPainc(t *testing.T) {
+	assert.Panicsf(t, func() {
+		testPanic("1")
+	}, "get")
 	typ := reflect.TypeOf(&User{
 		Name: "ton",
 	})
@@ -98,4 +106,3 @@ func Test_Public_iterateFields(t *testing.T) {
 		})
 	}
 }
-

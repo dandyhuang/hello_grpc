@@ -2,6 +2,7 @@ package utils
 
 import (
 	perror "github.com/pkg/errors"
+	_ "hello_grpc/test/link"
 	"os"
 )
 
@@ -22,4 +23,10 @@ func Load(filename string) error {
 	}
 
 	return nil
+}
+
+func helloWorld() string
+
+func LinkHello() string {
+	return helloWorld()
 }
