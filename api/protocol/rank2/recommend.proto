@@ -1,0 +1,578 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// option optimize_for = LITE_RUNTIME;
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.vivo.internet.recom";
+option java_outer_classname = "RecomProto";
+option objc_class_prefix = "HLW";
+option go_package = "hello_grpc/api/protocol/rank2/;rank2";
+
+
+package rtrs_frame;
+import "protocol/rank2/rtrs_expinfo.proto";
+import "protocol/rank2/uac.proto";
+
+// *************************** begin ******************************
+//Begin---------场景定义
+//目的: 用于识别不同的场景
+enum SCENE_CMD_ID {
+    UNKNOWN = 0;
+    SCENE_CMD_ID_INFORMATION_FLOW = 1;      //信息流--周群
+    SCENE_CMD_ID_DOWNLOAD_RECOM = 2;      //下载后推荐--克浩
+    SCENE_CMD_ID_APPSTORE_SEARCH_ASSOCIATE = 3;      //应用商店联想--克浩
+    SCENE_CMD_ID_APPSTORE_SEARCH_CPD_LIST = 4;      //应用商店搜索列表--克浩
+    SCENE_CMD_ID_BROWSER_SEARCH = 5;      //浏览器搜索--克浩
+    SCENE_CMD_ID_APPSTORE_DOWNLOAD_BEROFE_AFTER = 6;      //商店下载前后  --曾志
+    SCENE_CMD_ID_BROWSER_SITE = 7;                //浏览器名站   --邹宇
+    SCENE_CMD_ID_DMP_VECTOR_SEARCH = 8;           //DMP向量检索  --黄子轩
+    SCENE_CMD_ID_APPSTORE_SEARCH_GAME = 9;           //应用商店游戏搜索  --陈苗红
+    SCENE_CMD_ID_APPSTORE_GAME_ASSOCIATE = 10;           //应用商店游戏联想  --陈苗红
+    SCENE_CMD_ID_APPSTORE_HOME_RECOMM = 12;      //应用商店首页推荐  --陈春梅
+    SCENE_CMD_ID_APPSTORE_UPDATE_PAGE_RECOMM = 13;      //应用商店更新页推荐  --陈春梅
+    SCENE_CMD_ID_APPSTORE_THEME_PAGE_RECOMM = 15;     //应用商店专题页推荐   --罗川江
+    SCENE_CMD_ID_APPSTORE_CATEGORY_PAGE_RECOMM = 16;   //应用商店分类页推荐   --罗川江
+    SCENE_CMD_ID_APPSTORE_DOWNLOAD_MANAGE_PAGE_RECOMM = 17;  //应用商店下载管理页推荐  --罗川江
+    SCENE_CMD_ID_APPSTORE_UPDATE_PAGE_DOWNLOAD_RECOMM = 18;  //应用商店更新页下载推荐  --罗川江
+    SCENE_CMD_ID_THEME_ENTRANCE_RECOMMEND = 19;      // 主题字体首入页推荐--兰佛军
+    //SCENE_CMD_ID_APPSTORE_INSTALL_NECESSARY_RECOMM = 742;  //应用商店装机必备  --罗川江
+    //SCENE_CMD_ID_GLOBAL_SEARCH_RECOMM = 745;  //全局搜索  --罗川江
+    SCENE_CMD_ID_GAMECENTER_CONTENT_DETAIL_RECOMM = 28;      //内销游戏中心游戏内容详情页推荐--李建辉
+
+    SCENE_CMD_ID_ITHEME_THEME_LIST_PAGE_RECOMM = 50;      // i主题主题列表页推荐--兰佛军
+    SCENE_CMD_ID_ITHEME_FONT_LIST_PAGE_RECOMM = 51;      // i主题字体列表页推荐--兰佛军
+    SCENE_CMD_ID_ITHEME_THEME_COLUMN_RECOMM = 52;      // i主题推荐页主题栏推荐--兰佛军
+    SCENE_CMD_ID_SYSTEM_SETTING_THEME_RECOMM = 53;      // 系统设置主题推荐页推荐--兰佛军
+    SCENE_CMD_ID_ITHEME_DETAIL_PAGE_DOWNLOAD_AFTER = 54;      // 主题详情页下载后--兰佛军
+    SCENE_CMD_ID_ITHEME_FONT_COLUMN_RECOMM = 55;      // 主题推荐页字体栏--兰佛军
+    SCENE_CMD_ID_ITHEME_SEARCH_NO_RESULT = 56;      // 主题搜索无结果页--兰佛军
+    SCENE_CMD_ID_MINUS_ONE_THEME_RECOMM = 57;      // 负一屏主题卡片推荐--兰佛军
+    SCENE_CMD_ID_ITHEME_THEME_COLUMN_MORE_RECOMM = 58;      // 推荐页更多主题--兰佛军
+    SCENE_CMD_ID_ITHEME_WALLPAPER_LIST_PAGE_RECOMM = 59;      // 壁纸列表页场景--兰佛军
+    SCENE_CMD_ID_ITHEME_UNLOCK_LIST_PAGE_RECOMM = 60;    // 锁屏列表--兰佛军
+    SCENE_CMD_ID_ITHEME_UNLOCK_COLUMN_RECOMM = 61;    // 推荐页锁屏栏--兰佛军
+    SCENE_CMD_ID_ITHEME_ALLSCENE_BANNER_RECOMM = 62;   //i主题全局banner
+
+    SCENE_CMD_ID_APPSTORE_SEARCH_RECOMM_LIST = 102;      //搜索推荐页
+    SCENE_CMD_ID_APPSTORE_RECOMM_DOWNLOAD = 104;      //内销商店推荐用下载管理--黄斐铨
+    SCENE_CMD_ID_APPSTORE_CPD_DOWNLOAD = 105;      //内销商店CPD用下载管理--黄斐铨
+    SCENE_CMD_ID_APPSTORE_LIST_GAME_SEARCH = 106;      //内销列表游戏搜索--黄斐铨
+    SCENE_CMD_ID_APPSTORE_ASSOCIATE_GAME_SEARCH = 107;      //内销联想词游戏搜索--黄斐铨
+    SCENE_CMD_ID_APPSTORE_SEARCH_BROADCAST_WORD = 108;      //内销商店搜索轮播词--陈浩南
+    SCENE_CMD_ID_APPSTORE_APP_SEARCH_HOT_WORD = 109;      //内销商店应用搜索热词--陈浩南
+    SCENE_CMD_ID_APPSTORE_GAME_SEARCH_HOT_WORD = 110;      //内销商店游戏搜索热词--陈浩南
+    SCENE_CMD_ID_APPSTORE_DETAIL_BEFOR_DOWNLOAD = 111;      //内销商店详情页下载前--陈浩南
+    SCENE_CMD_ID_APPSTORE_DETAIL_AFTER_DOWNLOAD = 112;      //内销商店详情页下载后--陈浩南
+    SCENE_CMD_ID_APPSTORE_FULL_SCENE = 113;      //内销商店全场景--陈浩南
+    SCENE_CMD_ID_APPSTORE_CPD_AFTER_DOWNLOAD = 114;      //内销CPD下载后--曾志
+    SCENE_CMD_ID_APPSTORE_CPD_LIST_GAME_SEARCH = 115;          //内销CPD列表游戏搜索--郭鑫鹏
+    SCENE_CMD_ID_APPSTORE_CPD_ASSOCIATE_GAME_SEARCH = 116;     //内销CPD联想词游戏搜索--郭鑫鹏
+    SCENE_CMD_ID_APPSTORE_SEARCH_LIST_CPD_SEARCH = 117;      //内销列表CPD搜索--郑世卓
+    SCENE_CMD_ID_APPSTORE_DOWNLOAD_AFTER = 118;      //搜索、首页、详情页、更新页下载后   -- 肖明睿
+    SCENE_CMD_ID_APPSTORE_LY_LIST_GAME_SEARCH=119;  //内销游戏联运列表搜索
+    SCENE_CMD_ID_APPSTORE_LY_ASSOCIATE_GAME_SEARCH=120; //内销游戏联运联想词搜索
+    SCENE_CMD_ID_APPSTORE_UPDATE_PAGE=121;              //应用商店-更新页
+    SCENE_CMD_ID_APPSTORE_AFTER_UPDATE=122;             //应用商店-更新后
+    SCENE_CMD_ID_APPSTORE_NECESS_INSTALL=123;         //应用商店-装机必备
+    SCENE_CMD_ID_APPSTORE_DOWNLOAD_MANAGE=124;        //应用商店-下载管理页
+    SCENE_CMD_ID_APPSTORE_SEARCH_ACTIVE=125;          //应用商店-搜索激活页
+    SCENE_CMD_ID_APPSOTRE_SEARCH_NO_RESULT_RECOMM=126; //应用商店搜索无结果页
+    SCENE_CMD_ID_APPSTORE_APP_TAG=127;                 //应用商店-应用标签
+    SCENE_CMD_ID_APPSOTRE_TAG_APPLIST=128;             //应用商店-根据标签推荐APP
+    SCENE_CMD_ID_APPSTORE_UPDATE_PUSH=129;             //应用商店-通知栏push更新
+    SCENE_CMD_ID_APPSTORE_HOME_RECOMM_NON_COMMERCE = 130;  //应用商店首页推荐-非商业化
+    SCENE_CMD_ID_APPSTORE_DOWNLOAD_BEROFE_MULTI_MODULE = 131; //  应用商店-下载前多模块
+
+    SCENE_CMD_ID_H5_HOMEPAGE_RECOMM = 200;    //H5首页推荐
+    SCENE_CMD_ID_H5_SPECIALPAGE_RECOMM = 201;    //H5专题页推荐
+    SCENE_CMD_ID_H5_HOT_SEARCH_INSTALLATION = 202;    //H5热搜安装
+    SCENE_CMD_ID_H5_SEARCH_RESULT_PAGE = 203;    //H5搜索结果页
+    SCENE_CMD_ID_H5_ASSOCIATIVE_WORD_SEARCH = 204;    //H5联想词搜索
+    SCENE_CMD_ID_H5_SEARCH_HOT_WORDS = 205;    //H5搜索热词
+    SCENE_CMD_ID_H5_DETAILS_PAGE_BEFORE_DOWNLOAD_RECOMM = 206;    //H5详情页下载前推荐
+    SCENE_CMD_ID_H5_DETAILS_PAGE_AFTER_DOWNLOAD_RECOMM = 207;    //H5详情页下载后推荐
+
+    SCENE_CMD_ID_IMUSIC_PLAYLIST_CHANGE = 301;    //i音乐歌单推荐换一批--陈奕奕
+    SCENE_CMD_ID_IMUSIC_PLAYLIST_RECOMM = 302;   // i音乐热门歌单推荐--陈奕奕
+    SCENE_CMD_ID_IMUSIC_EVERYSONG_RECOMM = 303;  //i音乐每日歌曲推荐--陈奕奕
+    SCENE_CMD_ID_IMUSIC_FMFIRST_RECOMM = 304;   //有声读物热门推荐一级页面--陈奕奕
+    SCENE_CMD_ID_IMUSIC_FMSECOND_RECOMM = 305;  //有声读物热门推荐二级页面--陈奕奕
+    SCENE_CMD_ID_IMUSIC_FMONLINE_RECOMM = 306;  //有声读物热门推荐在线专辑推荐--陈奕奕
+    SCENE_CMD_ID_IMUSIC_EXCLUSIVE_RECOMM = 307;  //i音乐专属音乐推荐--陈奕奕 
+    SCENE_CMD_ID_IMUSIC_EXCLUSIVE_CHANGE = 308;  //i音乐专属音乐换一批--陈奕奕
+    SCENE_CMD_ID_IMUSIC_FMCOLUMN_RECOMM = 309;  //i音乐栏位推荐--陈奕奕  
+    SCENE_CMD_ID_IMUSIC_SONG_SEARCHWORD_RECOMM = 310;  // 音乐库页面歌曲搜索框推荐词推荐
+
+    SCENE_CMD_ID_GAMECENTER_LIST_SEARCH = 351;      //内销游戏中心列表搜索--黄斐铨
+    SCENE_CMD_ID_GAMECENTER_ASSOCIATE_SEARCH = 352;      //内销游戏中心联想词搜索--黄斐铨
+    SCENE_CMD_ID_GAMECENTER_FORUM_HOME_RECOMM = 353;      //内销游戏中心游戏论坛首页推荐--李建辉
+    SCENE_CMD_ID_GAMECENTER_CPD_LIST_SEARCH = 354;        //内销游戏中心列表搜索--郭鑫鹏
+    SCENE_CMD_ID_GAMECENTER_CPD_ASSOCIATE_SEARCH = 355;   //内销游戏中心联想词搜索--郭鑫鹏
+    SCENE_CMD_ID_GAMECENTER_CTR_PREDICT = 356;      //游戏CTR --郭鑫鹏
+    SCENE_CMD_ID_GAMECENTER_LY_LIST_SEARCH=357;     //游戏中心联运列表搜索
+    SCENE_CMD_ID_GAMECENTER_LY_ASSOCIATE_SEARCH=358; //游戏中心联运联想词搜索
+
+    SCENE_CMD_ID_GAMECENTER_RECOMMEND=359;              //游戏中心-首页-推荐列表
+    SCENE_CMD_ID_GAMECENTER_SEARCH_RECOM=360;           //游戏中心-首页-搜索-联想词
+    SCENE_CMD_ID_GAMECENTER_SEARCH_LIST=361;            //游戏中心-首页-搜索结果
+    SCENE_CMD_ID_GAMECENTER_GAME_DIV=362;               //游戏中心-单机游戏列表
+    SCENE_CMD_ID_GAMECENTER_NETGAME_DIV=363;            //游戏中心-网游列表
+    SCENE_CMD_ID_GAMECENTER_TOP_HOT=364;                //游戏中心-排行
+    SCENE_CMD_ID_GAMECENTER_TOP_GAME=365;               //游戏中心-排行
+    SCENE_CMD_ID_GAMECENTER_TOP_NETGAME=366;            //游戏中心-网游排行
+    SCENE_CMD_ID_GAMECENTER_TOP_NEWGAME=367;            //游戏中心-新游戏排行
+    SCENE_CMD_ID_GAMECENTER_GAME_DETAIL=368;            //游戏中心-游戏详情页
+    SCENE_CMD_ID_GAMECENTER_CATEGORY=369;               //游戏中心-分类
+    SCENE_CMD_ID_GAMECENTER_RECOMMEND_DAY_OUT=370;      //游戏中心-首页-每日一荐-外显
+    SCENE_CMD_ID_GAMECENTER_RECOMMEND_DAY_LIST=371;     //游戏中心-首页-每日一荐-列表
+    SCENE_CMD_ID_GAMECENTER_HOT_DIALOG_APP=372;         //游戏中心-装机必备（新打开游戏中心）
+    SCENE_CMD_ID_GAMECENTER_DOWNLOAD_MANAGEMENT_REC=373;//游戏中心-下载管理-为您精选
+    SCENE_CMD_ID_GAMECENTER_TOP_SEARCH_OUT=374;         //游戏中心-搜索页-热门游戏推荐-外显
+    SCENE_CMD_ID_GAMECENTER_TOP_SEARCH_LIST=375;        //游戏中心-搜索页-热门游戏推荐-列表
+
+    SCENE_CMD_ID_GAMECENTER_DOWNLOAD_AFTER=376;        //游戏下载后
+    SCENE_CMD_ID_GAMECENTER_GAME_BBS=377;              //游戏论坛
+    SCENE_CMD_ID_GAMECENTER_DOWNLOAD_AFTER_MULTI_MODULE=378; //游戏多模块下载后
+    SCENE_CMD_ID_GAMECENTER_LITTLE_GAME=379; //小游戏
+    SCENE_CMD_ID_GAMECENTER_HIGT_QUALITY_GAME=380; //精品游戏
+    SCENE_CMD_ID_GAMECENTER_CLASSIFY_GAME=381; // 分类
+    SCENE_CMD_ID_GAMECENTER_TAG_GAME=382; // 标签
+    SCENE_CMD_ID_GAMECENTER_TAG_CLASSIFY_APP=383; // 标签  分类 app
+
+    SCENE_CMD_ID_LOCKSCREEN_JOYPICTURE_RECOMM = 400; //内销悦图锁屏--马连洋 
+
+    SCENE_CMD_ID_QUICK_APP_SEARCH_PAGE_SEARCH = 410;  //快应用搜索页搜索
+    SCENE_CMD_ID_QUICK_APP_SECOND_LIST_RECOMM = 411;  //快应用推荐页二级列表推荐
+    SCENE_CMD_ID_QUICK_APP_HOMEPAGE_RECOMM = 412;     //快应用首页推荐
+    SCENE_CMD_ID_FAST_APP_SEARCH_BOX_GUESS_LIKE_RECOMM = 413;
+    SCENE_CMD_ID_FAST_APP_SEARCH_BOX_HOT_WORD_RECOMM = 414;
+    SCENE_CMD_ID_FAST_APP_HIBOARD_PERSONAL_RECOMM = 415;
+
+    SCENE_CMD_ID_ALLIANCE_AD_CPC = 450;            //联盟广告cpc -- 周群
+    SCENE_CMD_ID_AD_ALLIANCE_CPD = 451;            //广告联盟CPD -- 肖明睿
+    SCENE_CMD_ID_INFO_FLOW_OCPC = 452;            //信息流 -- 王宇宾
+    SCENE_CMD_ID_INFO_FLOW_OTHER = 453;            //信息流 -- 王宇宾
+
+    SCENE_CMD_ID_FOREIGN_APPSTORE_RECOMM_DETAIL_LIST = 501;      //外销商店详情页  --邹宇
+    SCENE_CMD_ID_FOREIGN_APPSTORE_RECOMM_UPDATE_LIST = 502;      //外销商店更新页  --邹宇
+    SCENE_CMD_ID_FOREIGN_APPSTORE_RECOMM_DOWNLOAD_MANAGER = 503;      //外销商店下载管理页  --邹宇
+    SCENE_CMD_ID_FOREIGN_APPSTORE_RECOMM_INSTALL_RECOMM = 504;      //外销商店安装推荐  --邹宇
+    SCENE_CMD_ID_FOREIGN_APPSTORE_CLASSIFY_LIST = 505;   // 外销商店分类榜单--邹宇
+    SCENE_CMD_ID_FOREIGN_APPSTORE_NEW_LIST = 506;  //外销商店new榜单--邹宇
+    SCENE_CMD_ID_FOREIGN_APPSTORE_SPECIAL_PAGE = 507;  //外销商店个性化页面--邹宇
+    SCENE_CMD_ID_FOREIGN_APPSTORE_HOME_PAGE_RECOMM = 508;  //外销商店首页推荐
+    SCENE_CMD_ID_FOREIGN_APPSTORE_COMMENT_RECOMM = 509;  //外销商店APP评论置顶推荐
+    SCENE_CMD_ID_FOREIGN_APPSTORE_RANK_PAGE_RECALL=510; // 外销商店排行页
+    SCENE_CMD_ID_FOREIGN_APPSTORE_UPGRADE_PAGE = 512; //外销商店升级必备页 - 李阳
+    SCENE_CMD_ID_FOREIGN_APPSTORE_UPGRADE_PAGE_NEW = 513; //外销商店升级必备页新版本 - 李阳
+    SCENE_CMD_ID_HOME_APPSTORE_NON_COMMERCE_COMMENT_RECOMM = 514; //内销商店APP非商业化评论推荐 - 刘思
+    SCENE_CMD_ID_FOREIGN_APPSTORE_INSTALL_PAGE = 515; //装机必备 -- 李阳
+    SCENE_CMD_ID_FOREIGN_APPSTORE_DETAIL_PAGE_TAG_REC = 516; // 详情页标签推荐 -- 李阳
+    SCENE_CMD_ID_FOREIGN_APPSTORE_TAG_PAGE = 517; // 标签页推荐 -- 李阳
+    SCENE_CMD_ID_FOREIGN_APPSTORE_TAG_CLASSIFY_GROUP_ID = 518;//外销标签、分类、标签组召回场景
+    SCENE_CMD_ID_FOREIGN_APPSTORE_HOME_PAGE_NEW=519;//外销首页新接口，全排序
+    SCENE_CMD_ID_FOREIGN_APPSTORE_APP_FOLDER=520;//外销应用文件夹推荐
+    SCENE_CMD_ID_FOREIGN_APPSTORE_DOWNLOAD_RECOMM=521;//外销应用下载推荐，根据用户安装列表进行推荐
+
+    //530-559  外销商业化场景
+    SCENE_CMD_ID_FOREIGN_APPSTORE_AD_RELATED=530;//外销商业化广告 相关性推荐
+    //560-579 外销游戏场景
+    SCENE_CMD_ID_FOREIGN_GAME_TAG_REC=560;//外销游戏标签推荐
+    
+    // sceneid=（580-599）占用
+    SCENE_CMD_ID_APPSTORE_SEARCH_LIST_CREATIVE = 580; // cps_search 列表搜索创意预估--孙会会
+
+    SCENE_CMD_ID_SHOP_RECOMMEND_FOR_YOU = 600;   //推荐页-为你推荐 --林涛
+    SCENE_CMD_ID_SHOP_PRODUCT_GROUP_REC_PREDICT = 601;   //详情页-商品搭配 --林涛
+    SCENE_CMD_ID_SHOP_DETAIL_VIEW_AGAIN = 602;   //详情页-看了又看 --林涛
+    SCENE_CMD_ID_SHOP_GUESS_YOU_LIKE = 603;   //详情页-猜你喜欢 --林涛
+    SCENE_CMD_ID_SHOP_RECOMMEND = 606;   //选购页-推荐 --林涛
+    SCENE_CMD_ID_SHOP_BUY_AND_BUY = 611;   //详情页-看了又看 --林涛
+	
+    SCENE_CMD_ID_APPSTORE_INDEX_RECOMM = 701; //应用商店首页推荐
+    SCENE_CMD_ID_APPSTORE_SEARCHACTIVE_RECOMM = 702; //应用商店热搜应用推荐
+    SCENE_CMD_ID_APPSTORE_STORESEARCH_RECOMM = 703; //应用商店列表搜索推荐
+    SCENE_CMD_ID_APPSTORE_ASSOSEARCH_RECOMM = 704; //应用商店联想词搜索推荐
+    SCENE_CMD_ID_APPSTORE_AFTERDOWNLOAD_RECOMM = 705; //应用商店多模块下载后推荐
+
+    SCENE_CMD_ID_APPSTORE_UPDATELIST_RECOMM = 706; //应用商店更新管理页推荐
+    SCENE_CMD_ID_APPSTORE_BROWSERSEARCH_RECOMM = 707; //应用商店浏览器搜索推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNBEFOREDETAIL_RECOMM = 708; //应用商店详情下载前推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERSEARCH_RECOMM = 709; //应用商店搜索下载后推荐
+    SCENE_CMD_ID_APPSTORE_DOWNLOADMANAGE_RECOMM = 710; //应用商店下载管理页推荐
+    SCENE_CMD_ID_APPSTORE_SPECIALTOPIC_RECOMM = 711; //应用商店专题页推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERGUIDE_RECOMM = 712; //应用商店安装引导推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERFIRST_RECOMM = 713; //应用商店首页下载后推荐
+    SCENE_CMD_ID_APPSTORE_ISTEWARD_RECOMM = 714; //应用商店i管家推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERDOWNLOADGUIDE_RECOMM = 715; //应用商店下载流量引导推荐
+    SCENE_CMD_ID_APPSTORE_APPPAGE_RECOMM = 716; //应用商店精品页推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERUPDATE_RECOMM = 717; //应用商店更新后推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERBROWSERMANAGE_RECOMM = 718; //应用商店浏览器下载管理页推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERDETAIL_RECOMM = 719; //应用商店老详情下载后推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNBEFOREBROWSERSEARCHH5_RECOMM = 720; //应用商店H5浏览器搜索下载前推荐
+    SCENE_CMD_ID_APPSTORE_APPTYPE_RECOMM = 721; //应用商店一级分类推荐
+    SCENE_CMD_ID_APPSTORE_APPSECONDTYPE_RECOMM = 722; //应用商店二级分类推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERBROWSERSEARCHH5_RECOMM = 723; //应用商店浏览器搜索下载后推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERAPPTYPE_RECOMM = 724; //应用商店分类下载后推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERRANKING_RECOMM = 725; //应用商店排行榜下载后推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNBEFOREBROWSERFLOWH5_RECOMM = 726; //应用商店浏览器信息流H5推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNBEFOREMESSAGEH5_RECOMM = 727; //应用商店短信h5下载前推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERBROWSERFLOWH5_RECOMM = 728; //应用商店浏览器信息流H5下载后推荐
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERMESSAGE_RECOMM = 729; //应用商店短信下载后推荐
+    SCENE_CMD_ID_APPSTORE_BROWSERDOWNINTERCEOTION_RECOMM = 730; //应用商店浏览器下载拦截推荐
+    SCENE_CMD_ID_APPSTORE_BUREAUSEARCHAPPSUGGEST_RECOMM = 731; //全局搜索-应用建议-推荐
+    SCENE_CMD_ID_APPSTORE_BROWSERSEARCHASSOCICATAPPAFTERDOWN_RECOMM = 732; //浏览器-搜索-联想应用详情安装后推荐
+    SCENE_CMD_ID_APPSTORE_H5APPSTORE_INDEX_RECOMM = 733;  //浏览器-H5商店-首页
+    SCENE_CMD_ID_APPSTORE_SEARCHRESULTLIST_RECOMM = 734;  //商店-搜索-搜索结果列表榜单
+    SCENE_CMD_ID_APPSTORE_H5APPSTORERESULTLIST_RECOMM = 735;   //浏览器-H5商店-搜索结果列表
+    SCENE_CMD_ID_APPSTORE_H5APPSTOREASSOCICATAPP_RECOMM = 736;   //浏览器-H5商店-联想应用
+    SCENE_CMD_ID_APPSTORE_H5APPSTORHOTSEARCHAFTERDOWN_RECOMM = 737;  //浏览器-H5商店-热搜安装
+    SCENE_CMD_ID_APPSTORE_RANKPAGEHOTSEARCHAFTERDOWN_RECOMM = 738;  //商店-排行页-热搜榜安装后推荐
+    SCENE_CMD_ID_APPSTORE_POINTDOWNLAOD_RECOMM = 739;  //积分下载场景
+    SCENE_CMD_ID_APPSTORE_BROSWERTOPDOWNLOAD_RECOMM = 740;  //浏览器下载热榜tab页
+    SCENE_CMD_ID_APPSTORE_CPDEVENT_RECOMM = 741;  //通用激励激活页
+    //SCENE_CMD_ID_APPSTORE_INSTALL_MUST = 742;  //装机必备
+    SCENE_CMD_ID_APPSTORE_INSTALL_NECESSARY_RECOMM = 742;  //应用商店装机必备  --罗川江
+    SCENE_CMD_ID_APPSTORE_TAG_MIX_LIST_RECOMM = 743;//标签落地页-吴腾飞
+    SCENE_CMD_ID_BROWSER_SUG_CPC = 744;//综搜广告CPC,浏览器sug页cpc位--郑镇荣
+    SCENE_CMD_ID_GLOBAL_SEARCH_RECOMM = 745;  //全局搜索  --罗川江
+    SCENE_CMD_ID_GOOGLE_HALF_SCREEN_RECOMM = 746;//google半屏推荐--吴腾飞
+    SCENE_CMD_ID_SEARCH_OPTIZ_WORD = 747;//搜索优选词--周保建
+    SCENE_CMD_ID_SEARCH_PREDICT = 748;//搜索混排--周保建
+    SCENE_CMD_ID_GLOBAL_SEARCH_CPC = 749;//全局搜索综搜-聂进
+    SCENE_CMD_ID_SEARCH_REQUIRED_FOR_UPDATE = 750;//搜索升版必备-卢满宇
+    SCENE_CMD_ID_SEARCH_HOT_WORDS = 751;//搜索热词-周保建
+    SCENE_CMD_ID_TOUTIAO_SEARCH = 752;//头条搜索结果页-周保建
+    SCENE_CMD_ID_ROM_ITHEM =753;//rom i主题主题
+    SCENE_CMD_ID_ROM_ITHEM_GOLD_CENTER =754;//rom i主题主题金币中心
+
+	//非商业化app store 推荐(801-850占用)
+    SCENE_CMD_ID_APPSTORE_DETAILS_DOWNBEFORE_NONCOMMER_RECOMM = 801;//应用商店详情页下载前相关推荐-刘思
+	SCENE_CMD_ID_APPSTORE_DETAILS_DOWNAFTER_NONCOMMER_RECOMM =802;//应用商店详情页下载后相关推荐-刘思
+	SCENE_CMD_ID_APPSTORE_SEARCH_DOWNAFTER_NONCOMMER_RECOMM = 803;//应用商店搜索下载后相关推荐-刘思
+	SCENE_CMD_ID_APPSTORE_CATEGORY_DOWNAFTER_NONCOMMER_RECOMM =804;//应用商店分类下载后相关推荐-刘思
+	SCENE_CMD_ID_APPSTORE_FIRST_PAGE_NONCOMMER_RECOMM =805;//应用商店首页相关推荐-刘思
+	SCENE_CMD_ID_APPSTORE_SCORE_REGISTER_NONCOMMER_RECOMM =806;//应用商店首页相关推荐-刘思
+	SCENE_CMD_ID_APPSTORE_SCORE_GOOGLE_AD_OPTIMIZE = 807;//应用商店google应用广告跳转无应用优化-吴腾飞
+	SCENE_CMD_ID_APPSTORE_NO_DOWNLOAD_LINK_RECOMM = 808;//应用商店首页活跃无下载接内容推荐-吴腾飞
+	SCENE_CMD_ID_APPSTORE_UPDATE_MANAGE_RECOMM = 809;//应用商店更新管理页专题推荐-吴腾飞
+	SCENE_CMD_ID_APPSTORE_APP_CATEGORY_PAGE_RECOMM = 810;//应用商店应用分类页推荐-吴腾飞
+	SCENE_CMD_ID_APPSTORE_AUTO_OPERAT_PLATFORM = 811; //应用商店自动化营运平台-吕平辉
+	SCENE_CMD_ID_APPSTORE_GOOGLE_TRANSFER_RECOM = 812; //谷歌接口跳转应用商店相关推荐-吕平辉、张达
+    SCENE_CMD_ID_APPSTORE_PERSONAL_PUSH_RECOM = 813; //应用商店个性化push推荐-吕平辉
+    
+	SCENE_CMD_ID_OFFICIAL_CONTENT_VSELECTED_EVERYBODY_IS_WATCHING = 901;//官网内容大家都在看-孙毅
+    SCENE_CMD_ID_OFFICIAL_CONTENT_COMMUNITY_HOME_PAGE = 902; //官网内容社区首页-孙毅
+    SCENE_CMD_ID_OFFICIAL_CONTENT_HOME_PAGE_RELATED=903;//官网社区首页相关推荐-孙毅
+	
+	//电子书（非公司业务场景） (1000-1099占用)
+
+    //咨讯平台占用 (1100-1199)
+    SCENE_CMD_ID_NEWS_PLATFORM_VECTOR_ONLINE_SEARCH = 1100;   //向量近邻检索
+    SCENE_CMD_ID_NEWS_PLATFORM_EVALUATE_SYSTEM = 1101;        //评测系统
+    
+    SCENE_CMD_ID_VIDEO_RECOMMEND_OLD = 1300;   //短视频推荐
+    SCENE_CMD_ID_VIDEO_FLLOW_PAGE = 1301;   //短视频关注页
+    SCENE_CMD_ID_VIDEO_EXPORE_PAGE = 1302;   //短视频探索页
+    SCENE_CMD_ID_VIDEO_RECOMMEND = 1303;   //短视频推荐页
+    SCENE_CMD_ID_BROWSER_RECOMMEND = 1401;   //浏览器推荐页
+    SCENE_CMD_ID_BROWSER_VIDEO_RECOMMEND = 1402;   //浏览器视频
+    SCENE_CMD_ID_VIVO_VIDEO = 1501;  
+
+
+    //应用商店小场景（9001-9050）
+    SCENE_CMD_ID_APPSTORE_AFTERDOWNLOAD_LITE_RECOM = 9002; //应用商店新详情页下载后多模块（小场景）张铁强
+    SCENE_CMD_ID_APPSTORE_DETAILSDOWNAFTERDETAIL_LITE_RECOMM = 9003; //应用商店新详情页下载后非多模块（小场景）张铁强
+    SCENE_CMD_ID_APPSTORE_FIRSTPAGE_LITE_RECOM = 9004; //应用商店首页非多模块（小场景）刘思
+    SCENE_CMD_ID_APPSTORE_FIRSTPAGE_MULTI_LITE_RECOM = 9005; //应用商店首页多模块（小场景）刘思
+    
+
+    //浏览器小场景（9051-9099）
+    SCENE_CMD_ID_BROWSER_DETAILSDOWNAFTER_GUID = 9051; //浏览器拦截推荐（小场景）周保建
+    SCENE_CMD_ID_BROWSER_TOPDOWN = 9052; //浏览器下载热榜（小场景）周保建
+    SCENE_CMD_ID_BROWSER_DOWNAFTER_BROWSER_MANAGE = 9053; //浏览器下载管理页热门推荐（小场景）周保建
+    SCENE_CMD_ID_BROWSER_INSTALLAFTER_RECOMM = 9054; //浏览器搜索安装后推荐（小场景）周保建
+}
+//End---------场景定义
+
+//Begin--------服务定义
+enum SERVICE_TYPE{
+    SERVICE_UNKNOWN = 0;
+    BASIC_RANK = 1; //粗排
+    ADVANCED_RANK =2; // 精排
+    BASIC_PREDICT = 3; // 智能拓量
+    RECALL = 4; //召回服务
+}
+//End
+
+//Begin---------实验平台
+//目的：支持多层实验平台，通过配置化方式实现多组实验统计
+
+message PredictorInfo {
+    string platform = 1; 
+    string modelName = 2;    
+    double powerRatio = 3;   
+    string oriModelName = 4;            
+};
+
+//场景算法信息 
+message SceneSubAlgInfo {
+    repeated string rankAlgs = 1; 
+    repeated string recallAlgs = 2;                                    
+    repeated PredictorInfo predictors = 3;   
+};
+
+message SeviceSceneInsulateInfo{
+    bool isEffect = 1;                            //服务场景分离是否生效
+    string serviceName = 2;                       //服务名
+    string serviceNameSuffix = 3;                 //服务名后缀
+};
+
+//Begin---------用户相关
+//设备相关信息
+//目的：用于个性化推荐
+message DeviceInfo{
+    string androidId = 1;  
+    string imei = 2;  
+    int64  superUser = 3;                                 //jail break/root
+    string language = 4;                                 //语言
+    string manufacturer = 5;                                  //手机厂商 htc, LG, ...
+    string modelName = 6;                                  //手机型号 Nexus 5, ...
+    string osVersion = 7;                                  //安卓版本号 4.4.1
+    string resolution = 8;                                  //400x800, 400*600
+    string macAddr = 9;                                  //34:34:f3:...
+    string clientVersion = 10;                                //客户端版本号 TMA_411_DEV/040411&NA/040411&2.3.4_10_1&20_15_14&samsung_GTS5570&NA&NA&V3
+    int64 addAttribute = 11;                             //设备附加属性
+    repeated int32 preferInfos = 12;                     //偏好列表
+	string udid = 13;                                    //用户设备统一唯一标识符
+	string oaid = 14;                                    
+};
+
+//位置相关信息
+//目的：LBS相关推荐
+message LocationInfo{
+    string city = 1;                                          //城市
+    string longitude = 2;                                    //经纬度
+    string timezone = 3;                                     //时区
+};
+
+//网络相关信息
+//目的：网络相关过滤
+message NetworkInfo{
+    string imsi = 1;                                           //sim卡号
+    string networkType = 2;                                   //wifi, 2g, 3g...
+    string networkOperator = 3;                               //运营商
+    string phoneNumber = 4;                                   //手机号
+    string clientIp = 5;                                      //客户端用户的ip
+    string wifiSsid = 6;                                       //wifi名(Vivo-Freewifi)
+    string wifiBssid = 7;                                      //wifi路由器的mac地址
+};
+//End---------用户相关
+
+
+//Item相关
+message AdItemInfo{
+    string traceId = 1;                                       // 广告用于跟踪计费的traceid
+    string adTxt = 2;                                         // 广告语
+    int32 adType = 3;                                          // 广告类型：1、普通网址 2、应用下载
+    int32 startTime = 4;                                        // 广告开始时间
+    int32 endTime = 5;                                         //广告结束时间
+    double price = 6;                                        // 广告的价格
+    int32 costType = 7;                                       // 区分广告的计费类型，如是否cpt
+    map<string,string> ideaMap = 8;                          // 广告创意信息
+    string currentIdea = 9;                                //当前创意
+    int32 pricingType = 10; //计费类型: 1、表示cpc；2、表示 ocpc; 3、表示cpd；4、表示 ocpd;
+    int64 creativeid = 11;  //创意id，与appid的关系是多对
+    int64 templateid = 12;
+    double bid = 13; //广告主出价
+    int32 stage = 14; //ocpc阶段, 非ocpc广告=0, ocpc第一阶段=1, ocpc第二阶段=2, ocpc第三阶段=3
+    int32 secondCvType = 15; //ocpc阶段, 第二目标转化目标
+    int64 appid = 16;
+    int32 chargeMode = 17; // 计费模式：1、cpd；2、ocpd；4、动态出价
+    int32 cvType = 18;  // 转换类型
+    int32 winCvType = 19;  // 竞价胜出目标
+    double pidBid = 20; // 一目标风控出价
+    double secondPidBid = 21; // 二目标风控出价
+    int32 isRta = 22;  // 是否是rta创意
+    int32 general_switch = 23; // 通投标识:0 关闭 1 客户开启 2运营开启
+    int64 dspId = 24; //第三方dsp的id
+    double gameLtv = 25; //商业化接口返回的ltv
+    double realLtv = 26; //商业化接口返回的ltv
+    double secondTargetPrice = 27; // 二目标转化价格
+    double secondBid = 28; //第二目标风控出价
+    int32 isCpd = 29; //是否cpd游戏 1-是
+};
+
+//付费模型相关
+message PayScoreInfo {
+    double opClickedLtv = 1; // 点击ltv，由付费意愿和ltv计算得来，对应"_clickLTV"
+    double adClickedLtv = 2; // 联盟点击ltv，由联盟付费意愿和联盟ltv计算得来
+    double opLtv = 3;        // 最终ltv，对应"_ltv"
+    double opPaywill = 4;    // 最终paywil
+    double adLtv = 5;
+    double adPaywill = 6;
+    double joLtv = 7;      //联运ltv
+    double joPaywill = 8;  //联运paywill
+    double joClickedLtv = 9; // 联运点击ltv，由联运付费意愿和联运ltv计算得来
+};
+
+message RecommendItem{
+    int64 id = 1;//appid
+    double score = 2;  
+    string recomReason = 3;                                  //推荐理由
+    int32 versionCode = 4;                                     //应用的versionCode
+    AdItemInfo adInfo = 5;
+    double cvr = 6;
+    string traceId = 7;
+    string strId = 8;
+    string appname = 9;
+    map<string, string> mapContext = 10;     //扩展字段
+    map<int64, double> targetScore = 11; //各预估目标及打分
+    int64 child_id = 12; //派生广告id,动态创意id
+    int32 floor = 13 ; //用于特殊场景标识楼层信息 和score对应
+    double ctr_power = 14;
+    PayScoreInfo payInfo = 15; //付费模型相关信息
+    double ctr = 16;
+    double retention = 17;
+    rtrs_frame.MixItem mix_item = 18;
+    string query = 19;  // query encoder服务输入
+    repeated double vecScore = 20;  // query embedding
+    double cvr2 = 21;
+    double ecpm = 22;  // cpd最终打分
+    int32 category = 23; // 0 应用 1 单机 2 网游
+    int32 cp = 24; //cp以2、5开头或者等于41是cpd，3开头是联运
+    string gameps = 25;  //  游戏队列
+    string cpdps = 26;  // cpd队列
+    double cpd_cvr = 27;
+    double cpd_cvr2 = 28;
+    double cpd_score = 29;
+
+};
+
+message RecommendGroup{
+    int64 id=1;//组id，实际场景中代表专题，分组，标签等id
+    double score=2;//得分
+    string name=3;//组name
+    repeated RecommendItem vecItem=4;//group内的item列表
+    map<string,string> mapContext=5;//扩展字段
+}
+
+
+//Begin---------App定向投放相关
+//年龄、收入等区间
+message Interval{
+    double lowerLimit = 1;                                    //下限
+    double upperLimit = 2;                                    //上限
+};
+//年龄性别参数
+message AgeSexInfo{
+    bool isIncludeAge = 1;                            //是否使用年龄字段
+    repeated Interval ageInterval = 2;                         //年龄区间
+    bool isIncludeSex = 3;                            //是否使用性别字段
+    int32 sex = 4;                                              //1男2女0全部
+};
+//收入和地域参数
+message IncomeCityInfo{
+    bool isIncludeIncome = 1;                         //是否使用收入字段
+    repeated Interval incomeInterval = 2;                      //收入区间
+    bool isIncludeCity = 3;                           //是否使用地域城市字段
+    repeated uint32 vecCityId = 4;                       //地域城市范围                        
+};
+//每个app的定向信息
+message RuleAppDirectInfo{
+    map<uint32, double> mapTagInfo = 1;              //tag集合
+    double exposePercent = 2;                                //曝光比
+    repeated uint32 vecInstallAppIdKai = 3;              //已安装app列表
+    repeated uint32 vecUnInstallAppIdKai = 4;        //未安装app列表
+    AgeSexInfo ageSexInfo = 5 ;      //年龄、性别信息
+    IncomeCityInfo incomeCityInfo = 6 ;      //收入、地域信息
+};
+
+//End---------App定向投放相关
+//appstore非商业化推荐模块类型
+message Module{
+	string moduleId = 1;
+	int32  moduleType = 2; //0:相关推荐 1：同标签推荐 2：同专题推荐
+};
+
+//推荐信息
+message RecommendInfo{
+    SCENE_CMD_ID sceneId = 1;                          //场景定义
+    string sceneSubAlg = 2;                      //目前流量还是通过二部来划分，用来标识一个场景下的子流量
+    string context = 3;                         //上下文信息，比如搜索的精准搜索匹配结果
+    int32 platformVersion = 4;                //平台版本号：比如应用商店、浏览器、游戏中心
+    repeated RecommendItem vecItem = 5;         //用于使用推荐给出的顺序
+    map<int64, RecommendItem> mapItem = 6;       //用于使用appid做key，返回数据信息，与vecItem不同时存在
+    string traceId = 7;
+    int32 totalResult = 8;                                      //总条数，推荐侧返回的可展示的item总数
+    int32 indexBegin = 9;                                       //请求起始条数，从0开始
+    int32 indexEnd = 10;                                         //请求结束位置
+    string query = 11;                                                //查询词
+    map<string, string> mapContext = 12;                         //上下文信息，比如搜索的精准搜索匹配结果
+    int64 positionId = 13;                                        // 广告位ID(int64)
+    double valueModifyParamA = 14;  // pctr*（a+bid^t）*factor 中的参数a
+    double valueModifyParamT = 15;  // pctr*（a+bid^t）*factor 中的参数t
+    double valueModifyParamFactor = 16;  // pctr*（a+bid^t）*factor 中的参数factor
+    SceneSubAlgInfo subAlgInfo = 17;
+    string sceneInfo = 18;                     //场景说明以及子场景的标注
+    string positionIdStr = 19;                                        // 广告位ID(string)
+    string word_seg = 20;               //query分词结果，以英文逗号分隔的分词结果
+    int32 refreshTimes = 21;
+    Module module = 22;    //所属模块
+    repeated RecommendGroup vecGroup=23;//用于使用推荐给出的组的顺序
+    int32 sceneid_int = 24; //用于标识场景ID,不需要通过枚举值来指定，减少接口的变更次数
+    int32 areaDldType = 25; // 1表示 自动下载；2表示手动下载
+    int32 ssp_media_type = 26; // add by luojianhui 20200715, 1表示自有流量，2表示联盟开发者平台的媒体流量，3表示联盟ssp流量
+    repeated RecommendItem vecItem_adx = 27;         //第三方dsp广告信息
+    repeated RecommendItem displayed_recommends = 28; // 已展示应用列表
+    string clientTraceData = 29; //商店调起路径，json格式
+    int32 pageNumber = 30; //屏数
+    string cpdSceneSubAlg = 31; //cpd算法标识
+    string gameSceneSubAlg = 32; //游戏算法标识
+};
+
+//Begin---------------接口
+//请求参数
+message RecomRequest{
+    DeviceInfo device = 1;
+    LocationInfo location = 2;
+    NetworkInfo network = 3;
+    RecommendInfo recommend = 4;
+    repeated AlgMultiTestInfo vecTestInfo = 5;                //多层abtest信息, 在请求access的时候已经确定好
+    string reqId = 6;
+    int32 timeout = 7; //请求超时时间，单位ms
+    string appKey = 8;
+    bool need_debug = 9;     //是否需要debug，目前只有白名单看板需要
+    map<string, SeviceSceneInsulateInfo> sceneInsulateContext = 10;   //服务场景分离信息
+	repeated Module vecModuleList = 11;      //模块列表
+    SERVICE_TYPE service = 12; // 服务类型，精排、粗排或智能拓量
+    bytes userFeature = 13;//用户特征
+    repeated RecommendInfo recommends = 14; // 多模块请求
+};
+
+//推荐结果
+message RecomResponse{
+    int32 ret = 1;
+    string retStr = 2;
+    RecommendInfo recomInfo = 3;
+    map<string,string> debug_info = 4;   //多层服务的debug内容，每层对应map的一项
+    map<string,RecomResponse> debug_info2 = 5;
+    repeated RecommendInfo recomInfoList = 6;//多模块返回
+    bytes binValue= 7;//用于返回二进制数据;
+
+};
+//End---------------接口

@@ -1,0 +1,62 @@
+syntax = "proto3";
+package rtrs_frame;
+
+import "protocol/rank2/rtrs_expinfo.proto";
+option go_package = "hello_grpc/api/protocol/rank2/;rank2";
+
+
+message AbtestReq {
+  uint64 pageid = 1;
+  string imei = 2;
+};
+
+message AbtestV2Req {
+  uint64 sceneid = 1;        //场景id
+  string userid = 2;         //用于查找白名单
+  string hashid = 3;         //用于计算哈希值
+  string page_recognize = 4; //指定场景查找结点
+};
+
+message AbtestRsp {
+  repeated AlgMultiTestInfo page_items = 1;
+  string debug_error = 2;
+};
+
+message AbNodeInfo {
+  bool bHead = 1; // 是否根节点
+  bool bHashMix = 2;
+  bool bHashDate = 3;
+  uint64 pageid = 4;  // 结点ID
+  uint64 sceneid = 5; // 场景
+
+  int32 version = 6;
+  uint64 abDefPage = 7;
+  uint64 channelSize = 8; // hash
+  uint64 hashFix = 9;
+  int64 hashDateDelay = 10;
+  int32 nodeType = 11;      // 结点类型
+  int32 nodeAlgorithm = 12; // hash算法类型
+  string jsName = 13;
+
+  repeated string abChannels =
+      14; // hash(***) [0,20] -> A,  abChannels[0] = "A"  abChannels[19] = "A"
+  map<string, uint64> subNodes = 15;  // 子节点名--》pageID映射
+  map<string, string> expParams = 16; // 配置的参数
+  map<string, uint64> fixUser = 17;   // 白名单imei-> 根节点映射
+  repeated string recognize = 18;     // 该结点流量识别标识
+};
+
+message AbNodeTree {
+  map<uint64, AbNodeInfo> id2NodeInfo = 1;
+  map<uint64, uint64> sceneid2Id = 2;
+  map<string, uint64> recog2Id = 3;
+};
+
+message AbtReqNodeTree {
+  uint64 sceneid = 1; //场景id
+};
+
+message AbtRspNodeTree {
+  AbNodeTree nodeTree = 1;
+  string debug_error = 2;
+};

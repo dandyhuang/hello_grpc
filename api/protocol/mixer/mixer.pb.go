@@ -10,7 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	anypb "google.golang.org/protobuf/types/known/anypb"
-	common "hello_grpc/api/protocol/common"
+	common "hello_grpc/api/protocol/common/"
 	reflect "reflect"
 	sync "sync"
 )

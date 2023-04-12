@@ -1,0 +1,15 @@
+syntax = "proto3";
+package rtrs_frame;
+option go_package = "hello_grpc/api/protocol/rank2/;rank2";
+
+
+message CpdAlgParam {
+    int32 recall_type = 1; // 按位存储，每一个二进制位表示一个召回通道，命中的话将对应位置1即可
+    float softmax_score = 2;  // 多分类模型得分
+    float lite_pctr = 3;  // 粗排模型ctr得分
+    float lite_pcvr = 4;  // 粗排模型cvr得分
+    float pctr = 5; // 模型输出的pctr
+    float pcvr = 6; // 模型输出的pcvr
+    float pcvr2 = 7; // 模型输出的pcvr2
+    int32 rerank_type = 8; // 按位存储，每一个二进制位表示一个rerank策略，命中的话将对应位置1即可, 最多支持32种，策略多可以设计成int64支持64种
+}

@@ -11,7 +11,7 @@ import (
 func SendPost(client *resty.Client, i discovery.ServiceInstance) {
 	body := `{"imei":"86428105997713","gaid":"86428105997713","req_id":"113113","scene_id":10001,"scene_subalg":"vre001","channel_id":0,"personal_switch":"1"}`
 	resp, err := client.R().EnableTrace().SetHeader("Content-Type", "application/json").
-		SetBody(body).Post("http://10.33.36.76:17800/feed/predict?sceneid=10001")
+		SetBody(body).Post("http://" + i.GetEndPoint() + "/feed/predict?sceneid=10001")
 	if err != nil {
 		fmt.Println("post errr:", err)
 		return
@@ -33,6 +33,10 @@ func SendPost(client *resty.Client, i discovery.ServiceInstance) {
 }
 
 func TestConsulServiceDiscovery(t *testing.T) {
+	var index uint8
+	for index = 0; ; index++ {
+		fmt.Println(index)
+	}
 	host := "127.0.0.1"
 	port := 8500
 	token := ""

@@ -1,0 +1,19 @@
+syntax = "proto3";
+package rtrs_frame;
+
+import "protocol/rank2/recommend.proto";
+option go_package = "hello_grpc/api/protocol/rank2/;rank2";
+
+
+//Begin---------------接口
+//请求参数
+message BatchRequest{
+    repeated rtrs_frame.RecomRequest recomRequestList = 1;   
+};
+
+//推荐结果
+message BatchResponse{
+    repeated rtrs_frame.RecomResponse recomResponseList = 1;   
+};
+//End---------------接口
+

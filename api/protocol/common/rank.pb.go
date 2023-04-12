@@ -9,7 +9,7 @@ package common
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	abt "hello_grpc/api/protocol/abt"
+	abt "hello_grpc/api/protocol/abt/"
 	reflect "reflect"
 	sync "sync"
 )

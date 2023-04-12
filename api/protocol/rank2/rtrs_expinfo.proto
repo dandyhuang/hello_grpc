@@ -1,0 +1,34 @@
+syntax = "proto3";
+package rtrs_frame;
+option go_package = "hello_grpc/api/protocol/rank2/;rank2";
+
+
+//目的：支持多层实验平台，通过配置化方式实现多组实验统计
+//代表流量经过该层，所附带的算法参数和系统参数
+message AlgMultiTestInfo {
+  int32 testID = 1; //暂未使用
+  int32 ruleID =
+      2; //标识实验流量进入哪个so执行，灰度过程中ruleID 和实验参数中都填入
+
+  //实验参数 由实验者和系统设定参数，各自识别并执行
+  //算法参数:被相应的so识别并执行
+  //系统参数:，IDC路由参数,参数
+  //参数名，参数值 比如 ruleID="10"
+  map<string, string> mapParams = 3;
+
+  // 模块层标识
+  // 1 -> scoring
+  // 2 -> sorting
+  // 3 -> filter
+  // R(ascii) -> retrieval
+  // ....
+  uint32 expLayer = 4;
+  string expName = 5; // 实验名称
+  uint64 pageid = 6;
+  string pageName = 7;
+};
+message AllTestInfo
+{
+		repeated AlgMultiTestInfo vecTestInfo = 1;
+		string debug_error  = 2;
+};

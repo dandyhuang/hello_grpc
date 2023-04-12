@@ -21,19 +21,19 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
+	"github.com/go-kratos/kratos/v2/config"
+	"github.com/go-kratos/kratos/v2/config/file"
+	"github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/balancer/roundrobin"
 	"google.golang.org/grpc/metadata"
-	pb "hello_grpc/service/proto"
+	"hello_grpc/api/protocol/rank2"
+	"hello_grpc/proto/rec"
 	"log"
-	"os"
 	"time"
-)
-
-const (
-	address     = "localhost:50051"
-	defaultName = "world"
 )
 
 func main() {
@@ -43,27 +43,62 @@ func main() {
 	//			grpclb.NewConsulResolver("127.0.0.1:8500", "grpc.health.v1.add"))))
 
 	// Set up a connection to the stream_server.
-	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock(),
+	var addr, imei, flagconf string
+	flag.StringVar(&addr, "addr", "10.193.49.142:19802", "配置文件")
+	flag.StringVar(&imei, "imei", "864022038223938", "配置文件")
+	flag.StringVar(&flagconf, "conf", "user.json", "配置文件")
+
+	flag.Parse()
+	fmt.Println("addr:", addr)
+	conn, err := grpc.Dial(addr, grpc.WithInsecure(), // grpc.WithBlock(),
 		grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"LoadBalancingPolicy": "%s"}`, roundrobin.Name)))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	c := pb.NewGreeterClient(conn)
+	c := rec.NewCommonServiceClient(conn)
 
-	// Contact the stream_server and print out its response.
-	name := defaultName
-	if len(os.Args) > 1 {
-		name = os.Args[1]
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	// metadata 使用
 	md := metadata.New(map[string]string{"key1": "val1", "key2": "val2"})
 	ctx = metadata.NewOutgoingContext(ctx, md)
-	r, err := c.SayHello(ctx, &pb.HelloRequest1{Name: name})
+
+	c1 := config.New(
+		config.WithSource(
+			file.NewSource(flagconf),
+		),
+	)
+	defer c1.Close()
+
+	if err := c1.Load(); err != nil {
+		panic(err)
+	}
+	req := rank2.RecomRequest{}
+	if err := c1.Scan(&req); err != nil {
+		panic(err)
+	}
+
+	log.Println("req:", req)
+
+	details, err := ptypes.MarshalAny(&req)
+	if err != nil {
+		panic(err)
+	}
+	cr := &rec.CommonRequest{}
+	cr.Request = details
+	anyName, err := ptypes.AnyMessageName(cr.Request)
+	if err != nil {
+		log.Println("msg name", err)
+	}
+
+	log.Println("anyName:", anyName)
+	r, err := c.Process(ctx, cr)
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	log.Printf("Greeting: %s", r.GetMessage())
+	foo := &rank2.RecomResponse{}
+
+	err = proto.Unmarshal(r.Response.Value, foo)
+	fmt.Println("value:", err, foo)
 }

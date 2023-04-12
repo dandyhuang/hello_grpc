@@ -25,7 +25,7 @@ package common
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	_ "hello_grpc/api/protocol/abt"
+	_ "hello_grpc/api/protocol/abt/"
 	reflect "reflect"
 	sync "sync"
 )
