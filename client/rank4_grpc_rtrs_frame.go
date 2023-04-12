@@ -91,6 +91,7 @@ func main() {
 	if err != nil {
 		log.Println("msg name", err)
 	}
+	cr.Reserved2 = uint64(req.Recommend.SceneId)
 
 	log.Println("anyName:", anyName)
 	r, err := c.Process(ctx, cr)
