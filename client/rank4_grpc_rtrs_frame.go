@@ -98,6 +98,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
+
 	foo := &rank2.RecomResponse{}
 
 	err = proto.Unmarshal(r.Response.Value, foo)
