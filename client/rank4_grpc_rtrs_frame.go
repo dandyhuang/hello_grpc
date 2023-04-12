@@ -44,7 +44,7 @@ func main() {
 
 	// Set up a connection to the stream_server.
 	var addr, imei, flagconf string
-	flag.StringVar(&addr, "addr", "10.193.49.142:19802", "配置文件")
+	flag.StringVar(&addr, "addr", "10.193.34.19:8880", "配置文件")
 	flag.StringVar(&imei, "imei", "864022038223938", "配置文件")
 	flag.StringVar(&flagconf, "conf", "user1.json", "配置文件")
 
