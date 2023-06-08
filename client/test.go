@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"sync/atomic"
 	"time"
 )
@@ -54,6 +55,9 @@ func main() {
 	// ins := CountIns{}
 
 	// go cTest(&ins)
+	str := "hello,world"
+	arr := strings.Split(str, "hello,")
+	fmt.Println(arr) // 输出 ["hello" "world"]
 	i := 9
 	defer func() {
 		fmt.Println(i)
