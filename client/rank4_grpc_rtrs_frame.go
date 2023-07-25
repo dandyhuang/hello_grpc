@@ -75,7 +75,7 @@ func main() {
 		panic(err)
 	}
 	req := rank2.RecomRequest{}
-	fmt.Println("req c1:", c1.Value("recommend.device"))
+	fmt.Println("req c1:", c1.Value("recommend"))
 	if err := c1.Scan(&req); err != nil {
 		fmt.Println("scan err:", err, req)
 		panic(err)
