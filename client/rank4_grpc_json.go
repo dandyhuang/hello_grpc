@@ -24,7 +24,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
@@ -70,11 +69,6 @@ func main() {
 		log.Fatal(err)
 	}
 	req := rank2.RecomRequest{}
-	// 将JSON数据解析到Person消息中
-	err = jsonpb.UnmarshalString(string(data), &req)
-	if err != nil {
-		log.Fatal(err)
-	}
 	err = json.Unmarshal(data, &req)
 	if err != nil {
 		log.Fatal(err)
