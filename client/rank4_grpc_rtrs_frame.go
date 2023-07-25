@@ -72,6 +72,7 @@ func main() {
 	defer c1.Close()
 
 	if err := c1.Load(); err != nil {
+		log.Println(err)
 		panic(err)
 	}
 	req := rank2.RecomRequest{}
