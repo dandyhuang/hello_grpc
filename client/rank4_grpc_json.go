@@ -21,6 +21,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"github.com/golang/protobuf/jsonpb"
@@ -74,12 +75,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	protoData, err := proto.Marshal(&req)
+	err = json.Unmarshal(data, &req)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("req:", protoData)
+	log.Println("req:", req)
 
 	details, err := ptypes.MarshalAny(&req)
 	if err != nil {
