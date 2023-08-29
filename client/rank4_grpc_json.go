@@ -68,6 +68,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	// SCENE_CMD_ID_APPSTORE_INTERWEAVE_RESOURCE_RECOMM
 	req := rank2.RecomRequest{}
 	err = json.Unmarshal(data, &req)
 	if err != nil {
