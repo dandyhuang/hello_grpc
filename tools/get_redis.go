@@ -37,10 +37,10 @@ func main() {
 		os.Exit(1)
 
 	}
-	v := rdb.Get(ctx, key)
+	v, _ := rdb.Get(ctx, key).Bytes()
 
 	fmt.Println("value:", v)
 	var m proto.Message
-	proto.Unmarshal([]byte(v.Val()), m)
+	proto.Unmarshal(v, m)
 	fmt.Println("Unmarshal:", m)
 }
