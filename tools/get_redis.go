@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/aj3423/aproto"
 	"github.com/go-redis/redis/v8"
 	"github.com/golang/protobuf/proto"
 	log "github.com/sirupsen/logrus"
@@ -179,8 +180,10 @@ func main() {
 
 	}
 	v := rdb.Get(ctx, key)
+	out, err := aproto.TryDumpEx([]byte(v.Val()), &aproto.ConsoleRenderer{})
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Println("value:", v)
-	rm := findTypeByName(v.Val())
-	fmt.Println("Unmarshal:", rm)
+	fmt.Println("value:", out)
 }
