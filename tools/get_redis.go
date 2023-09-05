@@ -179,8 +179,8 @@ func main() {
 		os.Exit(1)
 
 	}
-	v := rdb.Get(ctx, key)
-	out, err := aproto.TryDumpEx([]byte(v.Val()), &aproto.ConsoleRenderer{})
+	v, _ := rdb.Get(ctx, key).Bytes()
+	out, err := aproto.TryDumpEx(v, &aproto.ConsoleRenderer{})
 	if err != nil {
 		panic(err)
 	}
