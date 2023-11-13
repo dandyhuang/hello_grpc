@@ -33,7 +33,6 @@ import (
 	"hello_grpc/proto/rec"
 	"io/ioutil"
 	"log"
-	"math"
 	"time"
 )
 
@@ -52,10 +51,6 @@ func main() {
 	flag.Parse()
 	fmt.Println("addr:", addr)
 	conn, err := grpc.Dial(addr, grpc.WithInsecure(), // grpc.WithBlock(),
-		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(math.MaxInt32),
-			grpc.MaxCallSendMsgSize(math.MaxInt32)),
-		grpc.WithInitialConnWindowSize(math.MaxInt32),
-		grpc.WithInitialWindowSize(math.MaxInt32),
 		grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"LoadBalancingPolicy": "%s"}`, roundrobin.Name)))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
@@ -82,13 +77,7 @@ func main() {
 
 	log.Println("req:", req)
 
-	batch_req := rank2.BatchRequest{}
-	batch_req.RecomRequestList = make([]*rank2.RecomRequest, 0)
-	batch_req.RecomRequestList = append(batch_req.RecomRequestList, &req)
-	//log.Println("batch_req:", batch_req)
-
 	details, err := ptypes.MarshalAny(&req)
-	//details, err := ptypes.MarshalAny(&batch_req)
 	if err != nil {
 		panic(err)
 	}
@@ -108,7 +97,6 @@ func main() {
 	}
 
 	foo := &rank2.RecomResponse{}
-	//foo := &rank2.BatchResponse{}
 
 	err = proto.Unmarshal(r.Response.Value, foo)
 	fmt.Println("value:", err, foo)
